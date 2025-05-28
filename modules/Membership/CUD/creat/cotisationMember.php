@@ -7,7 +7,7 @@ $arrayKeys = ['idUser'];
 $controle_POST = array();
 $mark = array();
 if (checkPostFields($arrayKeys, $_POST)) {
-    array_push($controle_POST, $addNewMember->checkIdUserExiste (filter($_POST[$arrayKeys[0]])));
+    array_push($controle_POST, $addNewMember->checkUserExiste  (filter($_POST[$arrayKeys[0]])));
     array_push($mark, 1);
 }
 

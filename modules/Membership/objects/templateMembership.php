@@ -9,7 +9,7 @@ class templateMembership extends SQLmembership
         echo '<td>
             <form method="post" action="'.encodeRoutage(143).'">';
             echo '<input type="hidden" name="idUser" value="' . htmlspecialchars($idUser) . '">';
-            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Premier adhésion</button>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Adhérant</button>';
             echo '</form>
         </td>';
     }
