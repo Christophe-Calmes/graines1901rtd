@@ -1,29 +1,22 @@
 <?php
 function genToken ($size) {
     $alpha = 'abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for ($i=0; $i < 3 ; $i++) {
-        $alpha = str_shuffle($alpha).$alpha;
-    }
-    $token = NULL;
+    $token = '';
+    $caharacters = strlen($alpha);
     for ($i=0 ; $i < $size  ; $i++ ) {
-      $number = rand(0, strlen($alpha));
+      $number = random_int(0, $caharacters -1);
       $letter = substr($alpha, $number, 1);
       $token = $token.$letter;
-      //$token =  $token.substr($alpha, rand(0,strlen($alpha)));
     }
     return $token;
 }
 function IntToken ($size) {
-    $alpha = '1234564567890';
-    for ($i=0; $i < 6 ; $i++) {
-        $alpha = str_shuffle($alpha).$alpha;
-    }
-    $token = NULL;
+    $alpha = '1234567890';
+    $caharacters = strlen($alpha);
+    $token = '';
     for ($i=0 ; $i < $size  ; $i++ ) {
-      $number = rand(0, strlen($alpha));
-      $letter = substr($alpha, $number, 1);
-      $token = $token.$letter;
-      //$token =  $token.substr($alpha, rand(0,strlen($alpha)));
+      $number = random_int(0, $caharacters -1);
+      $token = $token.$alpha[$number];
     }
     return $token;
 }
