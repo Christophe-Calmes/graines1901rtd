@@ -57,4 +57,13 @@ class SQLmembership
         $param = [['prep'=>':idUser', 'variable'=>$idUser]];
         return ActionDB::select($select, $param, 0)[0];
     }
+    public function infosMember ($idUser) {
+        $infos = array();
+        $select = "SELECT `MemberNumber` FROM `membership` WHERE `id_users` = :idUser;";
+        $param = [['prep'=>':idUser', 'variable'=>$idUser]];
+        array_push($infos, ActionDB::select($select, $param, 0)[0]);
+        $select = "SELECT `prenom`, `nom` FROM `users` WHERE `idUser` = :idUser;";
+        array_push($infos, ActionDB::select($select, $param, 0)[0]);
+        return $infos;
+    }
 }

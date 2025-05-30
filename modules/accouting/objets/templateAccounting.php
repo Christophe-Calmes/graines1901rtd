@@ -16,12 +16,11 @@ class templateAccounting extends SQLaccounting
         $year = date('Y');
         echo '<aside class="item">';
             echo '<form class="formulaireClassique" method="post" action="'.encodeRoutage(144).'">';
-            echo '<input type="hidden" name="idUser" value="' . htmlspecialchars($idUser) . '">';
-            $this->globalSelect ('Type de transaction', 'type', $this->typeBankTransaction, 'type');
-            echo '<label for="numeroTransaction">Numéro de transaction :</label>';
-            echo '<input id="numeroTransaction" type="text" name="numeroTransaction" id="numeroTransactio" placeholder="numero de transaction"/>';
-
-            echo '<p>Cotisation annuel : '. $this->annualCotisation .' €</p>';
+            echo '<input type="hidden" name="idUser" value="'. $idUser.'">';
+            $this->globalSelect ('Type de transaction', 'formeBanquaire', $this->typeBankTransaction, 'type');
+            echo '<label for="numeroTransaction">Numéro de transaction ou chèque :</label>';
+            $this->globalSelect ('Cotisation', 'montant', $this->annualCotisation, 'type');
+            echo '<input id="numeroTransaction" type="text" name="numeroTransaction" placeholder="numero de transaction"/>';
             echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Adhésion '.$year.' / '.($year + 1).'</button>';
             echo '</form>';
         echo '</aside>';
