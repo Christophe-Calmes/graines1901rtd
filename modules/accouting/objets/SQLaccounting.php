@@ -23,4 +23,10 @@ class SQLaccounting
     public function amount ($id) {
         return $this->annualCotisation[$id]['price'];
     }
+    public function addActe ($param) {
+        print_r($param);
+        $insert = "INSERT INTO `compta`(  `formeBanquaire`,`montant`, `numeroTransaction`, `objet`,  `auteurActes` ) 
+        VALUES (:formeBanquaire, :montant, :numeroTransaction,  :objet, :idUser)";
+        return ActionDB::access($insert, $param, 2);
+    }
 }

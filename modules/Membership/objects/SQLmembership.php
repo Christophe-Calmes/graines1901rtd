@@ -3,9 +3,10 @@ class SQLmembership
 
 {
     protected function getMember ($accreditation) {
-        $sql = "SELECT `idUser`, `email`, `prenom`, `nom`, `login`,  `users`.`valide`, `dateCreation`, `typeRole`, `role`
+        $sql = "SELECT `idUser`, `email`, `prenom`, `nom`, `login`,  `users`.`valide`, `dateCreation`, `typeRole`, `role`, `cotisation`,  `membership`.`update_date`
         FROM `users`
         INNER JOIN `roles` ON `users`.`role` = `roles`.`accreditation`
+        INNER JOIN `membership` ON `id_users` = `idUser`
         WHERE `role` = :accreditation AND  `users`.`valide` = 1;";
         $param = [['prep'=>':accreditation', 'variable'=>$accreditation]];
         return ActionDB::select($sql, $param, 0);
@@ -65,5 +66,10 @@ class SQLmembership
         $select = "SELECT `prenom`, `nom` FROM `users` WHERE `idUser` = :idUser;";
         array_push($infos, ActionDB::select($select, $param, 0)[0]);
         return $infos;
+    }
+    public function recordCotisation ($idUser) {
+        $param = [['prep'=>':idUser', 'variable'=>$idUser]];
+        $update = "UPDATE `membership` SET `cotisation`= 1, `update_date`= NOW()  WHERE `id_users` = :idUser;";
+        return ActionDB::access($update, $param, 0);
     }
 }

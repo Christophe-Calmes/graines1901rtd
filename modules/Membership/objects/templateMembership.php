@@ -13,10 +13,15 @@ class templateMembership extends SQLmembership
             echo '</form>
         </td>';
     }
-    private function memberShip($idUser, $idNav) {
-        echo '<td>
+    private function memberShip($idUser, $idNav, $cotisation) {
+        if(!$cotisation) {
+            echo '<td>
                 <a href="'.findTargetRoute(237).'&idUser='.$idUser.'">Cotisation</a>
             </td>';
+        } else {
+            echo '<td><button class="redButton notPossible">Cotisation</button></td>';
+        }
+        
     }
 
     public function displayMember($idNav, $accreditation)
@@ -25,24 +30,35 @@ class templateMembership extends SQLmembership
          if (empty($dataMember)) {
               echo '<h2 class="subTitleSite">No members found.</h2>';
          } else {
-                echo '<h2 class="subTitleSite">List des membres du site non adhérant</h2>';
+                if($accreditation == 4) {
+                    echo '<h2 class="subTitleSite">List des membres du site adhérant</h2>';
+                } else {
+                    echo '<h2 class="subTitleSite">List des membres du site visiteur</h2>';
+                }
+
+                
                 echo '<table class="tableWebSite" border="1">';
-                    echo "<tr><th>Email</th><th>Prenom</th><th>Nom</th><th>Pseudo</th><th>Valid</th><th>Role</th><th>Date de création</th><th>Administration</th></tr>";
+                    echo "<tr><th>Email</th><th>Prenom</th><th>Nom</th><th>Pseudo</th><th>Valid</th><th>Role</th><th>Date de création</th><th>Cotisation</th><th>Administration</th></tr>";
                     foreach ($dataMember as $member) {
                         echo "<tr>";
                         echo '<td><a href="mailto:' . htmlspecialchars($member['email']) . '">'. htmlspecialchars($member['prenom']) .' '. htmlspecialchars($member['nom']) .'</a></td>';
                         echo "<td>" . htmlspecialchars($member['prenom']) . "</td>";
                         echo "<td>" . htmlspecialchars($member['nom']) . "</td>";
                         echo "<td>" . htmlspecialchars($member['login']) . "</td>";
-                        echo "<td>" . ($member['valide'] ? 'Yes' : 'No') . "</td>";
+                        echo "<td>" . ($member['valide'] ? 'Oui' : 'Non') . "</td>";
                         echo '<td>'.htmlspecialchars($member['typeRole']).'</td>';
                         echo "<td>" . htmlspecialchars(brassageDate($member['dateCreation'])) . "</td>";
+                        echo '<td>'.($member['cotisation'] ? 'Oui':'Non');
+                            if($member['cotisation']) {
+                                echo '<br/>Date cotisation : '.brassageDate($member['update_date']);
+                            }
+                        echo '</td>';
                         if($member['role'] == 1) {
                             $this->addMemberFirstTime ($member['idUser'], $idNav);
                         }
                         if($member['role'] == 4) {
-                            $this->memberShip($member['idUser'], $idNav);
-                        }
+                            $this->memberShip($member['idUser'], $idNav, $member['cotisation']);
+                        } 
                         
                         echo "</tr>";
                 }
