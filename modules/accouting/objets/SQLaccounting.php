@@ -38,8 +38,33 @@ class SQLaccounting
         VALUES (:formeBanquaire, :montant, :numeroTransaction,  :objet, :idUser)";
         return ActionDB::access($insert, $param, 2);
     }
-    protected function getActualAccouting ($date) {
-        return true;
+    private function getDateStartBalanceSheet () {
+        $select = "SELECT `openCompta` FROM `bilans` WHERE `archive` = 0;";
+        return ActionDB::select($select, [],2)[0]['openCompta'];
+    }
+    protected function getActualAccouting () {
+        $dateOpening = $this->getDateStartBalanceSheet ();
+        $param = [['prep'=>':dateActe', 'variable'=>$dateOpening]];
+        $select = "SELECT `idActe`, 
+                `dateActe`, 
+                `date_update`, 
+                `numeroTransaction`, 
+                `objet`, 
+                `montant`, 
+                `formeBanquaire`, 
+                `auteurActes`, 
+                `auteurDel`, 
+                `valide`, 
+                `bilan`,
+                `balance`
+        FROM `compta`
+        WHERE `dateActe` >= :dateActe AND `valide`=1;";
+        return ActionDB::select($select, $param, 2);
+    }
+    protected function identification ($idUser)  {
+        $select = "SELECT `prenom`, `nom` FROM `users` WHERE `idUser`=:idUser;";
+        $param = [['prep'=>':idUser', 'variable'=>$idUser]];
+        return ActionDB::select($select, $param, 0)[0];
     }
     protected function getFamilyMembership () {
         $select = "SELECT `cotisation`, `nom`, `prenom`, `idUser`

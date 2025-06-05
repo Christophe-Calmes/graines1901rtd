@@ -1,5 +1,6 @@
 <?php
 require ('modules/accouting/objets/SQLaccounting.php');
+require_once ('functions/functionDateTime.php');
 class templateAccounting extends SQLaccounting 
 {
 
@@ -45,9 +46,38 @@ class templateAccounting extends SQLaccounting
         
     }
 
-    public function displayActualAccounting ($date) {
-        $data = $this->getActualAccouting ($date);
-        print_r($data);
+    public function displayActualAccounting () {
+        $data = $this->getActualAccouting ();
+        echo '<table class="tableWebSite" border="1">';
+            echo '<tr>
+                    <th>Ordre transaction</th>
+                    <th>Date mouvement</th>
+                    <th>Date modification</th>
+                    <th>Numéro de transaction</th>
+                    <th>object</th>
+                    <th>Montant</th>
+                    <th>Type bancaire</th>
+                    <th>Auteur de la transaction</th>
+                    <th>Balance</th>
+                    <th>Bilan actif</th>
+                </tr>';
+            foreach ($data as $value) {
+                $name = $this->identification ($value['auteurActes']);
+                echo '<tr>
+                        <td>'.$value['idActe'].'</td>
+                        <td>'.formatDateHeureFr($value['dateActe']).'</td>
+                        <td>'.formatDateHeureFr($value['date_update']).'</td>
+                        <td>'.$value['numeroTransaction'].'</td>
+                        <td>'.$value['objet'].'</td>
+                        <td>'.$value['montant'].' €</td>
+                        <td>'.$this->typeBankTransaction[$value['formeBanquaire']]['type'].'</td>
+                        <td>'.$name['prenom'].' '.$name['nom'].'</td>
+                        <td>'.($value['balance'] ? 'Recette' : 'Débit').'</td>
+                        <td>'.($value['bilan'] ? 'Non' : 'Oui').'</td>
+                    </tr>';
+                    
+            }
+        echo '</table>';
     }
 
 }
