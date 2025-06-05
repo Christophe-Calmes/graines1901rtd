@@ -11,6 +11,13 @@ class SQLmembership
         $param = [['prep'=>':accreditation', 'variable'=>$accreditation]];
         return ActionDB::select($sql, $param, 0);
     }
+    protected function getNewMember() {
+        $select = "SELECT `idUser`, `email`, `prenom`, `nom`, `login`, `role`, `dateCreation`, `typeRole`
+        FROM `users` 
+        INNER JOIN `roles` ON `users`.`role` = `roles`.`accreditation`
+        WHERE `role` = 1 AND `users`.`valide` = 1;";
+        return ActionDB::select($select, [], 0);
+    }
     private function checkIdUser ($idUser) {
         $sql = "SELECT COUNT(`idUser`) AS `nbrUser` FROM `users` WHERE `idUser` = :idUser;";
         $param = [['prep'=>':idUser', 'variable' => $idUser]];
@@ -67,9 +74,23 @@ class SQLmembership
         array_push($infos, ActionDB::select($select, $param, 0)[0]);
         return $infos;
     }
-    public function recordCotisation ($idUser) {
-        $param = [['prep'=>':idUser', 'variable'=>$idUser]];
-        $update = "UPDATE `membership` SET `cotisation`= 1, `update_date`= NOW()  WHERE `id_users` = :idUser;";
+    public function recordCotisation ($idUser, $cotisation) {
+        $param = [['prep'=>':idUser', 'variable'=>$idUser], ['prep'=>':cotisation', 'variable'=>$cotisation]];
+        $update = "UPDATE `membership` SET `cotisation`= :cotisation, `update_date`= NOW()  WHERE `id_users` = :idUser;";
         return ActionDB::access($update, $param, 0);
     }
+    public function linkFamily ($param) {
+        $insert = "INSERT INTO `family_link`(`idUser`, `idFamily`) VALUES (:idUser, :idFamily);";
+        return actionDB::access($insert, $param, 0);
+    }
+    protected function linkIdentity ($idUser) {
+        $select = "SELECT `nom`, `prenom`
+            FROM `family_link` 
+            INNER JOIN `users` ON  `users`.`idUser` = `idFamily`
+            WHERE `family_link`.`idUser` = :idUser;";
+            $param = [['prep'=>':idUser', 'variable'=>$idUser]];
+            return ActionDB::select($select, $param, 0)[0];
+            
+    }
+    
 }

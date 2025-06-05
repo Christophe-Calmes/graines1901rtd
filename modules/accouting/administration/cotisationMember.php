@@ -1,13 +1,13 @@
 <?php
-require ('modules/Membership/objects/templateMembership.php');
-require ('modules/accouting/objets/templateAccounting.php');
+require_once ('modules/Membership/objects/templateMembership.php');
+require_once ('modules/accouting/objets/templateAccounting.php');
 $idUser = filter($_GET['idUser']);
 $cotisation = new templateMembership ();
 if($cotisation->checkMember ($idUser)) {
         echo '<article class="gallery">';
     $cotisation->dataSheetMemberShip ($idUser);
-    $accounting = new templateAccounting ();
-    $accounting->contributForYear ($idUser, $idNav);
+    $accountingDisplay = new templateAccounting ();
+    $accountingDisplay->contributForYear ($idUser, $idNav);
     echo '</article>';
 
 } else {

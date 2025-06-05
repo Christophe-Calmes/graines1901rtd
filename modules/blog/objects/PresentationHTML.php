@@ -29,7 +29,7 @@ class PresentationHTML extends SQLBlog
         return $html;
     }
     private function img ($data, $class) {
-        // *oimg* {src} (alt) *cmig*
+        // *OpenPicture* {src} (alt) *ClosePicture*
         $html = str_replace('OpenPicture', '<img class="'.$class.'"', $data);
         $html = str_replace('{', 'src="modules/blog/blogPictures/', $html);
         $html = str_replace('}', '"', $html);
@@ -73,8 +73,8 @@ class PresentationHTML extends SQLBlog
         return str_replace('*eh4*', ' </h4>', $setp1);
     }
     protected function htmlText ($data) {
-        $html = $this->article ($data, $this->classCSS['article']);
         
+        $html = $this->article ($data, $this->classCSS['article']);
         $html = $this->paragraphe ($html, $this->classCSS['p']);
         $html = $this->strong ($html, $this->classCSS['strong']);
         $html = $this->listHTML ($html, $this->classCSS['ul']);
