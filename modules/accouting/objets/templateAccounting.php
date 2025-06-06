@@ -36,8 +36,8 @@ class templateAccounting extends SQLaccounting
             echo '<form class="formulaireClassique" method="post" action="'.encodeRoutage(144).'">';
             echo '<input type="hidden" name="idUser" value="'. $idUser.'">';
             $this->globalSelect ('Type de transaction', 'formeBanquaire', $this->typeBankTransaction, 'type');
-            echo '<label for="numeroTransaction">Numéro de transaction ou chèque :</label>';
             $this->globalSelect ('Cotisation', 'montant', $this->annualCotisation, 'type');
+            echo '<label for="numeroTransaction">Numéro de transaction ou chèque :</label>';
             echo '<input id="numeroTransaction" type="text" name="numeroTransaction" placeholder="numero de transaction"/>';
             echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Adhésion '.$year.' / '.($year + 1).'</button>';
             echo '</form>';
@@ -45,8 +45,39 @@ class templateAccounting extends SQLaccounting
         echo '</aside>';
         
     }
+    private function balance () {
+        $resultat = $this->balanceAccounting ();
+        if($resultat[2]>0) {
+            $warning = 'green';
+        } else {
+            $warning = 'red';
+        }
+        echo '<table class="tableWebSite" border="1">';
+            echo '<tr>
+                    <th>Recette</th>
+                    <th>Debit</th>
+                    <th>Balance</th>
+                </tr>';
+            echo '<tr>
+                <td>'.round($resultat[0], 2).' €</td>
+                <td>'.round($resultat[1], 2).' €</td>
+                <td class="'.$warning.'">'.round($resultat[2], 2).' €</td>
+            </tr>';
+            
 
-    public function displayActualAccounting () {
+        echo '</table>';
+
+    }
+    private function formUnvalideActe ($idActe, $idNav) {
+        echo '<td>';
+            echo '<form method="post" action="'.encodeRoutage(147).'">';
+                echo '<input type="hidden" name="id" value="'. $idActe.'">';
+                echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Del</button>';
+            echo '</form>';
+        echo '</td>';
+    }
+
+    public function displayActualAccounting ($idNav) {
         $data = $this->getActualAccouting ();
         echo '<table class="tableWebSite" border="1">';
             echo '<tr>
@@ -60,6 +91,7 @@ class templateAccounting extends SQLaccounting
                     <th>Auteur de la transaction</th>
                     <th>Balance</th>
                     <th>Bilan actif</th>
+                    <th>Administration</th>
                 </tr>';
             foreach ($data as $value) {
                 $name = $this->identification ($value['auteurActes']);
@@ -73,11 +105,34 @@ class templateAccounting extends SQLaccounting
                         <td>'.$this->typeBankTransaction[$value['formeBanquaire']]['type'].'</td>
                         <td>'.$name['prenom'].' '.$name['nom'].'</td>
                         <td>'.($value['balance'] ? 'Recette' : 'Débit').'</td>
-                        <td>'.($value['bilan'] ? 'Non' : 'Oui').'</td>
-                    </tr>';
+                        <td>'.($value['bilan'] ? 'Non' : 'Oui').'</td>';
+                        $this->formUnvalideActe ($value['idActe'], $idNav);
+                echo'</tr>';
                     
             }
         echo '</table>';
+        echo '<aside class="customerForm">';
+        $this->balance();
+        echo '</aside>';
+    }
+
+    public function displayAddAct($idNav) {
+   
+            echo '<form class="customerForm" method="post" action="'.encodeRoutage(146).'">';
+                $this->globalSelect ('Type de transaction', 'formeBanquaire', $this->typeBankTransaction, 'type');
+                echo '<label for="montant">Valeur absolu montant en €</label>';
+                echo '<input type="number" id="montant" name="montant" step="0.01" min="0" placeholder="0.00 €">';
+                echo '<label for="balance">Recette ou Débit</label>';
+                    echo '<select id="balance" name="balance">';
+                        echo '<option value="1">Recette + </option>';
+                        echo '<option value="0">Débit -</option>';
+                    echo '</select>';
+                echo '<label for="numeroTransaction">Numéro de transaction ou chèque :</label>';
+                echo '<input id="numeroTransaction" type="text" name="numeroTransaction" placeholder="numero de transaction"/>';
+                echo '<label for="objet">Objet</label>';
+                echo '<input id="objet" type="text" name="objet" placeholder="Motif de la transaction"/>';
+                echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Add</button>';
+            echo '</form>';
     }
 
 }
