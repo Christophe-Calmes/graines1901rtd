@@ -134,5 +134,34 @@ class templateAccounting extends SQLaccounting
                 echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Add</button>';
             echo '</form>';
     }
+    private function displayBilan ($dataBilan) {
+    
+        if(!empty($dataBilan)) {
+            echo '<table class="tableWebSite" border="1">';
+                echo '<tr><th>Numéro bilan</th><th>Date ouverture</th><th>Date fermeture</th><th>Visualiser</th></tr>';
+                foreach ($dataBilan as $value) {
+                    echo '<tr>';
+                        echo '<td>'.$value['id'].'</td>';
+                        echo '<td>'.brassageDate($value['openCompta']).'</td>';
+                        echo '<td>'.brassageDate($value['closeCompta']).'</td>';
+                        echo '<td></td>';
+                    echo '</tr>';
+                }
+            echo '</table>';
+        } else {
+            echo '<h2>No data !</h2>';
+        }
+
+    }
+    public function displayOldBilan () {
+        $dataBilan = $this->getOldBilan ();
+        echo '<h2 class="subTitleSite">Date des anciens bilans</h2>';
+        $this->displayBilan ($dataBilan);
+    }
+    public function displayActualBilan () {
+        $dataBilan = $this->getActualBilan ();
+        echo '<h2 class="subTitleSite">Date du bilan actuel</h2>';
+        $this->displayBilan ($dataBilan);
+    }
 
 }

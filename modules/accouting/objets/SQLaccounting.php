@@ -62,6 +62,10 @@ class SQLaccounting
         $select = "SELECT `openCompta` FROM `bilans` WHERE `valid` = 1 AND `archive` = 0 ORDER BY `openCompta` DESC LIMIT 1;";
         return ActionDB::select($select, [],2)[0]['openCompta'];
     }
+    protected function getActualBilan () {
+        $select = "SELECT `id`, `openCompta`, `closeCompta`, `archive`, `valid` FROM `bilans` WHERE `valid` = 1 AND `archive` = 0 ORDER BY `openCompta` DESC LIMIT 1;";
+        return ActionDB::select($select, [],2);
+    }
     protected function getActualAccouting () {
         $dateOpening = $this->getDateStartBalanceSheet ();
         $param = [['prep'=>':dateActe', 'variable'=>$dateOpening]];
@@ -109,10 +113,18 @@ class SQLaccounting
         array_push($result, $result[0]-$result[1]);
         return $result;
     }
-    protected function unvalideActe ($idCompta) {
-        $param = [['prep'=>':id', 'variable'=>$idCompta]];
-        $update = "UPDATE `compta` SET `valide`= 0 WHERE `idActe`=:id AND `bilan`=0;";
+    public function unvalideActe ($param) {
+        $update = "UPDATE `compta` SET `valide`= 0, `date_update`= NOW(), `auteurDel`=:idUser  WHERE `idActe`=:id AND `bilan`=0;";
         ActionDB::access($update, $param, 2);
     }
-
+    public function getIdAct ($id) {
+        $select = "SELECT COUNT(`idActe`) AS `nbrActe` 
+        FROM `compta` WHERE `idActe` = :id AND `valide` = 1;";
+        $param = [['prep'=>':id', 'variable'=>$id]];
+        return ActionDB::select($select,  $param, 2)[0]['nbrActe'];
+    }
+    protected function getOldBilan () {
+        $select = "SELECT `id`, `openCompta`, `closeCompta`, `archive`, `valid` FROM `bilans` WHERE `archive` = 1;";
+        return ActionDB::select($select, [],2);
+    }
 }
