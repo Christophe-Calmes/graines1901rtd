@@ -68,6 +68,29 @@ class templateAccounting extends SQLaccounting
         echo '</table>';
 
     }
+        private function archiveBalance ($idBilan) {
+        $resultat = $this->archiveBalanceAccounting ($idBilan);
+        if($resultat[2]>0) {
+            $warning = 'green';
+        } else {
+            $warning = 'red';
+        }
+        echo '<table class="tableWebSite" border="1">';
+            echo '<tr>
+                    <th>Recette</th>
+                    <th>Debit</th>
+                    <th>Balance</th>
+                </tr>';
+            echo '<tr>
+                <td>'.round($resultat[0], 2).' €</td>
+                <td>'.round($resultat[1], 2).' €</td>
+                <td class="'.$warning.'">'.round($resultat[2], 2).' €</td>
+            </tr>';
+            
+
+        echo '</table>';
+
+    }
     private function formUnvalideActe ($idActe, $idNav) {
         echo '<td>';
             echo '<form method="post" action="'.encodeRoutage(147).'">';
@@ -115,6 +138,42 @@ class templateAccounting extends SQLaccounting
         $this->balance();
         echo '</aside>';
     }
+    private function ArchiveBilan ($data, $idBilan) {
+         echo '<table class="tableWebSite" border="1">';
+            echo '<tr>
+                    <th>Ordre transaction</th>
+                    <th>Date mouvement</th>
+                    <th>Date modification</th>
+                    <th>Numéro de transaction</th>
+                    <th>object</th>
+                    <th>Montant</th>
+                    <th>Type bancaire</th>
+                    <th>Auteur de la transaction</th>
+                    <th>Balance</th>
+                </tr>';
+             foreach ($data as $value) {
+                 $name = $this->identification ($value['auteurActes']);
+                echo '<tr>
+                        <td>'.$value['idActe'].'</td>
+                        <td>'.formatDateHeureFr($value['dateActe']).'</td>
+                        <td>'.formatDateHeureFr($value['date_update']).'</td>
+                        <td>'.$value['numeroTransaction'].'</td>
+                        <td>'.$value['objet'].'</td>
+                        <td>'.$value['montant'].' €</td>
+                        <td>'.$this->typeBankTransaction[$value['formeBanquaire']]['type'].'</td>
+                        <td>'.$name['prenom'].' '.$name['nom'].'</td>
+                        <td>'.($value['balance'] ? 'Recette' : 'Débit').'</td>';
+                echo'</tr>';
+             }
+         echo '</table>';
+        echo '<aside class="customerForm">';
+        $this->archiveBalance($idBilan);
+        echo '</aside>';
+    }
+    public function displayArchiveAccouting ($idBilan) {
+        $dataBilanArchive = $this->getBilanArchive ($idBilan);
+        $this->ArchiveBilan ($dataBilanArchive, $idBilan);
+    }
 
     public function displayAddAct($idNav) {
    
@@ -134,17 +193,21 @@ class templateAccounting extends SQLaccounting
                 echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Add</button>';
             echo '</form>';
     }
-    private function displayBilan ($dataBilan) {
+    private function displayBilan ($dataBilan, $archive) {
     
         if(!empty($dataBilan)) {
             echo '<table class="tableWebSite" border="1">';
-                echo '<tr><th>Numéro bilan</th><th>Date ouverture</th><th>Date fermeture</th><th>Visualiser</th></tr>';
+                echo '<tr><th>Date ouverture</th><th>Date fermeture</th><th>Visualiser</th></tr>';
                 foreach ($dataBilan as $value) {
                     echo '<tr>';
-                        echo '<td>'.$value['id'].'</td>';
                         echo '<td>'.brassageDate($value['openCompta']).'</td>';
                         echo '<td>'.brassageDate($value['closeCompta']).'</td>';
-                        echo '<td></td>';
+                        if($archive) {
+                            echo '<td><a href="'.findTargetRoute(242).'&idBilan='.$value['id'].'">Bilan '.year($value['openCompta']).' - '.year($value['closeCompta']).'</a></td>';
+                        } else {
+                            echo '<td><a href="'.findTargetRoute(239).'">Bilan en cours '.year($value['openCompta']).' - '.(year($value['openCompta'])+1).'</a></td>';
+                        }
+                       
                     echo '</tr>';
                 }
             echo '</table>';
@@ -156,12 +219,12 @@ class templateAccounting extends SQLaccounting
     public function displayOldBilan () {
         $dataBilan = $this->getOldBilan ();
         echo '<h2 class="subTitleSite">Date des anciens bilans</h2>';
-        $this->displayBilan ($dataBilan);
+        $this->displayBilan ($dataBilan, true);
     }
     public function displayActualBilan () {
         $dataBilan = $this->getActualBilan ();
-        echo '<h2 class="subTitleSite">Date du bilan actuel</h2>';
-        $this->displayBilan ($dataBilan);
+        echo '<h2 class="subTitleSite">Bilan actuel</h2>';
+        $this->displayBilan ($dataBilan, false);
     }
 
 }

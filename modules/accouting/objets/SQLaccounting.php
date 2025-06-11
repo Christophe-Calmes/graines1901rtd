@@ -113,6 +113,9 @@ class SQLaccounting
         array_push($result, $result[0]-$result[1]);
         return $result;
     }
+
+
+
     public function unvalideActe ($param) {
         $update = "UPDATE `compta` SET `valide`= 0, `date_update`= NOW(), `auteurDel`=:idUser  WHERE `idActe`=:id AND `bilan`=0;";
         ActionDB::access($update, $param, 2);
@@ -126,5 +129,46 @@ class SQLaccounting
     protected function getOldBilan () {
         $select = "SELECT `id`, `openCompta`, `closeCompta`, `archive`, `valid` FROM `bilans` WHERE `archive` = 1;";
         return ActionDB::select($select, [],2);
+    }
+    private function getDateArchiveBilan ($idBilan) {
+        $select = "SELECT `openCompta`, `closeCompta` FROM `bilans` WHERE `id` = :id AND `archive` = 1 AND `valid` = 1;";
+        $param = [['prep'=>':id', 'variable'=>$idBilan]];
+        return ActionDB::select($select, $param, 2)[0];
+    }
+    protected function getBilanArchive ($idBilan) {
+        $datesOldBilan = $this->getDateArchiveBilan ($idBilan);
+        $select = "SELECT `idActe`, `dateActe`, `date_update`, `numeroTransaction`, `objet`, `montant`, `formeBanquaire`, `auteurActes`, `auteurDel`, `valide`, `bilan`, `balance` 
+        FROM `compta` 
+        WHERE `dateActe` >= :OpenDate 
+        AND `dateActe`<=:closeDate 
+        AND `valide` = 1 
+        AND `bilan` = 1
+        ORDER BY `dateActe`;";
+        $param = [['prep'=>':OpenDate', 'variable'=>$datesOldBilan['openCompta']],
+        ['prep'=>':closeDate', 'variable'=>$datesOldBilan['closeCompta']]];
+        return ActionDB::select($select, $param, 2);
+
+    }
+    protected function archiveBalanceAccounting ($idBilan) {
+       $datesOldBilan = $this->getDateArchiveBilan ($idBilan);
+        $result = array();
+        $param = [['prep'=>':OpenDate', 'variable'=>$datesOldBilan['openCompta']],
+        ['prep'=>':closeDate', 'variable'=>$datesOldBilan['closeCompta']]];
+        $select = "SELECT SUM(`montant`) AS `sumBilan` FROM `compta` 
+                    WHERE `balance` = 1 
+                    AND `dateActe` >= :OpenDate 
+                    AND `dateActe`<=:closeDate 
+                    AND `bilan` = 1 
+                    AND `valide`=1;";
+        array_push($result, ActionDB::select($select, $param, 2)[0]['sumBilan']);
+        $select = "SELECT SUM(`montant`) AS `sumBilan` FROM `compta` 
+                    WHERE `balance` = 0 
+                    AND `dateActe` >= :OpenDate 
+                    AND `dateActe`<=:closeDate 
+                    AND `bilan` = 1 
+                    AND `valide`=1;";
+        array_push($result, ActionDB::select($select, $param, 2)[0]['sumBilan']);
+        array_push($result, $result[0]-$result[1]);
+        return $result;
     }
 }
