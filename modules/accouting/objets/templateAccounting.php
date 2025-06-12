@@ -206,10 +206,16 @@ class templateAccounting extends SQLaccounting
                             echo '<td><a href="'.findTargetRoute(242).'&idBilan='.$value['id'].'">Bilan '.year($value['openCompta']).' - '.year($value['closeCompta']).'</a></td>';
                         } else {
                             echo '<td><a href="'.findTargetRoute(239).'">Bilan en cours '.year($value['openCompta']).' - '.(year($value['openCompta'])+1).'</a>
-                            <form method="post" action="'.encodeRoutage(149).'">
+                            <div>
+                                <button type="button" id="magic" class="open">Ouvrir la cloturer du bilan</button>
+                                </div>
+                                <div id="hiddenForm">
+
+                                <form method="post" action="'.encodeRoutage(149).'">
                                 <input type="hidden" name="idBilan" value="'.$value['id'].'"/>
                                 <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Cloturer le bilan '.year($value['openCompta']).' - '.(year($value['openCompta'])+1).'</button>
-                            </form>
+                                </form>
+                                </div>
                             </td>';
                         }
                        

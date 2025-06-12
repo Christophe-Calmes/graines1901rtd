@@ -113,9 +113,6 @@ class SQLaccounting
         array_push($result, $result[0]-$result[1]);
         return $result;
     }
-
-
-
     public function unvalideActe ($param) {
         $update = "UPDATE `compta` SET `valide`= 0, `date_update`= NOW(), `auteurDel`=:idUser  WHERE `idActe`=:id AND `bilan`=0;";
         ActionDB::access($update, $param, 2);
@@ -127,7 +124,7 @@ class SQLaccounting
         return ActionDB::select($select,  $param, 2)[0]['nbrActe'];
     }
     protected function getOldBilan () {
-        $select = "SELECT `id`, `openCompta`, `closeCompta`, `archive`, `valid` FROM `bilans` WHERE `archive` = 1;";
+        $select = "SELECT `id`, `openCompta`, `closeCompta`, `archive`, `valid` FROM `bilans` WHERE `archive` = 1 ORDER BY `openCompta` DESC;";
         return ActionDB::select($select, [],2);
     }
     private function getDateArchiveBilan ($idBilan) {
