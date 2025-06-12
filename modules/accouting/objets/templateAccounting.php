@@ -193,11 +193,11 @@ class templateAccounting extends SQLaccounting
                 echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Add</button>';
             echo '</form>';
     }
-    private function displayBilan ($dataBilan, $archive) {
+    private function displayBilan ($dataBilan, $archive, $idNav) {
     
         if(!empty($dataBilan)) {
             echo '<table class="tableWebSite" border="1">';
-                echo '<tr><th>Date ouverture</th><th>Date fermeture</th><th>Visualiser</th></tr>';
+                echo '<tr><th>Date ouverture</th><th>Date fermeture</th><th>Administrer</th></tr>';
                 foreach ($dataBilan as $value) {
                     echo '<tr>';
                         echo '<td>'.brassageDate($value['openCompta']).'</td>';
@@ -205,7 +205,12 @@ class templateAccounting extends SQLaccounting
                         if($archive) {
                             echo '<td><a href="'.findTargetRoute(242).'&idBilan='.$value['id'].'">Bilan '.year($value['openCompta']).' - '.year($value['closeCompta']).'</a></td>';
                         } else {
-                            echo '<td><a href="'.findTargetRoute(239).'">Bilan en cours '.year($value['openCompta']).' - '.(year($value['openCompta'])+1).'</a></td>';
+                            echo '<td><a href="'.findTargetRoute(239).'">Bilan en cours '.year($value['openCompta']).' - '.(year($value['openCompta'])+1).'</a>
+                            <form method="post" action="'.encodeRoutage(149).'">
+                                <input type="hidden" name="idBilan" value="'.$value['id'].'"/>
+                                <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Cloturer le bilan '.year($value['openCompta']).' - '.(year($value['openCompta'])+1).'</button>
+                            </form>
+                            </td>';
                         }
                        
                     echo '</tr>';
@@ -219,12 +224,12 @@ class templateAccounting extends SQLaccounting
     public function displayOldBilan () {
         $dataBilan = $this->getOldBilan ();
         echo '<h2 class="subTitleSite">Date des anciens bilans</h2>';
-        $this->displayBilan ($dataBilan, true);
+        $this->displayBilan ($dataBilan, true, false);
     }
-    public function displayActualBilan () {
+    public function displayActualBilan ($idNav) {
         $dataBilan = $this->getActualBilan ();
         echo '<h2 class="subTitleSite">Bilan actuel</h2>';
-        $this->displayBilan ($dataBilan, false);
+        $this->displayBilan ($dataBilan, false, $idNav);
     }
 
 }

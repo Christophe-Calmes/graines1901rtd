@@ -92,5 +92,9 @@ class SQLmembership
             return ActionDB::select($select, $param, 0)[0];
             
     }
+    public function resetCotisation () {
+        $update = "UPDATE `membership` SET `cotisation` = 0 ";
+        ActionDB::access($update, [], 0);
+    }
     
 }

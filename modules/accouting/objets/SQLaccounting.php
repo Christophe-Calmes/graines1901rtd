@@ -171,4 +171,50 @@ class SQLaccounting
         array_push($result, $result[0]-$result[1]);
         return $result;
     }
+    public function checkBilan ($idBilan) {
+        $select = "SELECT COUNT(`id`) AS `checkID` 
+        FROM `bilans` 
+        WHERE `id` = :id AND `archive` = 0 AND `valid` = 1;";
+        $param = [['prep'=>':id', 'variable'=>$idBilan]];
+        if( ActionDB::select($select, $param, 2)[0]['checkID'] == 1) {
+            return true;
+        }
+        return false;
+    }
+    private function closeActualBilan ($param) {
+        $update = "UPDATE `compta` SET `bilan` = 1  WHERE `valide` = 1 AND `dateActe` >= :dateOldBilan;";
+        ActionDB::access($update, $param, 2);
+        return true;
+    }
+    private function closeBilanDateAndArchive ($param) {
+        $update = "UPDATE `bilans` SET `closeCompta`=NOW(), `archive`=1 WHERE `openCompta` = :dateOldBilan;";
+        ActionDB::access($update, $param, 2);
+        return true;
+    }
+    private function openNewBilan () {
+        $insert ="INSERT INTO `bilans` () VALUES ();";
+        ActionDB::access($insert, [], 2);
+    }
+
+    public function closeAndOpenBilan ($idUser) {
+        $solde = $this->balanceAccounting ();
+        if($solde[2]>=0) {
+            $balance = 1;
+        } else {
+            $balance = 0;
+        }
+        $dateOldBilan = $this->getDateStartBalanceSheet ();
+        $param = [['prep'=>':dateOldBilan', 'variable'=>$dateOldBilan]];
+        $this->closeActualBilan ($param);
+        $this->closeBilanDateAndArchive ($param);
+        $this->openNewBilan ();
+        $param = [['prep'=>':formeBanquaire', 'variable'=>1],
+        ['prep'=>':montant', 'variable'=>round($solde[2], 2)],
+        ['prep'=>':balance', 'variable'=>$balance],
+        ['prep'=>':numeroTransaction', 'variable'=>'report bilan'],
+        ['prep'=>':objet', 'variable'=>'Report bilan année précédente'],
+        ['prep'=>':idUser', 'variable'=>$idUser]];
+        $this->addAccountingActe ($param);
+        return true;
+    }
 }
