@@ -193,6 +193,22 @@ class templateAccounting extends SQLaccounting
                 echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Add</button>';
             echo '</form>';
     }
+    private function closeBilanButton ($idBilan, $openCompta, $idNav) {
+        echo '<div>
+                                <button type="button" id="magic" class="open red leftAlign">Cloturer du bilan</button>
+                                </div>
+                                <div id="hiddenForm">
+                                <article class="articleBlog">
+                                        <h3>DANGER !</h3>
+                                        <p>Attention, la cloture du bilan doit se faire en fin d\'exercice uniquement. Elle entraine la cloture du bilan actuel, mais aussi la remise à 0 de toute les cotisation en cours.</p>
+                                    
+                                    <form method="post" action="'.encodeRoutage(149).'">
+                                    <input type="hidden" name="idBilan" value="'.$idBilan.'"/>
+                                    <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Cloturer le bilan '.year($openCompta).' - '.(year($openCompta)+1).'</button>
+                                    </form>
+                                </article>
+                                </div>';
+    }
     private function displayBilan ($dataBilan, $archive, $idNav) {
     
         if(!empty($dataBilan)) {
@@ -206,16 +222,6 @@ class templateAccounting extends SQLaccounting
                             echo '<td><a href="'.findTargetRoute(242).'&idBilan='.$value['id'].'">Bilan '.year($value['openCompta']).' - '.year($value['closeCompta']).'</a></td>';
                         } else {
                             echo '<td><a href="'.findTargetRoute(239).'">Bilan en cours '.year($value['openCompta']).' - '.(year($value['openCompta'])+1).'</a>
-                            <div>
-                                <button type="button" id="magic" class="open">Ouvrir la cloturer du bilan</button>
-                                </div>
-                                <div id="hiddenForm">
-
-                                <form method="post" action="'.encodeRoutage(149).'">
-                                <input type="hidden" name="idBilan" value="'.$value['id'].'"/>
-                                <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Cloturer le bilan '.year($value['openCompta']).' - '.(year($value['openCompta'])+1).'</button>
-                                </form>
-                                </div>
                             </td>';
                         }
                        
@@ -236,6 +242,10 @@ class templateAccounting extends SQLaccounting
         $dataBilan = $this->getActualBilan ();
         echo '<h2 class="subTitleSite">Bilan actuel</h2>';
         $this->displayBilan ($dataBilan, false, $idNav);
+        echo '<h2 class="subTitleSite">Cloture du bilan actuel</h2>';
+        $this->closeBilanButton ($dataBilan[0]['id'], $dataBilan[0]['openCompta'], $idNav);
+       
     }
+
 
 }

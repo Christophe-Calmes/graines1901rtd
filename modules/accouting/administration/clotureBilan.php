@@ -4,4 +4,4 @@ $accounting = new templateAccounting ();
 $accounting->displayActualBilan ($idNav);
 echo '<h1 class="titleSite">Archive bilan</h1>';
 $accounting->displayOldBilan ();
-require ('javaScript/magicButton.php');
+require ('javaScript/magicButtonMenus.php');
