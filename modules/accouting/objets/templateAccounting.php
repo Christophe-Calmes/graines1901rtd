@@ -202,7 +202,9 @@ class templateAccounting extends SQLaccounting
                                         <h3>DANGER !</h3>
                                         <p>Attention, la cloture du bilan doit se faire en fin d\'exercice uniquement. Elle entraine la cloture du bilan actuel, mais aussi la remise à 0 de toute les cotisation en cours.</p>
                                     
-                                    <form method="post" action="'.encodeRoutage(149).'">
+                                    <form class="flex-center" method="post" action="'.encodeRoutage(149).'">
+                                    <label id="check">J\'ai compris et lu :</label>
+                                    <input id="check" type="checkbox" name="valid"/>
                                     <input type="hidden" name="idBilan" value="'.$idBilan.'"/>
                                     <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Cloturer le bilan '.year($openCompta).' - '.(year($openCompta)+1).'</button>
                                     </form>
@@ -233,18 +235,47 @@ class templateAccounting extends SQLaccounting
         }
 
     }
+    private function startCompta ($idNav) {
+          
+        echo '<div>
+                <button type="button" id="magic" class="open red">Demarrer la comptabilité</button>
+                </div>
+                <div id="hiddenForm">
+                <article class="articleBlog">
+                        <h3>DANGER !</h3>
+                        <p>Vous allez créer le démarrage du premier bilan de la comptabilité.</p>
+                    
+                    <form class="flex-center" method="post" action="'.encodeRoutage(150).'">
+                    <label id="check">J\'ai compris et lu :</label>
+                    <input id="check" type="checkbox" name="valid"/>
+                    
+                    <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Demarrage compta</button>
+                    </form>
+                </article>
+                </div>';
+
+    }
     public function displayOldBilan () {
         $dataBilan = $this->getOldBilan ();
-        echo '<h2 class="subTitleSite">Date des anciens bilans</h2>';
-        $this->displayBilan ($dataBilan, true, false);
+        if(!empty($dataBilan)) {
+            echo '<h1 class="titleSite">Archive bilan</h1>';
+            echo '<h2 class="subTitleSite">Date des anciens bilans</h2>';
+            $this->displayBilan ($dataBilan, true, false);
+        } else {
+            echo '<h2 class="titleSite">No archive in database</h2>';
+        }
+       
     }
     public function displayActualBilan ($idNav) {
         $dataBilan = $this->getActualBilan ();
-        echo '<h2 class="subTitleSite">Bilan actuel</h2>';
-        $this->displayBilan ($dataBilan, false, $idNav);
-        echo '<h2 class="subTitleSite">Cloture du bilan actuel</h2>';
-        $this->closeBilanButton ($dataBilan[0]['id'], $dataBilan[0]['openCompta'], $idNav);
-       
+        if(!empty($dataBilan)) {
+            echo '<h2 class="subTitleSite">Bilan actuel</h2>';
+            $this->displayBilan ($dataBilan, false, $idNav);
+            echo '<h2 class="subTitleSite">Cloture du bilan actuel</h2>';
+            $this->closeBilanButton ($dataBilan[0]['id'], $dataBilan[0]['openCompta'], $idNav);
+        } else {
+           $this->startCompta ($idNav);
+        }
     }
 
 

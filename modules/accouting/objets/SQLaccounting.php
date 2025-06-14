@@ -7,7 +7,7 @@ class SQLaccounting
     public function __construct () {
         $this->typeBankTransaction = [['id'=>0, 'type'=>'Liquide'], ['id'=>1, 'type'=>'Virement'], ['id'=>2, 'type'=>'Chéque']];
         $this->annualCotisation = [
-        ['id'=>0, 'type'=>'Année compléte 25 €', 'price'=>25, 'cotisation'=>1], 
+        ['id'=>0, 'type'=>'Année compléte 30 €', 'price'=>30, 'cotisation'=>1], 
         ['id'=>1, 'type'=>'Famille  50€', 'price'=>50, 'cotisation'=>2], 
         ['id'=>2, 'type'=>'demi année 15 €', 'price'=>15, 'cotisation'=>3]];
     }
@@ -188,7 +188,7 @@ class SQLaccounting
         ActionDB::access($update, $param, 2);
         return true;
     }
-    private function openNewBilan () {
+    public function openNewBilan () {
         $insert ="INSERT INTO `bilans` () VALUES ();";
         ActionDB::access($insert, [], 2);
     }
@@ -214,4 +214,5 @@ class SQLaccounting
         $this->addAccountingActe ($param);
         return true;
     }
+   
 }
