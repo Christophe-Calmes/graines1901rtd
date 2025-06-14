@@ -36,12 +36,6 @@ CREATE TABLE `bilans` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `bilans`
---
-
-INSERT INTO `bilans` (`id`, `openCompta`, `closeCompta`, `archive`, `valid`) VALUES
-(11, '2025-06-14 08:48:28', '2025-06-14 08:56:09', 1, 1),
-(12, '2025-06-14 08:56:09', NULL, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -65,25 +59,7 @@ CREATE TABLE `compta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `compta`
---
 
-INSERT INTO `compta` (`idActe`, `dateActe`, `date_update`, `numeroTransaction`, `objet`, `montant`, `formeBanquaire`, `auteurActes`, `auteurDel`, `valide`, `bilan`, `balance`) VALUES
-(41, '2025-06-14 08:53:08', NULL, '1', 'Cotisation Année compléte 30 € pour  2025 à septembre 2026 de Camille Calmes numéro adhérant: 2025WLrGiEIz', 30, 0, 58, NULL, 1, 1, 1),
-(42, '2025-06-14 08:53:22', NULL, '569895', 'Cotisation Famille  50€ pour  2025 à septembre 2026 de Bernard Arnaud numéro adhérant: 20252Aif2luJ', 50, 1, 58, NULL, 1, 1, 1),
-(43, '2025-06-14 08:53:45', NULL, '2', 'Cotisation Famille  50€ pour  2025 à septembre 2026 de Jean-Philippe Gasquet numéro adhérant: 2025TxI7tNlW', 50, 0, 58, NULL, 1, 1, 1),
-(44, '2025-06-14 08:54:28', NULL, '45623', 'Subvention mairie Berre l&#039;etang', 450, 1, 58, NULL, 1, 1, 1),
-(45, '2025-06-14 08:55:11', NULL, 'Facture 45656', 'Achat tapis de Jeu Pwork', 95, 1, 58, NULL, 1, 1, 0),
-(46, '2025-06-14 08:55:49', NULL, 'Facture 56892', 'Achat Kill Team Guyajeux', 87.5, 1, 58, NULL, 1, 1, 0),
-(47, '2025-06-14 08:56:09', NULL, 'report bilan', 'Report bilan année précédente', 397.5, 1, 58, NULL, 1, 0, 1),
-(48, '2025-06-14 16:13:05', NULL, '1', 'Cotisation Année compléte 30 € pour  2025 à septembre 2026 de Camille Calmes numéro adhérant: 2025WLrGiEIz', 30, 0, 58, NULL, 1, 0, 1),
-(49, '2025-06-14 16:13:15', NULL, '2', 'Cotisation Année compléte 30 € pour  2025 à septembre 2026 de Bernard Arnaud numéro adhérant: 20252Aif2luJ', 30, 0, 58, NULL, 1, 0, 1),
-(50, '2025-06-14 16:13:42', NULL, '3', 'Cotisation Année compléte 30 € pour  2025 à septembre 2026 de Jean Arnaud numéro adhérant: 2025I6jV4Yvw', 30, 0, 58, NULL, 1, 0, 1),
-(51, '2025-06-14 16:14:13', NULL, '89656', 'Cotisation Famille  50€ pour  2025 à septembre 2026 de Jean-Philippe Gasquet numéro adhérant: 2025TxI7tNlW', 50, 2, 58, NULL, 1, 0, 1);
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `events`
 --
 
@@ -228,13 +204,13 @@ ALTER TABLE `typeGames`
 -- AUTO_INCREMENT pour la table `bilans`
 --
 ALTER TABLE `bilans`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT pour la table `compta`
 --
 ALTER TABLE `compta`
-  MODIFY `idActe` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `idActe` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT pour la table `events`
