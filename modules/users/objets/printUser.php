@@ -62,20 +62,57 @@ private $yes;
     </div>';}
     
   }
-  public function printProfilUser ($variable) {
+  public function printProfilUser () {
+      $dataUser = $this->getProfil($_SESSION['tokenConnexion']);
+      echo '<aside class="box">';
       echo '<ul class="listeProfil">';
-      echo '<li><h4>Votre profil</h4></li>';
-      foreach ($variable as $value) {
-        echo '<li>Identité : '.$value['prenom'].' '.$value['nom'].'</li>';
-        echo '<li>Pseudo : '.$value['login'].'</li>';
-        echo '<li>Role : '.$this->role[$value['role']]['name'].'</li>';
-        echo '<li class="alignLi">Date d\'inscription : <p class="displayDate">'.brassageDate($value['dateCreation']).'</p></li>';
+        echo '<li><h4 class="titleEventItem">Votre profil</h4></li>';
+        $value = $dataUser[0];
+          echo '<li>Identité : '.$value['prenom'].' '.$value['nom'].'</li>';
+          echo '<li>Pseudo : '.$value['login'].'</li>';
+          echo '<li>Role : '.$this->role[$value['role']]['name'].'</li>';
+          echo '<li class="alignLi">Date d\'inscription au site : <p class="displayDate">'.brassageDate($value['dateCreation']).'</p></li>';
+          if(($value['role']== 1)||($value['role']== 4)) {
+          $member = $this->getTypeCotisation ($value['idUser']);
+          echo '<li>Numéro adhérant : '.$member['MemberNumber'].'</li>';
+          echo '<li>Membre association depuis le '.brassageDate($member['creat_date']).'</li>';
+               switch ($member['cotisation']) {
+                            case 0:
+                                echo '<br/>Date inscription : '.brassageDate($member['update_date']);
+                                echo '<br/>Pas de cotisation';
+                                break;
+                            case 1:
+                                echo '<br/>Date cotisation : '.brassageDate($member['update_date']);
+                                echo '<br/>Cotisation Individuel';
+                                break;
+                            case 2:
+                                echo '<br/>Date cotisation : '.brassageDate($member['update_date']);
+                                echo '<br/>Cotisation Famille';
+                                break;
+                            case 3:
+                                echo '<br/>Date cotisation : '.brassageDate($member['update_date']);
+                                echo '<br/>Cotisation demi année';
+                                break;
+                            case 9:
+                                $data = $this->linkIdentity ($member['idUser']);
+                                echo '<br/>Date cotisation : '.brassageDate($member['update_date']);
+                                echo '<br/>Cotisation familliale affilié à '.$data['prenom'].' '.$data['nom'];
+                                break;
+                            
+                            default:
+                                echo 'Non';
+                                break;
+                        }
+          }
+        echo '</ul>';
+      if(($value['role']== 1)||($value['role']== 4)){
+        echo '<p>Vous avez accepté les CGU :</>';
+        echo '<br/>';
+        echo '<a href="'.findTargetRoute(104).'">Voir les CGU</a>';
       }
-    echo '</ul>';
-    if($variable[0]['role']== 1){
-      echo '<p>Vous avez accepté les CGU :</>';
-      echo '<a href="'.findTargetRoute(104).'">Voir les CGU</a>';
-    }
+  
+      echo '</aside>';
+    return $dataUser;
   }
   public function delUser($idNav) {
       echo '<form action="'.encodeRoutage(22).'" method="post">

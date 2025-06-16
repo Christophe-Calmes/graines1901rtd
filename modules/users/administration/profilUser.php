@@ -4,10 +4,10 @@
   require 'modules/users/objets/getUser.php';
   require 'modules/users/objets/printUser.php';
   $user = new PrintUser();
-  $dataUser = $user->getProfil($_SESSION['tokenConnexion']);
+  //$dataUser = $user->getProfil($_SESSION['tokenConnexion']);
   echo '<div class="flex-rows">';
   echo '<article>';
-  $user->printProfilUser ($dataUser);
+  $dataUser = $user->printProfilUser ();
   echo '</article>';
   echo '<button type="button" id="magic" class="open">Modifier le profil ?</button>';
   echo '<aside class="flex-colonne" id="hiddenForm">';

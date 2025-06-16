@@ -567,7 +567,6 @@ select:disabled {
 }
 .styleListNews, ul {
   list-style: none;
-
 }
 /*Gallery Events*/
 .gallery {
@@ -592,9 +591,17 @@ select:disabled {
     border: var(--color-blueOneChair) solid 1px;
   }  
 
+/*Box cool*/
+.box {
+  background-color: var(--main-background-color);
+  border: var(--main-border);
+  border-radius: var(--main-radius);
+  margin: var(--main-marginButton);
+  padding: var(--main-padding);
+}
 /*Variable CSS boutton*/
 
-/*Fin Maitre boutton*/
+
 button {
   background-color: var(--main-background-color);
   border: var(--main-border);

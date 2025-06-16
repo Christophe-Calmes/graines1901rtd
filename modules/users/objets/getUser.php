@@ -8,7 +8,7 @@ Class GetUser {
     return ActionDB::select($select, $param);
   }
   public function getProfil($token) {
-    $select = "SELECT `token`, `email`, `prenom`, `nom`, `login`,`role`, `dateCreation`
+    $select = "SELECT `idUser`, `token`, `email`, `prenom`, `nom`, `login`,`role`, `dateCreation`
     FROM `users`
     WHERE `token` = :token";
     $param = [['prep'=>':token', 'variable'=>$token]];
@@ -45,4 +45,18 @@ Class GetUser {
             ['prep'=>':token', 'variable'=>$token]];
             return ActionDB::access($update, $param);      
   }
+  protected function getTypeCotisation ($idUser) {
+    $param = [['prep'=>':idUser', 'variable'=>$idUser]];
+    $select = "SELECT `MemberNumber`, `creat_date`, `update_date`, `cotisation` FROM `membership` WHERE `id_users` = :idUser;";
+    return ActionDB::select($select, $param, 0)[0];
+  }
+    protected function linkIdentity ($idUser) {
+        $select = "SELECT `nom`, `prenom`
+            FROM `family_link` 
+            INNER JOIN `users` ON  `users`.`idUser` = `idFamily`
+            WHERE `family_link`.`idUser` = :idUser;";
+            $param = [['prep'=>':idUser', 'variable'=>$idUser]];
+            return ActionDB::select($select, $param, 0)[0];
+            
+    }
 }

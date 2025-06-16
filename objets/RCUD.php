@@ -1,9 +1,9 @@
 <?php
 class RCUD {
-  protected $serverName = "localhost:Port";
-  protected $userName = "<UserNameDB>";
-  protected $password = "<PassWordUserNameDB>";
-  protected $dbName = ["graine1901", ""];
+  protected $serverName = "localhost:3306";
+  protected $userName = "r5v3";
+  protected $password = "camille";
+  protected $dbName = ["xgyd0647_rtdtech", "xgyd0647_blogRTD", "xgyd0647_rtdAssociation" ];
   private $sql;
   private $param;
   public function __construct($sql, $param) {
@@ -40,5 +40,6 @@ class RCUD {
     return $dataTraiter;
   }
   function __destruct() {
+
   }
 }
