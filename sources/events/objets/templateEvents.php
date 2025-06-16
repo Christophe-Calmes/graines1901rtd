@@ -47,8 +47,7 @@ class TemplateEvents extends sqlEvents
     }
     private function formUpdateGame ($game, $idNav) {
          $gamesTypes = $this->getGamesTypes ();
-        print_r($game['idTypeGame']);
-         echo '<h2 class="subTitleSite">Modifier un jeu ?</h2>';
+        echo '<h2 class="subTitleSite">Modifier un jeu ?</h2>';
         echo '<form class="customerForm" action="'.encodeRoutage(152).'"  method="post">';
             echo '<label for="nameGame">Nom du jeu</label>';
             echo '<input id="nameGame" type="text" name="nameGame" value="'.$game['nameGame'].'" />';
@@ -76,5 +75,69 @@ class TemplateEvents extends sqlEvents
         $game = $this->getGameSheet ($idGame);
         $this->formUpdateGame ($game, $idNav);
         
+    }
+    private function inputForm ($name, $label, $placeholder) {
+        echo '<label for="'.$name.'">'.$label.'</label>';
+        echo '<input id="'.$name.'" name="'.$name.'" placeholder="'.$placeholder.'"/>';
+    }
+    public function formAddLocation ($idNav) {
+        $arrayInput = [['name'=>'nameLocation', 'label'=>'Nom du lieu', 'placeholder'=>'Nom du lieu'],
+        ['name'=>'adress', 'label'=>'Adresse', 'placeholder'=>'Adresse'],
+        ['name'=>'city', 'label'=>'Ville', 'placeholder'=>'Ville'],
+        ['name'=>'zipCode', 'label'=>'Code Postal', 'placeholder'=>'Code Postal'],
+        ['name'=>'phone', 'label'=>'Telephone', 'placeholder'=>'Telephone'],];
+        echo '<h2 class="subTitleSite">Créer un lieux publique</h2>';
+        echo '<form class="customerForm" action="'.encodeRoutage(153).'"  method="post">';
+            foreach ($arrayInput as  $value) {
+                $this->inputForm ($value['name'], $value['label'], $value['placeholder']);
+            }
+          echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Créer</button>';
+        echo '</form>';
+    }
+    public function displayLocation ($valid, $private, $idNav) {
+        $dataLocation = $this->getLocation ($valid, $private);
+        print_r($dataLocation);
+         echo '<article class="sixColum box">';
+                echo '<div class="One">';
+                echo 'Nom du lieu';
+                echo '</div>';
+                echo '<div class="Two">';
+                echo 'Type Adress';
+                echo '</div>';
+                echo '<div class="Three">';
+                echo 'Code postal';
+                echo '</div>';
+                    echo '<div class="Four">';
+                echo 'Ville';
+                echo '</div>';
+                    echo '<div class="Five">';
+                echo 'Telephone';
+                echo '</div>';
+                    echo '<div class="Six">';
+                echo 'Administration';
+                echo '</div>';
+        echo '</article>';
+        foreach ($dataLocation as $location) {
+                     echo '<article class="sixColum box">';
+                echo '<div class="One">';
+                echo $location['nameLocation'];
+                echo '</div>';
+                echo '<div class="Two">';
+                echo $location['adress'];
+                echo '</div>';
+                echo '<div class="Three">';
+                echo $location['zipCode'];
+                echo '</div>';
+                    echo '<div class="Four">';
+                echo $location['city'];
+                echo '</div>';
+                    echo '<div class="Five">';
+                echo $location['phone'];
+                echo '</div>';
+                    echo '<div class="Six leftAlign">';
+                echo '<a href="'.findTargetRoute(248).'&idLocation='.$location['id'].'">Administrer</a>';;
+                echo '</div>';
+        echo '</article>';
+        }
     }
 }

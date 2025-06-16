@@ -41,4 +41,25 @@ class sqlEvents
          $param = [['prep'=>':idGame', 'variable'=>$idGame]];
          return ActionDB::select($select,$param, 2)[0];
     }
+    public function recordNewLocation ($param) {
+        $insert = "INSERT INTO `locations`(`nameLocation`, `adress`, `city`, `zipCode`, `phone`, `private`, `idOwner`) 
+        VALUES (:nameLocation, :adress, :city, :zipCode, :phone, 0, :idUser);";
+        return ActionDB::access($insert, $param, 2);
+    }
+    protected function getLocation ($valid, $private) {
+        $select = "SELECT `id`, 
+        `nameLocation`, 
+        `adress`, 
+        `city`, 
+        `zipCode`, 
+        `phone`, 
+        `private`, 
+        `idOwner`, 
+        `valid` 
+        FROM `locations` 
+        WHERE `valid` = :valide AND `private` = :private;";
+        $param = [['prep'=>':valide', 'variable'=>$valid],
+        ['prep'=>':private', 'variable'=>$private],];
+        return ActionDB::select($select, $param, 2);
+    }
 }

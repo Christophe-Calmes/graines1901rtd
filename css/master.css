@@ -482,6 +482,15 @@ select:disabled {
 }
 
 /*Grid*/
+.sixColum {
+  display: grid;
+grid-template-columns: repeat(6, 1fr);
+grid-template-rows: 1fr;
+grid-column-gap: 5px;
+grid-row-gap: 5px;
+ grid-template-areas:
+ "One Two Three Four Five Six"
+}
 .tripleColum {
 display: grid;
 grid-template-columns: repeat(3, 1fr);
@@ -495,6 +504,10 @@ grid-row-gap: 5px;
 .One { grid-area: One; }
 .Two { grid-area: Two; }
 .Three { grid-area: Three; }
+.Four {grid-area: Four;}
+.Five {grid-area: Five;}
+.Six {grid-area: Six;}
+.Seven {grid-area: Seven;}
 
 
 .adminNav {  display: grid;
