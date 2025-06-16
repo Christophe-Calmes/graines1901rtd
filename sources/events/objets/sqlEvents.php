@@ -16,4 +16,17 @@ class sqlEvents
         $insert = "INSERT INTO `nameGames`(`nameGame`, `idTypeGame`) VALUES (:nameGame, :typeGame)";
         return ActionDB::access($insert, $param, 2);
     }
+    public function numberGames () {
+        $select = "SELECT COUNT(`id`) AS `numberGame` FROM `nameGames` WHERE `valid` = 1;";
+        return ActionDB::select($select, [], 2)[0]['numberGame'];
+    }
+    protected function paginationGames ($premier, $parPage) {
+        $select = "SELECT `typeGame`, `nameGames`.`id` AS `idNameGame`, `typeGame`, `nameGame`
+        FROM `nameGames`
+        INNER JOIN `typeGames` ON `typeGames`.`id` = `nameGames`.`idTypeGame`
+        WHERE `nameGames`.`valid` = 1
+        ORDER BY `idTypeGame`, `nameGame`  LIMIT {$premier}, {$parPage};";
+        return ActionDB::select($select, [], 2);
+
+    }
 }
