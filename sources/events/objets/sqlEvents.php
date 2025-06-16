@@ -16,6 +16,10 @@ class sqlEvents
         $insert = "INSERT INTO `nameGames`(`nameGame`, `idTypeGame`) VALUES (:nameGame, :typeGame)";
         return ActionDB::access($insert, $param, 2);
     }
+    public function updateGame ($param) {
+        $update = "UPDATE `nameGames` SET `nameGame`=:nameGame,`idTypeGame`=:typeGame, `valid`=:valid WHERE `id` = :idGame;";
+        return ActionDB::access($update, $param, 2);
+    }
     public function numberGames () {
         $select = "SELECT COUNT(`id`) AS `numberGame` FROM `nameGames` WHERE `valid` = 1;";
         return ActionDB::select($select, [], 2)[0]['numberGame'];
@@ -28,5 +32,13 @@ class sqlEvents
         ORDER BY `idTypeGame`, `nameGame`  LIMIT {$premier}, {$parPage};";
         return ActionDB::select($select, [], 2);
 
+    }
+    protected function getGameSheet ($idGame) {
+        $select = "SELECT `nameGames`.`id` AS `idGame`, `nameGame`, `typeGame`, `idTypeGame`
+                    FROM `nameGames`
+                    INNER JOIN `typeGames` ON `typeGames`.`id` = `nameGames`.`idTypeGame`
+                    WHERE `nameGames`.`id` = :idGame;";
+         $param = [['prep'=>':idGame', 'variable'=>$idGame]];
+         return ActionDB::select($select,$param, 2)[0];
     }
 }
