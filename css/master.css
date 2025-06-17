@@ -175,6 +175,11 @@ a {
   flex-direction: row;
   justify-content: center;
 }
+.flex-row-reverse-simple {
+      display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
 .flex-center {
   display: flex;
   align-items: center;

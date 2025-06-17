@@ -91,4 +91,23 @@ class sqlEvents
         WHERE `id`=:idLocation;";
         return ActionDB::access($update, $param, 2);
     }
+    protected function getAllGameByType ($gameType) {
+        $select = "SELECT `id`, `nameGame` 
+        FROM `nameGames` 
+        WHERE `valid` = 1 AND `idTypeGame` = :gameType
+        ORDER BY `nameGame`;";
+            $param = [['prep'=>':gameType', 'variable'=>$gameType]];
+            return ActionDB::select($select, $param, 2);
+    }
+    protected function getAllLocation () {
+        $select = "SELECT `id`, `nameLocation`, `adress`, `city`
+        FROM `locations` 
+        WHERE `private` = 0 AND `valid` = 1;";
+        return ActionDB::select($select, [], 2);
+
+    }
+    protected function getAllGameTypes () {
+        $select = "SELECT `id`, `typeGame` FROM `typeGames` WHERE `valid` = 1 ORDER BY `typeGame`;";
+        return ActionDB::select($select, [], 2);
+    }
 }

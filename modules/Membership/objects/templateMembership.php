@@ -109,8 +109,6 @@ class templateMembership extends SQLmembership
              }
             
     }
-
-
     public function dataSheetMemberShip ($idUser) {
         $year = date('Y');
         $dataMembership = $this->getAllInfoMemberShip ($idUser);

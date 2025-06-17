@@ -166,7 +166,7 @@ class TemplateEvents extends sqlEvents
                         ['name'=>'city', 'label'=>'Ville', 'value'=>$dataLocation['city']],
                         ['name'=>'zipCode', 'label'=>'Code Postal', 'value'=>$dataLocation['zipCode']],
                         ['name'=>'phone', 'label'=>'Telephone', 'value'=>$dataLocation['phone']],];
-         echo '<h2 class="subTitleSite">Créer un lieux publique</h2>';
+        echo '<h2 class="subTitleSite">Créer un lieux publique</h2>';
         echo '<form class="customerForm" action="'.encodeRoutage(154).'"  method="post">';
             foreach ($arrayInput as  $value) {
                 $this->inputUpdateForm ($value['name'], $value['label'], $value['value']);
@@ -178,5 +178,71 @@ class TemplateEvents extends sqlEvents
             echo '<input type="hidden" name="idLocation" value="'.$dataLocation['id'].'"/>';
           echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>';
         echo '</form>';
+    }
+    private function numberParticipant ($number) {
+        echo '<label for="numberParticipants">Nombre de participants</label>';
+        echo '<select id="numberParticipants" name="numberParticipants">';
+            for ($i=2; $i <= $number ; $i++) { 
+               echo '<option value="'.$i.'">'.$i.' joueurs</option>';
+            }
+        echo '</select>';
+    }
+    private function gamesList ($gameType) {
+        $dataGames = $this->getAllGameByType ($gameType); 
+        echo '<label for="idNameGame">Jeu proposé</label>';
+        echo '<select id="idNameGam" name="idNameGame">';
+            foreach ($dataGames as  $game) {
+                echo '<option value="'.$game['id'].'">'.$game['nameGame'].'</option>';
+            }
+        echo '</select>';
+    }
+    private function locationList () {
+        $dataLocation = $this->getAllLocation ();
+        echo '<label for="idNameGame">Jeu proposé</label>';
+        echo '<select id="idNameGam" name="idNameGame">';
+                    foreach ($dataLocation as  $location) {
+                        echo '<option value="'.$location['id'].'">'.$location['nameLocation'].' - '.$location['adress'].' - '.$location['city'].'</option>';
+                    }
+        echo '</select>';
+    }
+    protected function formCreatEvent ($idNav, $gameType) {
+        echo '<h2 class="subTitleSite">Créer une partie</h2>';
+        echo '<form class="customerForm" action="'.encodeRoutage(155).'"  method="post">';
+        echo '<label for="nameEvent">Nom de votre événement</label>';
+        echo '<input id="nameEvent" type="text" name="nameEvent" placeholder="Nom de votre événement" size="20"/>';
+        echo '<label for="objetEvent">Description</label>';
+        echo '<textarea id="objetEvent", name="objetEvent" rows="10" cols="60" placeholder="Remplissez une bréve description de la partie."></textarea>';
+        echo '<label for="dateEvent">Date</label>';
+        echo '<input type="date" id="dateEvent" name="dateEvent"/>';
+        echo '<label for="hourEvent">Heure</label>';
+        echo '<input type="time" id="hourEvent" name="hourEvent"/>';
+        $this->numberParticipant (6);
+        $this->gamesList ($gameType);
+        $this->locationList ();
+        echo '<input type="hidden" name="idTypeGame" value="'.$gameType.'"/>';
+        echo '<div class="flex-row-reverse-simple">';
+            echo '<label id="check">Assurez vous que les locaux sont libre avant de valider.</label>';
+            echo '<input id="check" type="checkbox" name="valid"/>';
+        echo '</div>';
+        echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Créer</button>';
+        echo '</form>';
+    }
+    public function displayFormsEvent ($idNav) {
+        $dataGameTypes = $this->getAllGameTypes ();
+            if(!empty($dataGameTypes)) {
+                echo '<article class="flex-colonne-form">';
+                echo '<h3 class="titleSite">Ajouter un évément</h3>';
+                foreach ($dataGameTypes as $gameType) {
+                echo '<details>
+                        <summary class="titleSite">
+                            '.$gameType['typeGame'].'
+                        </summary>';
+            $this->formCreatEvent ($idNav, $gameType['id']);
+            echo '</details>';
+            }
+            echo '</article>';
+        } else {
+            echo '<h3 class="titleSite">Aucun type de jeu dans la base</h3>';
+        }
     }
 }
