@@ -78,7 +78,11 @@ class TemplateEvents extends sqlEvents
     }
     private function inputForm ($name, $label, $placeholder) {
         echo '<label for="'.$name.'">'.$label.'</label>';
-        echo '<input id="'.$name.'" name="'.$name.'" placeholder="'.$placeholder.'"/>';
+        echo '<input id="'.$name.'" name="'.$name.'" size="'.strlen($placeholder).'" placeholder="'.$placeholder.'"/>';
+    }
+    private function inputUpdateForm ($name, $label, $value) {
+        echo '<label for="'.$name.'">'.$label.'</label>';
+        echo '<input id="'.$name.'" name="'.$name.'" value="'.$value.'" size="'.strlen($value).'"/>';
     }
     public function formAddLocation ($idNav) {
         $arrayInput = [['name'=>'nameLocation', 'label'=>'Nom du lieu', 'placeholder'=>'Nom du lieu'],
@@ -96,48 +100,83 @@ class TemplateEvents extends sqlEvents
     }
     public function displayLocation ($valid, $private, $idNav) {
         $dataLocation = $this->getLocation ($valid, $private);
-        print_r($dataLocation);
-         echo '<article class="sixColum box">';
-                echo '<div class="One">';
-                echo 'Nom du lieu';
-                echo '</div>';
-                echo '<div class="Two">';
-                echo 'Type Adress';
-                echo '</div>';
-                echo '<div class="Three">';
-                echo 'Code postal';
-                echo '</div>';
-                    echo '<div class="Four">';
-                echo 'Ville';
-                echo '</div>';
-                    echo '<div class="Five">';
-                echo 'Telephone';
-                echo '</div>';
-                    echo '<div class="Six">';
-                echo 'Administration';
-                echo '</div>';
-        echo '</article>';
-        foreach ($dataLocation as $location) {
-                     echo '<article class="sixColum box">';
-                echo '<div class="One">';
-                echo $location['nameLocation'];
-                echo '</div>';
-                echo '<div class="Two">';
-                echo $location['adress'];
-                echo '</div>';
-                echo '<div class="Three">';
-                echo $location['zipCode'];
-                echo '</div>';
-                    echo '<div class="Four">';
-                echo $location['city'];
-                echo '</div>';
-                    echo '<div class="Five">';
-                echo $location['phone'];
-                echo '</div>';
-                    echo '<div class="Six leftAlign">';
-                echo '<a href="'.findTargetRoute(248).'&idLocation='.$location['id'].'">Administrer</a>';;
-                echo '</div>';
-        echo '</article>';
+        if(!empty($dataLocation)) {
+            if($valid == 0) {
+                echo '<h2 class="subTitleSite">Lieu non valide.</h2>';
+            } else {
+                echo '<h2 class="subTitleSite">Lieu valide.</h2>';
+            }
+            echo '<article class="sixColum box">';
+                    echo '<div class="One">';
+                    echo 'Nom du lieu';
+                    echo '</div>';
+                    echo '<div class="Two">';
+                    echo 'Adresse';
+                    echo '</div>';
+                    echo '<div class="Three">';
+                    echo 'Code postal';
+                    echo '</div>';
+                        echo '<div class="Four">';
+                    echo 'Ville';
+                    echo '</div>';
+                        echo '<div class="Five">';
+                    echo 'Telephone';
+                    echo '</div>';
+                        echo '<div class="Six">';
+                    echo 'Administration';
+                    echo '</div>';
+            echo '</article>';
+            foreach ($dataLocation as $location) {
+                        echo '<article class="sixColum box">';
+                    echo '<div class="One">';
+                    echo $location['nameLocation'];
+                    echo '</div>';
+                    echo '<div class="Two">';
+                    echo $location['adress'];
+                    echo '</div>';
+                    echo '<div class="Three">';
+                    echo $location['zipCode'];
+                    echo '</div>';
+                        echo '<div class="Four">';
+                    echo $location['city'];
+                    echo '</div>';
+                        echo '<div class="Five">';
+                    echo $location['phone'];
+                    echo '</div>';
+                        echo '<div class="Six leftAlign">';
+                    echo '<a href="'.findTargetRoute(248).'&idLocation='.$location['id'].'">Administrer</a>';;
+                    echo '</div>';
+            echo '</article>';
+            }
+        } else {
+              if($valid == 0) {
+                echo '<h2 class="subTitleSite">Aucun lieu non valide.</h2>';
+            } else {
+                echo '<h2 class="subTitleSite">Aucun lieu valide dans la base de donnée.</h2>';
+            }
+              
         }
+        
+
+    }
+    public function updateFormLocation ($idLocation, $idNav) {
+        $dataLocation = $this->getOneLocation ($idLocation);
+         $arrayInput = [['name'=>'nameLocation', 'label'=>'Nom du lieu', 'value'=>$dataLocation['nameLocation']],
+                        ['name'=>'adress', 'label'=>'Adresse', 'value'=>$dataLocation['adress']],
+                        ['name'=>'city', 'label'=>'Ville', 'value'=>$dataLocation['city']],
+                        ['name'=>'zipCode', 'label'=>'Code Postal', 'value'=>$dataLocation['zipCode']],
+                        ['name'=>'phone', 'label'=>'Telephone', 'value'=>$dataLocation['phone']],];
+         echo '<h2 class="subTitleSite">Créer un lieux publique</h2>';
+        echo '<form class="customerForm" action="'.encodeRoutage(154).'"  method="post">';
+            foreach ($arrayInput as  $value) {
+                $this->inputUpdateForm ($value['name'], $value['label'], $value['value']);
+            }
+            echo '<select id="valid", name="valid">';
+                echo '<option value="0">Invalide</option>';
+                echo '<option value="1" selected>valide</option>';
+            echo '</select>';
+            echo '<input type="hidden" name="idLocation" value="'.$dataLocation['id'].'"/>';
+          echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>';
+        echo '</form>';
     }
 }

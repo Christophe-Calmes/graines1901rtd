@@ -12,6 +12,11 @@ class sqlEvents
         $param = [['prep'=>':idTypeGame', 'variable'=>$idTypeGame]];
         return ActionDB::select($select, $param, 2)[0]['check'];
     }
+    public function checkIdLocation ($idLocation) {
+        $select = "SELECT COUNT(`id`) AS `check` FROM `locations` WHERE `id`= :idLocation;";
+               $param = [['prep'=>':idLocation', 'variable'=>$idLocation]];
+        return ActionDB::select($select, $param, 2)[0]['check'];
+    }
     public function recordNewGame ($param) {
         $insert = "INSERT INTO `nameGames`(`nameGame`, `idTypeGame`) VALUES (:nameGame, :typeGame)";
         return ActionDB::access($insert, $param, 2);
@@ -61,5 +66,29 @@ class sqlEvents
         $param = [['prep'=>':valide', 'variable'=>$valid],
         ['prep'=>':private', 'variable'=>$private],];
         return ActionDB::select($select, $param, 2);
+    }
+    protected function getOneLocation ($idLocation) {
+        $select = "SELECT `id`, 
+            `nameLocation`, 
+            `adress`, 
+            `city`, 
+            `zipCode`, 
+            `phone`
+            FROM `locations` 
+            WHERE `id` = :idLocation;";
+        $param = [['prep'=>':idLocation', 'variable'=>$idLocation]];
+        return ActionDB::select($select, $param, 2)[0];
+
+    }
+    public function updateLocation ($param) {
+        $update = "UPDATE `locations` SET 
+        `nameLocation`=:nameLocation, 
+        `adress`=:adress, 
+        `city`=:city, 
+        `zipCode`=:zipCode, 
+        `phone`=:phone,
+        `valid`=:valid
+        WHERE `id`=:idLocation;";
+        return ActionDB::access($update, $param, 2);
     }
 }
