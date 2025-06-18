@@ -27,8 +27,11 @@ array_pop($_POST);
 if($mark == $controle_POST) {
     $parametre = new Preparation ();
     $param = $parametre->creationPrepIdUser ($_POST);
-    $addEvent->recordNewEvent ($param);
- header('location:../index.php?message=New event success to record&idNav='.$idNav);
+    $idEvent = $addEvent->recordNewEvent ($param);
+    $post = ['idEvent'=>$idEvent];
+    $param = $parametre->creationPrepIdUser ($post);
+    $addEvent->recordEventParticipant ($param);
+    header('location:../index.php?message=New event success to record&idNav='.$idNav);
 } else {
     header('location:../index.php?message=New event fail to record&idNav='.$idNav);
 }

@@ -146,9 +146,18 @@ class sqlEvents
         $param = [['prep'=>':idGame', 'variable'=>$idGame]];
          return ActionDB::select($select,$param, 2)[0]['check'];
     }
+    public function recordEventParticipant ($param) {
+        $insert = "INSERT INTO `link_events_participants`(`idParticipant`, `idEvent`) VALUES (:idUser, :idEvent);";
+        return ActionDB::access($insert, $param, 2);
+    } 
+    private function lastEvent () {
+        $select = "SELECT `id` FROM `events` ORDER BY `id` DESC LIMIT 1;";
+        return ActionDB::select($select, [], 2)[0]['id'];
+    }
     public function recordNewEvent ($param) {
         $insert = "INSERT INTO `events`( `nameEvent`, `objetEvent`, `dateEvent`, `hourEvent`, `numberParticipants`, `idNameGame`, `idLocation`, `idOwner`) 
         VALUES (:nameEvent, :objetEvent, :dateEvent ,  :hourEvent, :numberParticipants, :idNameGame, :idLocation, :idUser);";
-        return ActionDB::access($insert, $param, 2);
+        ActionDB::access($insert, $param, 2);
+        return $this->lastEvent ();
     }
 }
