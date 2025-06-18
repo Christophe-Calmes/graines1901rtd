@@ -110,4 +110,45 @@ class sqlEvents
         $select = "SELECT `id`, `typeGame` FROM `typeGames` WHERE `valid` = 1 ORDER BY `typeGame`;";
         return ActionDB::select($select, [], 2);
     }
+    public function checkValideDate($dateEvent, $format = 'Y-m-d') { 
+        $today = new DateTime();
+        $today->setTime(0, 0, 0); 
+        $eventDate = DateTime::createFromFormat($format, $dateEvent);
+            if (!$eventDate || $eventDate->format($format) !== $dateEvent) {
+                return false;
+            }
+            $eventDate->setTime(0, 0, 0);
+            if ($eventDate >= $today) {
+                return true; 
+            } else {
+                return false; 
+            }
+    }
+    public function isValidTime($hourEvent, $format = 'H:i') {
+        $time = DateTime::createFromFormat($format, $hourEvent);
+        if ($time && $time->format($format) === $hourEvent) {
+            return true;
+        } else {
+            return false; 
+        }
+    }
+    public function isNumberOfParticipant ($number, $limit) {
+            $filteredNumber = filter_var($number, FILTER_VALIDATE_INT, [
+            "options" => [
+                "min_range" => $limit[0],
+                "max_range" => $limit[1]
+        ]
+    ]);
+        return $filteredNumber !== false;
+    }
+    public function checkGame ($idGame) {
+        $select = "SELECT COUNT(`id`) AS `check` FROM `nameGames` WHERE `id` = :idGame AND `valid` = 1;";
+        $param = [['prep'=>':idGame', 'variable'=>$idGame]];
+         return ActionDB::select($select,$param, 2)[0]['check'];
+    }
+    public function recordNewEvent ($param) {
+        $insert = "INSERT INTO `events`( `nameEvent`, `objetEvent`, `dateEvent`, `hourEvent`, `numberParticipants`, `idNameGame`, `idLocation`, `idOwner`) 
+        VALUES (:nameEvent, :objetEvent, :dateEvent ,  :hourEvent, :numberParticipants, :idNameGame, :idLocation, :idUser);";
+        return ActionDB::access($insert, $param, 2);
+    }
 }

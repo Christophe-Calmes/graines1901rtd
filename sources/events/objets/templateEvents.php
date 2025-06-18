@@ -190,7 +190,7 @@ class TemplateEvents extends sqlEvents
     private function gamesList ($gameType) {
         $dataGames = $this->getAllGameByType ($gameType); 
         echo '<label for="idNameGame">Jeu proposé</label>';
-        echo '<select id="idNameGam" name="idNameGame">';
+        echo '<select id="idNameGame" name="idNameGame">';
             foreach ($dataGames as  $game) {
                 echo '<option value="'.$game['id'].'">'.$game['nameGame'].'</option>';
             }
@@ -199,7 +199,7 @@ class TemplateEvents extends sqlEvents
     private function locationList () {
         $dataLocation = $this->getAllLocation ();
         echo '<label for="idNameGame">Jeu proposé</label>';
-        echo '<select id="idNameGam" name="idNameGame">';
+        echo '<select id="idNameGam" name="idLocation">';
                     foreach ($dataLocation as  $location) {
                         echo '<option value="'.$location['id'].'">'.$location['nameLocation'].' - '.$location['adress'].' - '.$location['city'].'</option>';
                     }
@@ -219,7 +219,6 @@ class TemplateEvents extends sqlEvents
         $this->numberParticipant (6);
         $this->gamesList ($gameType);
         $this->locationList ();
-        echo '<input type="hidden" name="idTypeGame" value="'.$gameType.'"/>';
         echo '<div class="flex-row-reverse-simple">';
             echo '<label id="check">Assurez vous que les locaux sont libre avant de valider.</label>';
             echo '<input id="check" type="checkbox" name="valid"/>';
