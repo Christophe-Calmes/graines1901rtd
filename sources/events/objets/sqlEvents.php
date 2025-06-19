@@ -17,6 +17,11 @@ class sqlEvents
                $param = [['prep'=>':idLocation', 'variable'=>$idLocation]];
         return ActionDB::select($select, $param, 2)[0]['check'];
     }
+    public function checkIdEvent ($idEvent) {
+        $select ="SELECT COUNT(`id`) AS `check` FROM `events` WHERE `id` = :idEvent;";
+        $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
+        return ActionDB::select($select, $param, 2)[0]['check'];
+    }
     public function recordNewGame ($param) {
         $insert = "INSERT INTO `nameGames`(`nameGame`, `idTypeGame`) VALUES (:nameGame, :typeGame)";
         return ActionDB::access($insert, $param, 2);
@@ -159,5 +164,76 @@ class sqlEvents
         VALUES (:nameEvent, :objetEvent, :dateEvent ,  :hourEvent, :numberParticipants, :idNameGame, :idLocation, :idUser);";
         ActionDB::access($insert, $param, 2);
         return $this->lastEvent ();
+    }
+    protected function getMyEvent ($valid, $moment) {
+        // $moment = true (present & futur), false (past)
+        $user = new Controles ();
+
+        $param = [['prep'=>':valid', 'variable'=>$valid], 
+        ['prep'=>':dateEvent', 'variable'=>date('Y-m-d')],
+        ['prep'=>':idOwner', 'variable'=> $user->idUser($_SESSION)]];
+    if($moment) {
+       $select = "SELECT `events`.`id` AS `idEvent`,  
+        `events`.
+        `nameEvent`, 
+        `objetEvent`, 
+        `dateEvent`, 
+        `hourEvent`, 
+        `numberParticipants`, 
+        `events`.`valid` AS `validEvent`, 
+        `creat_date`, 
+        `nameGame`, 
+        `typeGame`, 
+        `typeGames`.`id` AS `idTypeGame`,
+        `nameLocation`, 
+        `adress`, 
+        `city`, 
+        `zipCode`, 
+        `phone`
+
+        FROM `events` 
+        INNER JOIN `locations` ON `locations`.`id`= `idLocation`
+        INNER JOIN `nameGames` ON `events`. `idNameGame` = `nameGames`.`id`
+        INNER JOIN `typeGames` ON `nameGames`.`idTypeGame` = `typeGames`.`id`
+        WHERE  `events`.`valid` = :valid AND `dateEvent`>= :dateEvent AND `events`.`idOwner` = :idOwner;";
+        } else {
+                   $select = "SELECT `events`.`id` AS `idEvent`,  
+        `events`.
+        `nameEvent`, 
+        `objetEvent`, 
+        `dateEvent`, 
+        `hourEvent`, 
+        `numberParticipants`, 
+        `events`.`valid` AS `validEvent`, 
+        `creat_date`, 
+        `nameGame`, 
+        `typeGame`, 
+        `typeGames`.`id` AS `idTypeGame`,
+        `nameLocation`, 
+        `adress`, 
+        `city`, 
+        `zipCode`, 
+        `phone`
+        FROM `events` 
+        INNER JOIN `locations` ON `locations`.`id`= `idLocation`
+        INNER JOIN `nameGames` ON `events`. `idNameGame` = `nameGames`.`id`
+        INNER JOIN `typeGames` ON `nameGames`.`idTypeGame` = `typeGames`.`id`
+        WHERE  `events`.`valid` = :valid AND `dateEvent`< :dateEvent AND `events`.`idOwner` = :idOwner;";
+        }
+        return ActionDB::select($select, $param, 2);
+    }
+    private function deleteAllEventParticipant ($param) {
+        array_pop($param);
+        echo 'Debug deleteAllEventParticipants $param<br/>';
+        print_r($param);
+        $delete = "DELETE FROM `link_events_participants` WHERE `idEvent` = :idEvent;";
+        return ActionDB::access($delete, $param, 2);
+    }
+    public function deleteOneEventByOwner ($param) {
+          print_r($param);
+        $this->deleteAllEventParticipant ($param);
+        $delete = "DELETE FROM `events` WHERE `id` = :idEvent AND `idOwner` = :idUser;";
+        return  ActionDB::access($delete, $param, 2);
+       
     }
 }

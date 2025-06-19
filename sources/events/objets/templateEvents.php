@@ -1,5 +1,7 @@
 <?php
 require('sources/events/objets/sqlEvents.php');
+require ('functions/functionDateTime.php');
+
 class TemplateEvents extends sqlEvents
 {
 
@@ -243,5 +245,52 @@ class TemplateEvents extends sqlEvents
         } else {
             echo '<h3 class="titleSite">Aucun type de jeu dans la base</h3>';
         }
+    }
+        private function deleteEvent ($idEvent, $idNav) {
+            echo '<form action="'.encodeRoutage(156).'"  method="post">';
+            echo '<div class="flex-row-reverse-simple">';
+            echo '<label id="check">Vous êtes certain de détruire cette événement ?</label>';
+            echo '<input id="check" type="checkbox" name="valid"/>';
+            echo '</div>';
+            echo '<input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Effacer</button>';
+            echo '</form>';
+    }
+    protected function displayEvent ($valid, $moment, $admin, $idNav) {
+        $dataEvents = $this->getMyEvent ($valid, $moment);
+        if($moment == true) {
+            $message = '<h2 class="subTitleSite">Evénement à venir</h2>';
+        } else {
+              $message = '<h2 class="subTitleSite">Evénement passé</h2>';
+        }
+        if(!empty($dataEvents)) {
+            echo $message;
+            echo '<main class="gallery">';
+                    foreach ($dataEvents as $detail) {
+                        echo '<article class="item">';
+                            echo '<ul class="listClass">';
+                                echo '<li>'.$detail['nameEvent'].'</li>';
+                                echo '<li>Le '.brassageDate($detail['dateEvent']).' à '.$detail['hourEvent'].'</li>';
+                                echo '<li><p>'.$detail['objetEvent'].'</p></li>';
+                                echo '<li>Type de jeu  : '.$detail['typeGame'].'</li>';
+                                echo '<li>Nom du jeu  : '.$detail['nameGame'].'</li>';
+                                echo '<li>Lieu : '.$detail['nameEvent'].'</li>';
+                                echo '<li>Lieu : '.$detail['nameLocation'].'</li>';
+                                echo '<li>Adresse : '.$detail['adress'].', '.$detail['zipCode'].' '.$detail['city'].'</li>';
+                                echo '<li>Telephone : '.$detail['phone'].'</li>';
+                                echo '<li>Date de création : '.formatDateHeureFr($detail['creat_date']).'</li>';
+                                if(($admin)&&($detail['dateEvent']<date('Y-m-d'))) {
+                                 echo '<li>'.$this->deleteEvent ($detail['idEvent'], $idNav).'</li>';
+                                }
+                            echo '</ul>';
+                        echo '</article>';
+                    }
+                echo '</main>';
+        }
+    }
+
+    public function adminMyEvent ($sort, $idNav) {
+        // $sort = [$valid(bool), $moment(bool), $admin(bool)]
+        $this->displayEvent ($sort[0], $sort[1], $sort[2], $idNav);
     }
 }
