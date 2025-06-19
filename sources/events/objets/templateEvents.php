@@ -246,7 +246,62 @@ class TemplateEvents extends sqlEvents
             echo '<h3 class="titleSite">Aucun type de jeu dans la base</h3>';
         }
     }
-        private function deleteEvent ($idEvent, $idNav) {
+    private function register ($dataRegister, $idEvent, $idNav) {
+        $idUser = new Controles ();
+        $idParticipant = $idUser->idUser($_SESSION);
+        $idUser = array_column($dataRegister, 'idUser');
+        $matchId = array_search($idParticipant, $idUser);
+        return $matchId;
+        /*if($matchId === false) {
+            echo '<form action="'.encodeRoutage(157).'"  method="post">';
+            echo '<input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscription</button>';
+            echo '</form>';
+        } 
+        if($matchId >=0){
+            echo '<form action="'.encodeRoutage(158).'"  method="post">';
+            echo '<input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Désinscription</button>';
+            echo '</form>';
+        }*/
+    }
+    private function subscribEvent ($matchId, $idNav, $idEvent) {
+        if($matchId === false) {
+            echo '<form action="'.encodeRoutage(157).'"  method="post">';
+            echo '<input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscription</button>';
+            echo '</form>';
+        }
+    }
+    private function unSubscribEvent ($matchId, $idNav, $idEvent) {
+        if($matchId !== false) {
+            echo '<form action="'.encodeRoutage(158).'"  method="post">';
+            echo '<input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Désinscription</button>';
+            echo '</form>';
+        }
+    }
+
+
+    private function displayRegister ($idEvent, $idNav, $numberMax) {
+        $dataRegister = $this->registerEvent ($idEvent);
+        $actual = $this->countParticipantsOneEvent ($idEvent);
+        echo '<ul class="listClass">';
+        echo '<li><h4 class="titleEventItem">Liste des inscrits ('.$actual.'/'.$numberMax.') :</h4></li>';
+        foreach ($dataRegister as $speudo) {
+            echo '<li>'.$speudo['login'].'</li>';
+        }
+       echo '</ul>';
+       $matchId = $this->register ($dataRegister, $idEvent, $idNav);
+       $delta = $numberMax- $actual;
+       if($matchId !== false) {
+            $this->unSubscribEvent ($matchId, $idNav, $idEvent);
+       }
+       if($delta>0) {
+        $this->subscribEvent ($matchId, $idNav, $idEvent);
+       }
+    }
+    private function deleteEvent ($idEvent, $idNav) {
             echo '<form action="'.encodeRoutage(156).'"  method="post">';
             echo '<div class="flex-row-reverse-simple">';
             echo '<label id="check">Vous êtes certain de détruire cette événement ?</label>';
@@ -269,7 +324,7 @@ class TemplateEvents extends sqlEvents
                     foreach ($dataEvents as $detail) {
                         echo '<article class="item">';
                             echo '<ul class="listClass">';
-                                echo '<li>'.$detail['nameEvent'].'</li>';
+                                echo '<li class="subTitleSite">'.$detail['nameEvent'].'</li>';
                                 echo '<li>Le '.brassageDate($detail['dateEvent']).' à '.$detail['hourEvent'].'</li>';
                                 echo '<li><p>'.$detail['objetEvent'].'</p></li>';
                                 echo '<li>Type de jeu  : '.$detail['typeGame'].'</li>';
@@ -282,15 +337,45 @@ class TemplateEvents extends sqlEvents
                                 if(($admin)&&($detail['dateEvent']<date('Y-m-d'))) {
                                  echo '<li>'.$this->deleteEvent ($detail['idEvent'], $idNav).'</li>';
                                 }
+                                $this->displayRegister ($detail['idEvent']);
                             echo '</ul>';
                         echo '</article>';
                     }
                 echo '</main>';
+        }
+        if(!empty($dataEvent)) {
+            echo '<td><a href="'.findTargetRoute(249).'">Créer un événement ?</a>';
         }
     }
 
     public function adminMyEvent ($sort, $idNav) {
         // $sort = [$valid(bool), $moment(bool), $admin(bool)]
         $this->displayEvent ($sort[0], $sort[1], $sort[2], $idNav);
+    }
+    public function actualEvent ($idNav) {
+        $dataActualEvent = $this->getActualEvent ();
+        if(!empty($dataActualEvent)) {
+            echo '<h2 class="subTitleSite">Evénement à venir</h2>';;
+            echo '<main class="gallery">';
+                    foreach ($dataActualEvent as $detail) {
+                        //print_r($detail);
+                        echo '<article class="item">';
+                            echo '<ul class="listClass">';
+                                echo '<li class="subTitleSite">'.$detail['nameEvent'].'</li>';
+                                echo '<li>Le '.brassageDate($detail['dateEvent']).' à '.$detail['hourEvent'].'</li>';
+                                echo '<li><p>'.$detail['objetEvent'].'</p></li>';
+                                echo '<li>Type de jeu  : '.$detail['typeGame'].'</li>';
+                                echo '<li>Nom du jeu  : '.$detail['nameGame'].'</li>';
+                                echo '<li>Lieu : '.$detail['nameEvent'].'</li>';
+                                echo '<li>Lieu : '.$detail['nameLocation'].'</li>';
+                                echo '<li>Adresse : '.$detail['adress'].', '.$detail['zipCode'].' '.$detail['city'].'</li>';
+                                echo '<li>Telephone : '.$detail['phone'].'</li>';
+                                echo '<li>Date de création : '.formatDateHeureFr($detail['creat_date']).'</li>';
+                               $this->displayRegister ($detail['idEvent'], $idNav, $detail['numberParticipants']);
+                            echo '</ul>';
+                        echo '</article>';
+                    }
+                echo '</main>';
+        }
     }
 }

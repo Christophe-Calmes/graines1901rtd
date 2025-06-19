@@ -90,7 +90,7 @@ h2 {
 .center {
   display: inline-block;
 }
-.subTitleSite{
+.subTitleSite {
   font-family: var(--font-family);
   font-weight: var(--font-weight);
   font-style: var(--font-style);

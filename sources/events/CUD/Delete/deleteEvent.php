@@ -16,7 +16,7 @@ if($mark == $controle_POST) {
     $parametre = new Preparation ();
     $param = $parametre->creationPrepIdUser ($_POST);
     $deleteEvent->deleteOneEventByOwner ($param);
-    //header('location:../index.php?message=Delete event success to record&idNav='.$idNav);
+    header('location:../index.php?message=Delete event success to record&idNav='.$idNav);
 } else {
-    //header('location:../index.php?message=Delete event fail to record&idNav='.$idNav);
+    header('location:../index.php?message=Delete event fail to record&idNav='.$idNav);
 }
