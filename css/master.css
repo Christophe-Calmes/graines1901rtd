@@ -995,12 +995,18 @@ nav {
   .menu-btn {
       position: absolute;
       top: 3vh;
+      left: 2vw;
       display: block;
       width: fit-content;
       display: flex;
       background-color: var(--main-background-navBar);
       padding: 1em;
       margin-left: 0;
+  }
+  .titleSite {
+          position: absolute;
+          left: 40vw;
+          font-size: 1.5rem;
   }
 
   .menu.active {
@@ -1060,7 +1066,14 @@ nav {
   text-align: justify;
   width: 100%;
 }
-  .listClass { 
+.listClass { 
+    font-size: 0.9em;
+    margin-right: auto;
+  }
+  .item {
+    width: 10vw;
+  }
+  /*.listClass { 
     text-indent: -20vw;
     list-style: none;
     text-align: left;
@@ -1068,12 +1081,12 @@ nav {
     font-size: 0.8em;
     margin-left: auto;
     margin-right: auto;
-  }
-  .listClass li {
+  }*/
+  /*.listClass li {
 
     margin: 0;
     padding: 0;
-  }
+  }*/
   .imgNews {
     display: block;
     margin-bottom: 0em;
@@ -1096,5 +1109,6 @@ nav {
   .flex-rows-carousel {
     flex-direction: column;
   }
+
 }
 /*Burger Menu*/

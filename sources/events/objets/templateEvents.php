@@ -156,10 +156,7 @@ class TemplateEvents extends sqlEvents
             } else {
                 echo '<h2 class="subTitleSite">Aucun lieu valide dans la base de donnée.</h2>';
             }
-              
         }
-        
-
     }
     public function updateFormLocation ($idLocation, $idNav) {
         $dataLocation = $this->getOneLocation ($idLocation);
@@ -252,18 +249,6 @@ class TemplateEvents extends sqlEvents
         $idUser = array_column($dataRegister, 'idUser');
         $matchId = array_search($idParticipant, $idUser);
         return $matchId;
-        /*if($matchId === false) {
-            echo '<form action="'.encodeRoutage(157).'"  method="post">';
-            echo '<input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
-            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscription</button>';
-            echo '</form>';
-        } 
-        if($matchId >=0){
-            echo '<form action="'.encodeRoutage(158).'"  method="post">';
-            echo '<input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
-            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Désinscription</button>';
-            echo '</form>';
-        }*/
     }
     private function subscribEvent ($matchId, $idNav, $idEvent) {
         if($matchId === false) {
@@ -281,8 +266,6 @@ class TemplateEvents extends sqlEvents
             echo '</form>';
         }
     }
-
-
     private function displayRegister ($idEvent, $idNav, $numberMax) {
         $dataRegister = $this->registerEvent ($idEvent);
         $actual = $this->countParticipantsOneEvent ($idEvent);
@@ -329,7 +312,6 @@ class TemplateEvents extends sqlEvents
                                 echo '<li><p>'.$detail['objetEvent'].'</p></li>';
                                 echo '<li>Type de jeu  : '.$detail['typeGame'].'</li>';
                                 echo '<li>Nom du jeu  : '.$detail['nameGame'].'</li>';
-                                echo '<li>Lieu : '.$detail['nameEvent'].'</li>';
                                 echo '<li>Lieu : '.$detail['nameLocation'].'</li>';
                                 echo '<li>Adresse : '.$detail['adress'].', '.$detail['zipCode'].' '.$detail['city'].'</li>';
                                 echo '<li>Telephone : '.$detail['phone'].'</li>';
@@ -337,7 +319,7 @@ class TemplateEvents extends sqlEvents
                                 if(($admin)&&($detail['dateEvent']<date('Y-m-d'))) {
                                  echo '<li>'.$this->deleteEvent ($detail['idEvent'], $idNav).'</li>';
                                 }
-                                $this->displayRegister ($detail['idEvent']);
+                                $this->displayRegister ($detail['idEvent'], $idNav, $detail['numberParticipants']);
                             echo '</ul>';
                         echo '</article>';
                     }
@@ -352,30 +334,48 @@ class TemplateEvents extends sqlEvents
         // $sort = [$valid(bool), $moment(bool), $admin(bool)]
         $this->displayEvent ($sort[0], $sort[1], $sort[2], $idNav);
     }
+    private function oneEventSheet ($detail, $idNav) {
+                   echo '<article class="item">';
+                            echo '<ul class="listClass">';
+                                $fullAddress = htmlspecialchars_decode($detail['adress'].', '.$detail['zipCode'].' '.$detail['city']);
+                                echo '<li><a class="link" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text='.urlencode($detail['nameEvent']).'&dates='.dateAndTimeAgendaGoogle($detail['dateEvent']).'&details='.urlencode($detail['nameGame']).'&location='.urlencode($fullAddress).'&sf=true&output=xml" target="_blank">Ajouter à Google Agenda</a></li>';
+                                echo '<li class="subTitleSite">'.$detail['nameEvent'].'</li>';
+                                echo '<li>Le '.brassageDate($detail['dateEvent']).' à '.$detail['hourEvent'].'</li>';
+                                echo '<li><p>'.$detail['objetEvent'].'</p></li>';
+                                echo '<li>Type de jeu  : '.$detail['typeGame'].'</li>';
+                                echo '<li>Nom du jeu  : '.$detail['nameGame'].'</li>';
+                                echo '<li>Lieu : '.$detail['nameLocation'].'</li>';
+                                echo '<li>Adresse : '.$detail['adress'].', '.$detail['zipCode'].' '.$detail['city'].'</li>';
+                                echo '<li>Telephone : '.$detail['phone'].'</li>';
+                               $this->displayRegister ($detail['idEvent'], $idNav, $detail['numberParticipants']);
+                            echo '</ul>';
+                        echo '</article>';
+    }
+
+
     public function actualEvent ($idNav) {
         $dataActualEvent = $this->getActualEvent ();
         if(!empty($dataActualEvent)) {
             echo '<h2 class="subTitleSite">Evénement à venir</h2>';;
             echo '<main class="gallery">';
                     foreach ($dataActualEvent as $detail) {
-                        //print_r($detail);
-                        echo '<article class="item">';
-                            echo '<ul class="listClass">';
-                                echo '<li class="subTitleSite">'.$detail['nameEvent'].'</li>';
-                                echo '<li>Le '.brassageDate($detail['dateEvent']).' à '.$detail['hourEvent'].'</li>';
-                                echo '<li><p>'.$detail['objetEvent'].'</p></li>';
-                                echo '<li>Type de jeu  : '.$detail['typeGame'].'</li>';
-                                echo '<li>Nom du jeu  : '.$detail['nameGame'].'</li>';
-                                echo '<li>Lieu : '.$detail['nameEvent'].'</li>';
-                                echo '<li>Lieu : '.$detail['nameLocation'].'</li>';
-                                echo '<li>Adresse : '.$detail['adress'].', '.$detail['zipCode'].' '.$detail['city'].'</li>';
-                                echo '<li>Telephone : '.$detail['phone'].'</li>';
-                                echo '<li>Date de création : '.formatDateHeureFr($detail['creat_date']).'</li>';
-                               $this->displayRegister ($detail['idEvent'], $idNav, $detail['numberParticipants']);
-                            echo '</ul>';
-                        echo '</article>';
+                        $this->oneEventSheet ($detail, $idNav);
                     }
                 echo '</main>';
         }
+    }
+    public function myAgenda ($idNav) {
+        $dataMyAgenda = $this->getMyAgenda ();
+         if(!empty($dataMyAgenda)) {
+            echo '<h2 class="subTitleSite">Votre agenda</h2>';
+            echo '<main class="gallery">';
+                    foreach ($dataMyAgenda as $detail) {
+                            $this->oneEventSheet ($detail, $idNav);
+                    }
+                echo '</main>';
+        } else {
+                echo '<h2 class="subTitleSite">Votre agenda est vide</h2>';
+        }
+
     }
 }

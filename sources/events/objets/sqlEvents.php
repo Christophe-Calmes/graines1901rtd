@@ -174,13 +174,15 @@ class sqlEvents
         ActionDB::access($insert, $param, 2);
         return $this->lastEvent ();
     }
+    private function getIdUser () {
+        $user = new Controles ();
+        return $user->idUser($_SESSION);
+    }
     protected function getMyEvent ($valid, $moment) {
         // $moment = true (present & futur), false (past)
-        $user = new Controles ();
-
         $param = [['prep'=>':valid', 'variable'=>$valid], 
         ['prep'=>':dateEvent', 'variable'=>date('Y-m-d')],
-        ['prep'=>':idOwner', 'variable'=> $user->idUser($_SESSION)]];
+        ['prep'=>':idOwner', 'variable'=> $this->getIdUser ()]];
     if($moment) {
        $select = "SELECT `events`.`id` AS `idEvent`,  
         `events`.
@@ -278,6 +280,37 @@ class sqlEvents
         $this->deleteAllEventParticipant ($param);
         $delete = "DELETE FROM `events` WHERE `id` = :idEvent AND `idOwner` = :idUser;";
         return  ActionDB::access($delete, $param, 2);  
+    }
+    protected function getMyAgenda () {
+             $param = [['prep'=>':dateEvent', 'variable'=>date('Y-m-d')],
+                        ['prep'=>':idParticipant', 'variable'=> $this->getIdUser ()]];
+            $select ="SELECT 
+        `events`.`id` AS `idEvent`,  
+        `events`.
+        `nameEvent`, 
+        `objetEvent`, 
+        `dateEvent`, 
+        `hourEvent`, 
+        `numberParticipants`, 
+        `events`.`valid` AS `validEvent`, 
+        `creat_date`, 
+        `nameGame`, 
+        `typeGame`, 
+        `typeGames`.`id` AS `idTypeGame`,
+        `nameLocation`, 
+        `adress`, 
+        `city`, 
+        `zipCode`, 
+        `phone`
+        FROM `link_events_participants` 
+            INNER JOIN `events` ON  `link_events_participants`.`idEvent` = `events`.`id`
+            INNER JOIN `locations` ON `locations`.`id`= `idLocation`
+            INNER JOIN `nameGames` ON `events`. `idNameGame` = `nameGames`.`id`
+            INNER JOIN `typeGames` ON `nameGames`.`idTypeGame` = `typeGames`.`id`
+            
+            WHERE `idParticipant` = :idParticipant AND `dateEvent`>= :dateEvent 
+            ORDER BY `dateEvent` LIMIT 12;"; 
+        return ActionDB::select($select, $param, 2);
     }
 
 }
