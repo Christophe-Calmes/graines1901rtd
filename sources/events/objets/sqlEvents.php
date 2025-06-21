@@ -5,6 +5,11 @@ class sqlEvents
         $select = "SELECT `id` AS `idTypeGame`, `typeGame` FROM `typeGames` WHERE `valid` = 1;";
         return ActionDB::select($select, [], 2);
     }
+        protected function getGamesTypesAdmin ($valid) {
+        $param = [['prep'=>':valid', 'variable'=>$valid]];
+        $select = "SELECT `id` AS `idTypeGame`, `typeGame`, `valid` FROM `typeGames` WHERE `valid` = :valid;";
+        return ActionDB::select($select, $param, 2);
+    }
     public function checkIdTypeGame ($idTypeGame) {
         $select = "SELECT COUNT(`id`) AS `check` 
                     FROM `typeGames` 

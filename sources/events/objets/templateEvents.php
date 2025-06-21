@@ -378,4 +378,51 @@ class TemplateEvents extends sqlEvents
         }
 
     }
+    private function formUpdateTypeGame ($idTypeGame, $idNav, $valid) {
+        echo '<form action="'.encodeRoutage(160).'"  method="post">';
+            echo '<input type="hidden" name="idTypeGame" value="'.$idTypeGame.'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">'.($valid ? 'Invalide' : 'Valide').'</button>';
+        echo '</form>';
+    }
+    private function displayGameTypeAdmin ($data, $valid, $idNav) {
+        if($valid == 1) {
+            echo '<h2 class="subTitleSite">Type de jeux valide</h2>';
+        }
+        if($valid == 0) {
+            echo '<h2 class="subTitleSite">Type de jeux invalide</h2>';
+        }
+            echo '<article class="tripleColum box">';
+                echo '<div class="One">Type de jeu</div>';
+                echo '<div class="Two">Valide ?</div>';
+                echo '<div class="Three">Administrer</div>';
+            echo '</article>';
+            foreach ($data as $detail) {
+               echo '<article class="tripleColum box">';
+                echo '<div class="One">';
+                    echo $detail['typeGame'];
+                echo '</div>';
+                echo '<div class="Two">';
+                    echo ($detail['valid'] ? 'Oui' : 'Non');
+                echo '</div>';
+                echo '<div class="Three">';
+                    $this->formUpdateTypeGame ($detail['idTypeGame'], $idNav, $detail['valid']);
+                echo '</div>';
+                echo '</article>';
+            }
+           
+
+    }
+
+    public function displayGameType ($idNav) {
+        $dataGameTypeValid = $this->getGamesTypesAdmin (1);
+        $dataGameTypeUnvalid = $this->getGamesTypesAdmin (0);
+        if(!empty($dataGameTypeValid)) {
+            $this->displayGameTypeAdmin ($dataGameTypeValid, 1, $idNav) ;
+        }
+        if(!empty($dataGameTypeUnvalid )){
+            $this->displayGameTypeAdmin ($dataGameTypeUnvalid, 0, $idNav) ;
+        }
+        
+
+    }
 }
