@@ -10,6 +10,7 @@ class sqlEvents
         $select = "SELECT `id` AS `idTypeGame`, `typeGame`, `valid` FROM `typeGames` WHERE `valid` = :valid;";
         return ActionDB::select($select, $param, 2);
     }
+ 
     public function checkIdTypeGame ($idTypeGame) {
         $select = "SELECT COUNT(`id`) AS `check` 
                     FROM `typeGames` 
@@ -317,5 +318,12 @@ class sqlEvents
             ORDER BY `dateEvent` LIMIT 12;"; 
         return ActionDB::select($select, $param, 2);
     }
-
+    public function updateValideGameType ($param) {
+        $update = "UPDATE `typeGames` SET `valid`= `valid`^1 WHERE `id` = :idTypeGame;";
+        return ActionDB::select($update, $param, 2);
+    }
+    public function insertNewGameType ($param) {
+        $insert = "INSERT INTO `typeGames`(`typeGame`) VALUES (:typeGame);";
+        return ActionDB::access($insert, $param, 2);
+    }
 }

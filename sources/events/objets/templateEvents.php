@@ -422,7 +422,17 @@ class TemplateEvents extends sqlEvents
         if(!empty($dataGameTypeUnvalid )){
             $this->displayGameTypeAdmin ($dataGameTypeUnvalid, 0, $idNav) ;
         }
-        
+    }
+    public function formGameType ($idNav) {
+        echo '<form class="customerForm" action="'.encodeRoutage(159).'"  method="post">';
+            echo '<label for="typeGame">Nom du Type</label>';
+            echo '<input id="typeGame" type="text" name="typeGame" placeholder="Nouveau type" />';
+            echo '<div class="flex-row-reverse-simple">';
+            echo '<label id="check">Assurez vous que ce type de jeu soit valide.</label>';
+            echo '<input id="check" type="checkbox" name="valid"/>';
+        echo '</div>';
+        echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Créer</button>';
+        echo '</form>';
 
     }
 }
