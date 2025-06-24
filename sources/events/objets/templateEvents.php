@@ -284,6 +284,17 @@ class TemplateEvents extends sqlEvents
         $this->subscribEvent ($matchId, $idNav, $idEvent);
        }
     }
+    private function displayRegisterAdmin ($idEvent, $idNav, $numberMax) {
+        $dataRegister = $this->registerEvent ($idEvent);
+        $actual = $this->countParticipantsOneEvent ($idEvent);
+        echo '<ul class="listClass">';
+        echo '<li><h4 class="titleEventItem">Liste des inscrits ('.$actual.'/'.$numberMax.') :</h4></li>';
+        foreach ($dataRegister as $speudo) {
+            echo '<li>'.$speudo['login'].'</li>';
+        }
+       echo '</ul>';
+    }
+
     private function deleteEvent ($idEvent, $idNav) {
             echo '<form action="'.encodeRoutage(156).'"  method="post">';
             echo '<div class="flex-row-reverse-simple">';
@@ -348,6 +359,36 @@ class TemplateEvents extends sqlEvents
                                 echo '<li>Adresse : '.$detail['adress'].', '.$detail['zipCode'].' '.$detail['city'].'</li>';
                                 echo '<li>Telephone : '.$detail['phone'].'</li>';
                                $this->displayRegister ($detail['idEvent'], $idNav, $detail['numberParticipants']);
+                            echo '</ul>';
+                        echo '</article>';
+    }
+    private function deleteEventByGestionnaire ($idEvent, $idNav) {
+     echo '<li>
+                <form action="'.encodeRoutage(161).'"  method="post">';
+                        echo '<div class="flex-row-reverse-simple box">';
+                        echo '<label id="check">Vous êtes certain de détruire cette événement ?</label>';
+                        echo '<input id="check" type="checkbox" name="valid"/>';
+                        echo '</div>';
+                        echo '<input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
+                        echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Effacer</button>';
+            echo '</form>
+        </li>';
+    }
+    private function oneAdminEventSheet ($detail, $idNav) {
+                   echo '<article class="item">';
+                            echo '<ul class="listClass">';
+                                $fullAddress = htmlspecialchars_decode($detail['adress'].', '.$detail['zipCode'].' '.$detail['city']);
+                                echo '<li><a class="link" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text='.urlencode($detail['nameEvent']).'&dates='.dateAndTimeAgendaGoogle($detail['dateEvent']).'&details='.urlencode($detail['nameGame']).'&location='.urlencode($fullAddress).'&sf=true&output=xml" target="_blank">Ajouter à Google Agenda</a></li>';
+                                echo '<li class="subTitleSite">'.$detail['nameEvent'].'</li>';
+                                echo '<li>Le '.brassageDate($detail['dateEvent']).' à '.$detail['hourEvent'].'</li>';
+                                echo '<li><p>'.$detail['objetEvent'].'</p></li>';
+                                echo '<li>Type de jeu  : '.$detail['typeGame'].'</li>';
+                                echo '<li>Nom du jeu  : '.$detail['nameGame'].'</li>';
+                                echo '<li>Lieu : '.$detail['nameLocation'].'</li>';
+                                echo '<li>Adresse : '.$detail['adress'].', '.$detail['zipCode'].' '.$detail['city'].'</li>';
+                                echo '<li>Telephone : '.$detail['phone'].'</li>';
+                                    $this->displayRegisterAdmin  ($detail['idEvent'], $idNav, $detail['numberParticipants']);
+                                    $this->deleteEventByGestionnaire ($detail['idEvent'], $idNav);
                             echo '</ul>';
                         echo '</article>';
     }
@@ -434,5 +475,30 @@ class TemplateEvents extends sqlEvents
         echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Créer</button>';
         echo '</form>';
 
+    }
+    public function displayBilanEvents () {
+        $dataBilan = $this->getAllDateBilan ();
+        echo '<h2 class="subTitleSite">Bilans nombre événements</h2>';
+           echo '<article class="tripleColum box">';
+                echo '<div class="One">Date démarrage bilan</div>';
+                echo '<div class="Two">Date fin de bilan</div>';
+                echo '<div class="Three">Nombre de parties</div>';
+            echo '</article>';
+        foreach ($dataBilan as $value) {
+            echo '<article class="tripleColum">';
+                echo '<div class="One box">'.brassageDate($value['openCompta']).'</div>';
+                echo '<div class="Two box">'.brassageDate($value['closeCompta']).'</div>';
+                echo '<div class="Three box">'.$value['nombre_evenements'].'</div>';
+            echo '</article>';
+        }
+    }
+
+    public function displayAdminEvents ($firstPage, $parPage, $past, $idNav) {
+        $dataEvents = $this->GetEvents ($firstPage, $parPage, $past);
+            echo '<main class="gallery">';
+                foreach ($dataEvents as  $detail) {
+                    $this->oneAdminEventSheet ($detail, $idNav);
+                }
+            echo '</main>';
     }
 }

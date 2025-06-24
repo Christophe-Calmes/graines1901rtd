@@ -1,6 +1,85 @@
 <?php
 class sqlEvents
 {
+    protected function GetEvents ($firstPage, $parPage, $past) {
+        if($past) {
+              $select = "SELECT 
+        `events`.`id` AS `idEvent`,  
+        `events`.
+        `nameEvent`, 
+        `objetEvent`, 
+        `dateEvent`, 
+        `hourEvent`, 
+        `numberParticipants`, 
+        `events`.`valid` AS `validEvent`, 
+        `creat_date`, 
+        `nameGame`, 
+        `typeGame`, 
+        `typeGames`.`id` AS `idTypeGame`,
+        `nameLocation`, 
+        `adress`, 
+        `city`, 
+        `zipCode`, 
+        `phone`
+            FROM `events`
+            INNER JOIN `locations` ON `locations`.`id`= `idLocation`
+            INNER JOIN `nameGames` ON `events`. `idNameGame` = `nameGames`.`id`
+            INNER JOIN `typeGames` ON `nameGames`.`idTypeGame` = `typeGames`.`id`
+            WHERE `dateEvent`<= NOW() AND `events`.`valid` = 1
+            ORDER BY `dateEvent` DESC
+            LIMIT {$firstPage}, {$parPage};";
+ 
+        } else {
+            $select = "SELECT 
+        `events`.`id` AS `idEvent`,  
+        `events`.
+        `nameEvent`, 
+        `objetEvent`, 
+        `dateEvent`, 
+        `hourEvent`, 
+        `numberParticipants`, 
+        `events`.`valid` AS `validEvent`, 
+        `creat_date`, 
+        `nameGame`, 
+        `typeGame`, 
+        `typeGames`.`id` AS `idTypeGame`,
+        `nameLocation`, 
+        `adress`, 
+        `city`, 
+        `zipCode`, 
+        `phone`
+            FROM `events`
+            INNER JOIN `locations` ON `locations`.`id`= `idLocation`
+            INNER JOIN `nameGames` ON `events`. `idNameGame` = `nameGames`.`id`
+            INNER JOIN `typeGames` ON `nameGames`.`idTypeGame` = `typeGames`.`id`
+            WHERE `dateEvent`>= NOW() AND `events`.`valid` = 1
+            ORDER BY `dateEvent` DESC
+            LIMIT {$firstPage}, {$parPage};";
+           
+        }
+       
+
+    return ActionDB::select($select, [], 2);
+    }
+
+    protected function getAllDateBilan () {
+        $select = "SELECT
+            b.id AS bilan_id,
+            b.openCompta,
+            b.closeCompta,
+            COUNT(e.id) AS nombre_evenements
+        FROM
+            bilans AS b
+        LEFT JOIN
+            events AS e ON e.dateEvent >= DATE(b.openCompta)
+                        AND (b.closeCompta IS NULL OR e.dateEvent <= DATE(b.closeCompta))
+        GROUP BY
+            b.id, b.openCompta, b.closeCompta
+        ORDER BY
+            b.id;";
+        return ActionDB::select($select, [], 2);
+    }
+
     protected function getGamesTypes () {
         $select = "SELECT `id` AS `idTypeGame`, `typeGame` FROM `typeGames` WHERE `valid` = 1;";
         return ActionDB::select($select, [], 2);
@@ -277,14 +356,23 @@ class sqlEvents
     }
     private function deleteAllEventParticipant ($param) {
         array_pop($param);
-        echo 'Debug deleteAllEventParticipants $param<br/>';
-        print_r($param);
+        $delete = "DELETE FROM `link_events_participants` WHERE `idEvent` = :idEvent;";
+        return ActionDB::access($delete, $param, 2);
+    }
+    private function deleteAllEventParticipantByGestionnaire ($param) {
         $delete = "DELETE FROM `link_events_participants` WHERE `idEvent` = :idEvent;";
         return ActionDB::access($delete, $param, 2);
     }
     public function deleteOneEventByOwner ($param) {
         $this->deleteAllEventParticipant ($param);
-        $delete = "DELETE FROM `events` WHERE `id` = :idEvent AND `idOwner` = :idUser;";
+        $update = "UPDATE `events` SET `valid`=0 WHERE `id` = :idEvent AND `idOwner` = :idUser;";
+        ActionDB::access($update, $param, 2);  
+        //$delete = "DELETE FROM `events` WHERE `id` = :idEvent AND `idOwner` = :idUser;";
+        //return  ActionDB::access($delete, $param, 2);  
+    }
+    public function deleteOneEventByGestionnaire ($param) {
+        $this->deleteAllEventParticipantByGestionnaire ($param);
+        $delete = "DELETE FROM `events` WHERE `id` = :idEvent;";
         return  ActionDB::access($delete, $param, 2);  
     }
     protected function getMyAgenda () {
@@ -326,4 +414,13 @@ class sqlEvents
         $insert = "INSERT INTO `typeGames`(`typeGame`) VALUES (:typeGame);";
         return ActionDB::access($insert, $param, 2);
     }
+    public function numberOfEvent ($past) {
+        if($past) {
+            $select = "SELECT COUNT(`id`) AS `nbrEvents` FROM `events` WHERE`dateEvent`<= NOW() AND `valid`=1;";
+        } else {
+            $select = "SELECT COUNT(`id`) AS `nbrEvents` FROM `events` WHERE`dateEvent` >= NOW() AND `valid`=1;";
+        }
+        return ActionDB::select($select, [],2)[0]['nbrEvents'];
+    }
+    
 }
