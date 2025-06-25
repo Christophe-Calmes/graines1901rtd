@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : jeu. 19 juin 2025 à 08:14
+-- Généré le : mer. 25 juin 2025 à 20:43
 -- Version du serveur : 8.0.42-0ubuntu0.24.04.1
 -- Version de PHP : 8.3.6
 
@@ -97,126 +97,76 @@ CREATE TABLE `journaux` (
 --
 
 INSERT INTO `journaux` (`idConnexion`, `ipUser`, `idUser`, `login`, `mdpHacker`, `dateHeure`, `okConnexion`) VALUES
-(1, '::1', 1, 'Admin', '0', '2025-05-22 16:50:20', 1),
-(2, '::1', 58, 'Gestionnaire', '0', '2025-05-22 17:08:12', 1),
-(3, '::1', 58, 'Gestionnaire', '0', '2025-05-22 17:08:50', 1),
-(4, '::1', 1, 'Admin', '0', '2025-05-28 14:27:15', 1),
-(5, '::1', 58, 'Gestionnaire', '0', '2025-05-28 14:28:28', 1),
-(6, '::1', 58, 'Gestionnaire', '0', '2025-05-28 14:28:49', 1),
-(7, '::1', 1, 'Admin', '0', '2025-05-28 14:39:18', 1),
-(8, '::1', 0, 'Camille', 'christophe', '2025-05-28 14:44:33', 0),
-(9, '::1', 60, 'Camille', '0', '2025-05-28 14:49:07', 1),
-(10, '::1', 1, 'Admin', '0', '2025-05-28 14:50:02', 1),
-(11, '::1', 58, 'Gestionnaire', '0', '2025-05-28 14:52:51', 1),
-(12, '::1', 58, 'Gestionnaire', '0', '2025-05-28 15:00:32', 1),
-(13, '::1', 1, 'Admin', '0', '2025-05-28 16:12:36', 1),
-(14, '::1', 1, 'Admin', '0', '2025-05-28 17:48:32', 1),
-(15, '::1', 1, 'Admin', '0', '2025-05-28 18:08:01', 1),
-(16, '::1', 58, 'Gestionnaire', '0', '2025-05-28 18:08:06', 1),
-(17, '::1', 1, 'Admin', '0', '2025-05-28 18:25:06', 1),
-(18, '::1', 58, 'Gestionnaire', '0', '2025-05-28 18:25:30', 1),
-(19, '::1', 1, 'Admin', '0', '2025-05-28 18:27:55', 1),
-(20, '::1', 59, 'Aresh', '0', '2025-05-28 18:28:17', 1),
-(21, '::1', 58, 'Gestionnaire', '0', '2025-05-28 18:28:23', 1),
-(22, '::1', 58, 'Gestionnaire', '0', '2025-05-28 19:55:03', 1),
-(23, '::1', 1, 'Admin', '0', '2025-05-28 19:55:26', 1),
-(24, '::1', 58, 'Gestionnaire', '0', '2025-05-28 19:57:51', 1),
-(25, '::1', 1, 'Admin', '0', '2025-05-28 20:28:01', 1),
-(26, '::1', 58, 'Gestionnaire', '0', '2025-05-29 08:39:14', 1),
-(27, '::1', 1, 'Admin', '0', '2025-05-29 08:54:19', 1),
-(28, '::1', 58, 'Gestionnaire', '0', '2025-05-29 08:58:07', 1),
-(29, '::1', 58, 'Gestionnaire', '0', '2025-05-29 10:59:04', 1),
-(30, '::1', 58, 'Gestionnaire', '0', '2025-05-29 11:52:32', 1),
-(31, '::1', 58, 'Gestionnaire', '0', '2025-05-30 16:46:32', 1),
-(32, '::1', 58, 'Gestionnaire', '0', '2025-05-31 14:12:41', 1),
-(33, '::1', 58, 'Gestionnaire', '0', '2025-06-04 21:35:02', 1),
-(34, '::1', 58, 'Gestionnaire', '0', '2025-06-05 13:03:06', 1),
-(35, '::1', 1, 'Admin', '0', '2025-06-05 13:04:10', 1),
-(36, '::1', 58, 'Gestionnaire', '0', '2025-06-05 13:06:50', 1),
-(37, '::1', 1, 'Admin', '0', '2025-06-05 13:17:33', 1),
-(38, '::1', 58, 'Gestionnaire', '0', '2025-06-05 13:18:04', 1),
-(39, '::1', 58, 'Gestionnaire', '0', '2025-06-05 13:21:19', 1),
-(40, '::1', 58, 'Gestionnaire', '0', '2025-06-05 13:51:40', 1),
-(41, '::1', 1, 'Admin', '0', '2025-06-05 14:18:03', 1),
-(42, '::1', 58, 'Gestionnaire', '0', '2025-06-05 14:19:57', 1),
-(43, '::1', 58, 'Gestionnaire', '0', '2025-06-05 15:27:50', 1),
-(44, '::1', 58, 'Gestionnaire', '0', '2025-06-05 16:12:13', 1),
-(45, '::1', 58, 'Gestionnaire', '0', '2025-06-05 19:49:43', 1),
-(46, '::1', 58, 'Gestionnaire', '0', '2025-06-05 22:05:07', 1),
-(47, '::1', 58, 'Gestionnaire', '0', '2025-06-06 09:11:32', 1),
-(48, '::1', 1, 'Admin', '0', '2025-06-06 09:26:34', 1),
-(49, '::1', 58, 'Gestionnaire', '0', '2025-06-06 09:32:16', 1),
-(50, '::1', 58, 'Gestionnaire', '0', '2025-06-06 15:19:24', 1),
-(51, '::1', 1, 'Admin', '0', '2025-06-06 16:24:07', 1),
-(52, '::1', 58, 'Gestionnaire', '0', '2025-06-06 16:26:54', 1),
-(53, '::1', 58, 'Gestionnaire', '0', '2025-06-10 15:17:24', 1),
-(54, '::1', 58, 'Gestionnaire', '0', '2025-06-10 15:17:40', 1),
-(55, '::1', 1, 'Admin', '0', '2025-06-10 15:55:30', 1),
-(56, '::1', 58, 'Gestionnaire', '0', '2025-06-10 15:56:55', 1),
-(57, '::1', 58, 'Gestionnaire', '0', '2025-06-11 08:26:40', 1),
-(58, '::1', 1, 'Admin', '0', '2025-06-11 08:35:07', 1),
-(59, '::1', 1, 'Admin', '0', '2025-06-11 08:38:14', 1),
-(60, '::1', 58, 'Gestionnaire', '0', '2025-06-11 08:38:19', 1),
-(61, '::1', 58, 'Gestionnaire', '0', '2025-06-11 10:24:38', 1),
-(62, '::1', 1, 'Admin', '0', '2025-06-11 10:25:51', 1),
-(63, '::1', 58, 'Gestionnaire', '0', '2025-06-11 10:26:28', 1),
-(64, '::1', 58, 'Gestionnaire', '0', '2025-06-12 15:34:10', 1),
-(65, '::1', 58, 'Gestionnaire', '0', '2025-06-12 18:24:24', 1),
-(66, '::1', 1, 'Admin', '0', '2025-06-12 23:04:01', 1),
-(67, '::1', 58, 'Gestionnaire', '0', '2025-06-12 23:05:18', 1),
-(68, '::1', 61, 'Bernard', '0', '2025-06-12 23:05:38', 1),
-(69, '::1', 58, 'Gestionnaire', '0', '2025-06-13 09:11:40', 1),
-(70, '::1', 1, 'Admin', '0', '2025-06-13 09:11:56', 1),
-(71, '::1', 58, 'Gestionnaire', '0', '2025-06-13 09:12:07', 1),
-(72, '::1', 58, 'Gestionnaire', '0', '2025-06-14 08:18:06', 1),
-(73, '::1', 1, 'Admin', '0', '2025-06-14 08:34:46', 1),
-(74, '::1', 1, 'Admin', '0', '2025-06-14 08:35:14', 1),
-(75, '::1', 58, 'Gestionnaire', '0', '2025-06-14 08:35:24', 1),
-(76, '::1', 1, 'Admin', '0', '2025-06-14 08:41:29', 1),
-(77, '::1', 58, 'Gestionnaire', '0', '2025-06-14 08:42:19', 1),
-(78, '::1', 58, 'Gestionnaire', '0', '2025-06-14 16:12:51', 1),
-(79, '::1', 0, 'Camille', 'christophe', '2025-06-14 16:21:01', 0),
-(80, '::1', 0, 'Aresh', 'christophe', '2025-06-14 16:21:06', 0),
-(81, '::1', 1, 'Admin', '0', '2025-06-14 16:21:10', 1),
-(82, '::1', 61, 'Bernard', '0', '2025-06-14 16:21:22', 1),
-(83, '::1', 66, 'Eric', '0', '2025-06-14 16:45:58', 1),
-(84, '::1', 58, 'Gestionnaire', '0', '2025-06-14 16:48:28', 1),
-(85, '::1', 66, 'Eric', '0', '2025-06-14 16:49:40', 1),
-(86, '::1', 58, 'Gestionnaire', '0', '2025-06-16 08:24:52', 1),
-(87, '::1', 61, 'Bernard', '0', '2025-06-16 08:25:06', 1),
-(88, '::1', 58, 'Gestionnaire', '0', '2025-06-16 09:08:59', 1),
-(89, '::1', 1, 'Admin', '0', '2025-06-16 09:09:07', 1),
-(90, '::1', 1, 'Admin', '0', '2025-06-16 09:19:56', 1),
-(91, '::1', 1, 'Admin', '0', '2025-06-16 09:20:48', 1),
-(92, '::1', 58, 'Gestionnaire', '0', '2025-06-16 09:20:59', 1),
-(93, '::1', 1, 'Admin', '0', '2025-06-16 09:30:57', 1),
-(94, '::1', 58, 'Gestionnaire', '0', '2025-06-16 09:33:07', 1),
-(95, '::1', 58, 'Gestionnaire', '0', '2025-06-16 10:14:20', 1),
-(96, '::1', 58, 'Gestionnaire', '0', '2025-06-16 14:07:24', 1),
-(97, '::1', 1, 'Admin', '0', '2025-06-16 14:09:55', 1),
-(98, '::1', 58, 'Gestionnaire', '0', '2025-06-16 14:12:51', 1),
-(99, '::1', 58, 'Gestionnaire', '0', '2025-06-16 20:16:31', 1),
-(100, '::1', 1, 'Admin', '0', '2025-06-16 20:16:57', 1),
-(101, '::1', 1, 'Admin', '0', '2025-06-16 20:18:30', 1),
-(102, '::1', 58, 'Gestionnaire', '0', '2025-06-16 20:20:57', 1),
-(103, '::1', 0, 'Bernard', 'camille', '2025-06-16 21:17:11', 0),
-(104, '::1', 61, 'Bernard', '0', '2025-06-16 21:17:24', 1),
-(105, '::1', 58, 'Gestionnaire', '0', '2025-06-16 21:18:12', 1),
-(106, '::1', 58, 'Gestionnaire', '0', '2025-06-16 21:26:17', 1),
-(107, '::1', 1, 'Admin', '0', '2025-06-16 21:53:57', 1),
-(108, '::1', 58, 'Gestionnaire', '0', '2025-06-16 21:54:32', 1),
-(109, '::1', 58, 'Gestionnaire', '0', '2025-06-17 11:29:35', 1),
-(110, '::1', 1, 'Admin', '0', '2025-06-17 14:59:21', 1),
-(111, '::1', 1, 'Admin', '0', '2025-06-17 15:01:48', 1),
-(112, '::1', 61, 'Bernard', '0', '2025-06-17 15:02:57', 1),
-(113, '::1', 61, 'Bernard', '0', '2025-06-18 08:20:20', 1),
-(114, '::1', 58, 'Gestionnaire', '0', '2025-06-18 09:45:46', 1),
-(115, '::1', 61, 'Bernard', '0', '2025-06-18 09:47:55', 1),
-(116, '::1', 1, 'Admin', '0', '2025-06-18 09:49:51', 1),
-(117, '::1', 61, 'Bernard', '0', '2025-06-18 09:50:40', 1),
-(118, '::1', 61, 'Bernard', '0', '2025-06-19 08:24:03', 1),
-(119, '::1', 1, 'Admin', '0', '2025-06-19 09:27:00', 1),
-(120, '::1', 61, 'Bernard', '0', '2025-06-19 09:28:27', 1);
+(1, '::1', 1, 'Admin', '0', '2025-06-19 14:32:31', 1),
+(2, '::1', 63, 'christophe', '0', '2025-06-19 14:32:43', 1),
+(3, '::1', 61, 'Bernard', '0', '2025-06-19 15:34:35', 1),
+(4, '::1', 58, 'Gestionnaire', '0', '2025-06-19 15:57:21', 1),
+(5, '::1', 62, 'Jean', '0', '2025-06-19 15:57:30', 1),
+(6, '::1', 58, 'Gestionnaire', '0', '2025-06-19 15:58:21', 1),
+(7, '::1', 65, 'Kriss', '0', '2025-06-19 15:58:34', 1),
+(8, '::1', 62, 'Jean', '0', '2025-06-19 16:22:46', 1),
+(9, '::1', 61, 'Bernard', '0', '2025-06-19 16:23:09', 1),
+(10, '::1', 64, 'JeanPhi', '0', '2025-06-19 16:23:30', 1),
+(11, '::1', 61, 'Bernard', '0', '2025-06-19 16:23:39', 1),
+(12, '::1', 63, 'christophe', '0', '2025-06-19 16:23:58', 1),
+(13, '::1', 61, 'Bernard', '0', '2025-06-20 12:44:38', 1),
+(14, '::1', 61, 'Bernard', '0', '2025-06-20 15:32:49', 1),
+(15, '::1', 1, 'Admin', '0', '2025-06-20 15:34:12', 1),
+(16, '::1', 0, 'Camille', 'christophe', '2025-06-20 15:34:45', 0),
+(17, '::1', 61, 'Bernard', '0', '2025-06-20 15:34:52', 1),
+(18, '::1', 1, 'Admin', '0', '2025-06-20 15:36:35', 1),
+(19, '::1', 61, 'Bernard', '0', '2025-06-20 15:37:08', 1),
+(20, '::1', 1, 'Admin', '0', '2025-06-20 16:01:21', 1),
+(21, '::1', 61, 'Bernard', '0', '2025-06-20 16:01:57', 1),
+(22, '::1', 58, 'Gestionnaire', '0', '2025-06-20 16:22:55', 1),
+(23, '::1', 58, 'Gestionnaire', '0', '2025-06-21 10:24:39', 1),
+(24, '::1', 1, 'Admin', '0', '2025-06-21 10:25:18', 1),
+(25, '::1', 58, 'Gestionnaire', '0', '2025-06-21 10:28:52', 1),
+(26, '::1', 1, 'Admin', '0', '2025-06-21 10:36:19', 1),
+(27, '::1', 58, 'Gestionnaire', '0', '2025-06-21 10:36:41', 1),
+(28, '::1', 58, 'Gestionnaire', '0', '2025-06-21 13:22:21', 1),
+(29, '::1', 61, 'Bernard', '0', '2025-06-21 13:32:14', 1),
+(30, '::1', 1, 'Admin', '0', '2025-06-21 13:54:32', 1),
+(31, '::1', 58, 'Gestionnaire', '0', '2025-06-21 13:55:11', 1),
+(32, '::1', 61, 'Bernard', '0', '2025-06-21 13:55:23', 1),
+(33, '::1', 58, 'Gestionnaire', '0', '2025-06-23 16:12:23', 1),
+(34, '::1', 1, 'Admin', '0', '2025-06-23 16:14:13', 1),
+(35, '::1', 58, 'Gestionnaire', '0', '2025-06-23 16:16:21', 1),
+(36, '::1', 1, 'Admin', '0', '2025-06-23 16:38:26', 1),
+(37, '::1', 1, 'Admin', '0', '2025-06-23 16:39:14', 1),
+(38, '::1', 1, 'Admin', '0', '2025-06-23 16:39:22', 1),
+(39, '::1', 58, 'Gestionnaire', '0', '2025-06-23 16:39:27', 1),
+(40, '::1', 58, 'Gestionnaire', '0', '2025-06-24 11:30:35', 1),
+(41, '::1', 58, 'Gestionnaire', '0', '2025-06-24 13:24:08', 1),
+(42, '::1', 1, 'Admin', '0', '2025-06-24 13:41:11', 1),
+(43, '::1', 1, 'Admin', '0', '2025-06-24 13:43:18', 1),
+(44, '::1', 1, 'Admin', '0', '2025-06-24 13:44:53', 1),
+(45, '::1', 58, 'Gestionnaire', '0', '2025-06-24 13:47:14', 1),
+(46, '::1', 61, 'Bernard', '0', '2025-06-24 14:05:50', 1),
+(47, '::1', 58, 'Gestionnaire', '0', '2025-06-24 14:12:29', 1),
+(48, '::1', 61, 'Bernard', '0', '2025-06-24 14:13:47', 1),
+(49, '::1', 0, 'Camille', 'christophe', '2025-06-24 14:14:52', 0),
+(50, '::1', 63, 'christophe', '0', '2025-06-24 14:15:00', 1),
+(51, '::1', 64, 'JeanPhi', '0', '2025-06-24 14:17:12', 1),
+(52, '::1', 65, 'Kriss', '0', '2025-06-24 14:17:43', 1),
+(53, '::1', 58, 'Gestionnaire', '0', '2025-06-24 14:18:04', 1),
+(54, '::1', 61, 'Bernard', '0', '2025-06-24 14:27:27', 1),
+(55, '::1', 61, 'Bernard', '0', '2025-06-25 17:54:28', 1),
+(56, '::1', 63, 'christophe', '0', '2025-06-25 17:54:51', 1),
+(57, '::1', 65, 'Kriss', '0', '2025-06-25 17:55:02', 1),
+(58, '::1', 58, 'Gestionnaire', '0', '2025-06-25 18:04:21', 1),
+(59, '::1', 61, 'Bernard', '0', '2025-06-25 18:40:46', 1),
+(60, '::1', 1, 'Admin', '0', '2025-06-25 18:44:23', 1),
+(61, '::1', 0, 'Christophe', 'camille', '2025-06-25 18:45:47', 0),
+(62, '::1', 61, 'Bernard', '0', '2025-06-25 18:45:51', 1),
+(63, '::1', 1, 'Admin', '0', '2025-06-25 19:29:39', 1),
+(64, '::1', 61, 'Bernard', '0', '2025-06-25 19:30:01', 1),
+(65, '::1', 1, 'Admin', '0', '2025-06-25 19:51:59', 1),
+(66, '::1', 65, 'Kriss', '0', '2025-06-25 19:52:40', 1),
+(67, '::1', 61, 'Bernard', '0', '2025-06-25 21:54:10', 1),
+(68, '::1', 58, 'Gestionnaire', '0', '2025-06-25 22:32:31', 1),
+(69, '::1', 1, 'Admin', '0', '2025-06-25 22:41:12', 1),
+(70, '::1', 58, 'Gestionnaire', '0', '2025-06-25 22:41:36', 1);
 
 -- --------------------------------------------------------
 
@@ -240,10 +190,10 @@ CREATE TABLE `membership` (
 
 INSERT INTO `membership` (`id`, `MemberNumber`, `creat_date`, `update_date`, `id_users`, `cotisation`, `valid`) VALUES
 (22, '2025WLrGiEIz', '2025-06-05 13:59:41', '2025-06-16 19:23:11', 63, 2, 1),
-(23, '20252Aif2luJ', '2025-06-05 13:59:43', '2025-06-14 14:13:15', 61, 0, 1),
-(24, '2025I6jV4Yvw', '2025-06-05 13:59:44', '2025-06-14 14:13:42', 62, 0, 1),
-(25, '2025TxI7tNlW', '2025-06-05 14:12:18', '2025-06-14 14:14:13', 64, 0, 1),
-(26, '2025oNyVqQDz', '2025-06-05 14:12:18', '2025-06-14 14:14:20', 65, 0, 1);
+(23, '20252Aif2luJ', '2025-06-05 13:59:43', '2025-06-25 20:36:30', 61, 1, 1),
+(24, '2025I6jV4Yvw', '2025-06-05 13:59:44', '2025-06-25 20:36:37', 62, 1, 1),
+(25, '2025TxI7tNlW', '2025-06-05 14:12:18', '2025-06-25 20:36:48', 64, 1, 1),
+(26, '2025oNyVqQDz', '2025-06-05 14:12:18', '2025-06-25 20:37:02', 65, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -389,7 +339,14 @@ INSERT INTO `navigation` (`idNav`, `nomNav`, `cheminNav`, `menuVisible`, `zoneMe
 (247, 'Ajouter lieux', 'sources/events/administration/addLocations.php', 1, 36, 2, 3, 1, 36, '3196960891968008', 21),
 (248, 'Admin Location Sheet', 'sources/events/administration/administrationLocationSheet.php', 0, 0, 5, 3, 1, 0, '9067027182160922', 21),
 (249, 'Ajouter événements', 'sources/events/public/addEvent.php', 1, 35, 1, 4, 1, 35, '95692395669580339302', 21),
-(250, 'Mes événements', 'sources/events/public/myEvents.php', 1, 35, 2, 4, 1, 0, '5713351534563472', 21);
+(250, 'Mes événements', 'sources/events/public/myEvents.php', 1, 35, 2, 4, 1, 0, '5713351534563472', 21),
+(251, 'Prochain événements', 'sources/events/public/registerForAnEvent.php', 1, 35, 3, 4, 1, 0, '61009048941251698546', 21),
+(252, 'Agenda', 'sources/events/public/myAgenda.php', 1, 35, 4, 4, 1, 0, '0879846531742617', 21),
+(253, 'Admin type de jeux', 'sources/events/administration/addGameType.php', 1, 36, 0, 3, 1, 0, '80567463643356516770', 21),
+(254, 'Bilan evenement', 'sources/events/administration/EventBilan.php', 1, 36, 4, 3, 0, 0, '66870226499401214578', 21),
+(255, 'Ancien événements', 'sources/events/administration/pastEvents.php', 1, 36, 5, 3, 1, 0, '1123933039651105', 21),
+(257, 'Prochain événement', 'sources/events/administration/nextEvents.php', 1, 36, 6, 3, 1, 0, '6964962153698244', 21),
+(258, 'updateMyEvent', 'sources/events/public/updateMyEvent.php', 0, 0, 6, 4, 1, 0, '3477427313613792', 21);
 
 -- --------------------------------------------------------
 
@@ -479,7 +436,13 @@ INSERT INTO `routageForm` (`idForm`, `chemin`, `securiter`, `valide`, `route`, `
 (153, 'sources/events/CUD/Creat/addLocation.php', 3, 1, '86367651746585431165', 21),
 (154, 'sources/events/CUD/Update/updateLocation.php', 3, 1, '22350424109667718889', 21),
 (155, 'sources/events/CUD/Creat/addEvents.php', 4, 1, '02045477816882008718', 21),
-(156, 'sources/events/CUD/Delete/deleteEvent.php', 4, 1, '38578685817459536691', 21);
+(156, 'sources/events/CUD/Delete/deleteEvent.php', 4, 1, '38578685817459536691', 21),
+(157, 'sources/events/CUD/Creat/registerForAnEvent.php', 4, 1, '71527438763585483401', 21),
+(158, 'sources/events/CUD/Delete/unregisterForAnEvent.php', 4, 1, '17218033608789153824', 21),
+(159, 'sources/events/CUD/Creat/addGameType.php', 3, 1, '80175506994741002168', 21),
+(160, 'sources/events/CUD/Update/updateGameType.php', 3, 1, '10624063468714786943', 21),
+(161, 'sources/events/CUD/Delete/deleteEventByGestionnaire.php', 3, 1, '33344105345773603200', 21),
+(162, 'sources/events/CUD/Update/updateEventByOwner.php', 4, 1, '92746791759443073230', 21);
 
 -- --------------------------------------------------------
 
@@ -505,13 +468,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`idUser`, `token`, `email`, `prenom`, `nom`, `login`, `mdp`, `valide`, `role`, `dateCreation`) VALUES
-(1, 'uAIUCYhACZ', 'christophe.calmes2020@laposte.net', 'Christophe', 'Calmes', 'Admin', '$2y$10$oADkGPsXhTD1m1.vawEEJevfSC1BwODMOuCHCntUrBQgpV5TmLy6S', 1, 2, '2022-06-12 14:26:13'),
-(58, 'rEgaESwdFC', 'gestionnaire@gmail.com', 'Christophe', 'Calmes', 'Gestionnaire', '$2y$10$gIj/T1GuebPFWQwoR0GBcueEDa6Rc30/03E7.WE/Qp6rnbaZUy132', 1, 3, '2024-05-15 16:28:55'),
-(61, 'uB5MQpVOPtamqGO7', 'utilisateur1@gmail.com', 'Bernard', 'Arnaud', 'Bernard', '$2y$10$BWJabOySv.dqsJ9YFZjZq.Yik4UplqemDAnwLxPdgyAdFgbQ8NXbG', 1, 4, '2025-06-05 13:20:51'),
-(62, '912O9RIrND0qNJWw', 'utilisateur2@gmail.com', 'Jean', 'Arnaud', 'Jean', '$2y$10$dZDF1meunrmse4I4U5rJUeowOwb.nmXJ4Cb7aClZFTjLy2Dt.843q', 1, 4, '2025-06-05 13:51:36'),
-(63, 'renb7nwZXp1MiErh', 'utilisateur3@gmail.com', 'Camille', 'Calmes', 'christophe', '$2y$10$nVKXRbmB1g/pUT1tolQKS.DP.uTSdn3rXV0DYuGUM/h.Rk1a9a9X2', 1, 4, '2025-06-05 15:27:48'),
-(64, '5vBJ8BrXn8ioWE7R', 'utilisateur5@gmail.com', 'Jean-Philippe', 'Gasquet', 'JeanPhi', '$2y$10$sdI8S33v4KzWh5jKQa4jKOVSqAytY5Me7cHZpMvZB5R9dG8VM1Qbe', 1, 4, '2025-06-05 16:11:35'),
-(65, 'dmyd0pf3FO5VOlDQ', 'utilisateur6@gmail.com', 'Christelle', 'Gasquet', 'Kriss', '$2y$10$MNO91eG3WIHx22hZ4LQ1pex0YML5Ks.keebOVdOMs2eWv2hnUKbJK', 1, 4, '2025-06-05 16:12:10'),
+(1, 'iTlITfUFuj', 'christophe.calmes2020@laposte.net', 'Christophe', 'Calmes', 'Admin', '$2y$10$oADkGPsXhTD1m1.vawEEJevfSC1BwODMOuCHCntUrBQgpV5TmLy6S', 1, 2, '2022-06-12 14:26:13'),
+(58, '4nBZ4mwsXF', 'gestionnaire@gmail.com', 'Christophe', 'Calmes', 'Gestionnaire', '$2y$10$gIj/T1GuebPFWQwoR0GBcueEDa6Rc30/03E7.WE/Qp6rnbaZUy132', 1, 3, '2024-05-15 16:28:55'),
+(61, 'XVAMu99v4U', 'utilisateur1@gmail.com', 'Bernard', 'Arnaud', 'Bernard', '$2y$10$BWJabOySv.dqsJ9YFZjZq.Yik4UplqemDAnwLxPdgyAdFgbQ8NXbG', 1, 4, '2025-06-05 13:20:51'),
+(62, '5u7ky3Qp7N', 'utilisateur2@gmail.com', 'Jean', 'Arnaud', 'Jean', '$2y$10$dZDF1meunrmse4I4U5rJUeowOwb.nmXJ4Cb7aClZFTjLy2Dt.843q', 1, 4, '2025-06-05 13:51:36'),
+(63, 'ULI5eK6PQn', 'utilisateur3@gmail.com', 'Camille', 'Calmes', 'christophe', '$2y$10$nVKXRbmB1g/pUT1tolQKS.DP.uTSdn3rXV0DYuGUM/h.Rk1a9a9X2', 1, 4, '2025-06-05 15:27:48'),
+(64, 'dnzU8yaF2Y', 'utilisateur5@gmail.com', 'Jean-Philippe', 'Gasquet', 'JeanPhi', '$2y$10$sdI8S33v4KzWh5jKQa4jKOVSqAytY5Me7cHZpMvZB5R9dG8VM1Qbe', 1, 4, '2025-06-05 16:11:35'),
+(65, 'yEW8Ep9z1heD7szZ', 'utilisateur6@gmail.com', 'Christelle', 'Gasquet', 'Kriss', '$2y$10$MNO91eG3WIHx22hZ4LQ1pex0YML5Ks.keebOVdOMs2eWv2hnUKbJK', 1, 4, '2025-06-05 16:12:10'),
 (66, 'J34m5BPhAfomK04v', 'Eric', 'Eric', 'Delpeche', 'Eric', '$2y$10$od0DneEMES1RtOlXycPEveldXWM5cC12/kyeXutqumYQSE2yH79sS', 1, 1, '2025-06-14 16:45:49');
 
 --
@@ -600,7 +563,7 @@ ALTER TABLE `dataSite`
 -- AUTO_INCREMENT pour la table `journaux`
 --
 ALTER TABLE `journaux`
-  MODIFY `idConnexion` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `idConnexion` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT pour la table `membership`
@@ -624,7 +587,7 @@ ALTER TABLE `modules`
 -- AUTO_INCREMENT pour la table `navigation`
 --
 ALTER TABLE `navigation`
-  MODIFY `idNav` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
+  MODIFY `idNav` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=259;
 
 --
 -- AUTO_INCREMENT pour la table `roles`
@@ -636,7 +599,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT pour la table `routageForm`
 --
 ALTER TABLE `routageForm`
-  MODIFY `idForm` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
+  MODIFY `idForm` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
 
 --
 -- AUTO_INCREMENT pour la table `users`
