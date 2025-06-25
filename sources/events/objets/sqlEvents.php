@@ -61,6 +61,37 @@ class sqlEvents
 
     return ActionDB::select($select, [], 2);
     }
+    protected function getOneEvent ($idEvent) {
+        $select = "SELECT 
+        `events`.`id` AS `idEvent`,  
+        `events`.
+        `nameEvent`, 
+        `objetEvent`, 
+        `dateEvent`, 
+        `hourEvent`, 
+        `numberParticipants`, 
+        `events`.`valid` AS `validEvent`, 
+        `creat_date`, 
+        `nameGame`,
+        `events`. `idNameGame`,
+        `idLocation`,
+        `typeGame`, 
+        `typeGames`.`id` AS `idTypeGame`,
+        `nameLocation`, 
+        `adress`, 
+        `city`, 
+        `zipCode`, 
+        `phone`
+            FROM `events`
+            INNER JOIN `locations` ON `locations`.`id`= `idLocation`
+            INNER JOIN `nameGames` ON `events`. `idNameGame` = `nameGames`.`id`
+            INNER JOIN `typeGames` ON `nameGames`.`idTypeGame` = `typeGames`.`id`
+            WHERE `events`.`id`=:idEvent AND `events`.`idOwner` = :idUser;";
+        $idUser = new Controles ();
+        $idOwner = $idUser->idUser($_SESSION);
+            $param = [['prep'=>':idEvent', 'variable'=>$idEvent],['prep'=>':idUser', 'variable'=>$idOwner]];
+            return ActionDB::select ($select, $param, 2);
+    }
 
     protected function getAllDateBilan () {
         $select = "SELECT
@@ -106,6 +137,12 @@ class sqlEvents
         $select ="SELECT COUNT(`id`) AS `check` FROM `events` WHERE `id` = :idEvent;";
         $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
         return ActionDB::select($select, $param, 2)[0]['check'];
+    }
+    public function checkOwenerEvent ($idEvent) {
+        $select = "SELECT COUNT(`id`) AS `nbrEvent` FROM `events` WHERE `idOwner` = :idUser AND `id` = :idEvent;";
+        $idUser = new Controles ();
+        $param = [['prep'=>':idEvent', 'variable'=>$idEvent],['prep'=>':idUser', 'variable'=>$idUser->idUser($_SESSION)]];
+        return ActionDB::select($select, $param, 2)[0]['nbrEvent'];
     }
     public function recordNewGame ($param) {
         $insert = "INSERT INTO `nameGames`(`nameGame`, `idTypeGame`) VALUES (:nameGame, :typeGame)";
@@ -215,6 +252,9 @@ class sqlEvents
             }
     }
     public function isValidTime($hourEvent, $format = 'H:i') {
+         if (strlen($hourEvent) === 8 && strpos($hourEvent, ':') === 2 && strrpos($hourEvent, ':') === 5) {
+            $format = 'H:i:s';
+        }
         $time = DateTime::createFromFormat($format, $hourEvent);
         if ($time && $time->format($format) === $hourEvent) {
             return true;
@@ -259,6 +299,20 @@ class sqlEvents
         ActionDB::access($insert, $param, 2);
         return $this->lastEvent ();
     }
+    public function updateEvent ($param) {
+        $update = "UPDATE `events` SET 
+        `nameEvent`=:nameEvent,
+        `objetEvent`=:objetEvent,
+        `dateEvent`=:dateEvent,
+        `hourEvent`=:hourEvent,
+        `numberParticipants`=:numberParticipants, 
+        `idNameGame`=:idNameGame,
+        `idLocation`=:idLocation 
+        WHERE `id` = :idEvent AND `idOwner`=:idUser;";
+        ActionDB::access($update, $param, 2);
+    }
+
+
     private function getIdUser () {
         $user = new Controles ();
         return $user->idUser($_SESSION);

@@ -182,7 +182,21 @@ class TemplateEvents extends sqlEvents
         echo '<label for="numberParticipants">Nombre de participants</label>';
         echo '<select id="numberParticipants" name="numberParticipants">';
             for ($i=2; $i <= $number ; $i++) { 
+
                echo '<option value="'.$i.'">'.$i.' joueurs</option>';
+            }
+        echo '</select>';
+    }
+    private function numberParticipantSelected ($number, $selected) {
+        echo '<label for="numberParticipants">Nombre de participants</label>';
+        echo '<select id="numberParticipants" name="numberParticipants">';
+            for ($i=2; $i <= $number ; $i++) { 
+                if($selected == $i) {
+                    echo '<option value="'.$i.'" selected>'.$i.' joueurs</option>';
+                } else {
+                    echo '<option value="'.$i.'">'.$i.' joueurs</option>';
+                }
+               
             }
         echo '</select>';
     }
@@ -195,12 +209,39 @@ class TemplateEvents extends sqlEvents
             }
         echo '</select>';
     }
+    private function gamesListSelected ($gameType, $idNameGame) {
+        $dataGames = $this->getAllGameByType ($gameType); 
+        echo '<label for="idNameGame">Jeu proposé</label>';
+        echo '<select id="idNameGame" name="idNameGame">';
+            foreach ($dataGames as  $game) {
+                if($game['id'] == $idNameGame) {
+                    echo '<option value="'.$game['id'].'" selected>'.$game['nameGame'].'</option>';
+                } else {
+                    echo '<option value="'.$game['id'].'">'.$game['nameGame'].'</option>';
+                }
+            }
+        echo '</select>';
+    }
     private function locationList () {
         $dataLocation = $this->getAllLocation ();
         echo '<label for="idNameGame">Jeu proposé</label>';
         echo '<select id="idNameGam" name="idLocation">';
                     foreach ($dataLocation as  $location) {
                         echo '<option value="'.$location['id'].'">'.$location['nameLocation'].' - '.$location['adress'].' - '.$location['city'].'</option>';
+                    }
+        echo '</select>';
+    }
+    private function locationListSelected ($idLocation) {
+        $dataLocation = $this->getAllLocation ();
+        echo '<label for="idNameGame">Jeu proposé</label>';
+        echo '<select id="idNameGam" name="idLocation">';
+                    foreach ($dataLocation as  $location) {
+                        if($location['id'] == $idLocation) {
+                            echo '<option value="'.$location['id'].'" selected>'.$location['nameLocation'].' - '.$location['adress'].' - '.$location['city'].'</option>';
+                        } else {
+                            echo '<option value="'.$location['id'].'">'.$location['nameLocation'].' - '.$location['adress'].' - '.$location['city'].'</option>';
+                        }
+                        
                     }
         echo '</select>';
     }
@@ -223,6 +264,29 @@ class TemplateEvents extends sqlEvents
             echo '<input id="check" type="checkbox" name="valid"/>';
         echo '</div>';
         echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Créer</button>';
+        echo '</form>';
+    }
+    protected function formUpdateEvent ($idNav, $gameType, $detailOneEvent) {
+        //echo '<h2 class="subTitleSite">Créer une partie</h2>';
+        echo '<form class="customerForm" action="'.encodeRoutage(162).'"  method="post">';
+        echo '<label for="nameEvent">Nom de votre événement</label>';
+        echo '<input id="nameEvent" type="text" name="nameEvent" value="'.$detailOneEvent['nameEvent'].'" size="'.strlen($detailOneEvent['nameEvent']).'"/>';
+        echo '<label for="objetEvent">Description</label>';
+        echo '<textarea id="objetEvent", name="objetEvent" rows="10" cols="60" placeholder="Remplissez une bréve description de la partie.">'.$detailOneEvent['objetEvent'].'</textarea>';
+        echo '<label for="dateEvent">Date</label>';
+        echo '<input type="date" id="dateEvent" name="dateEvent" value="'.$detailOneEvent['dateEvent'].'"/>';
+        echo '<label for="hourEvent">Heure</label>';
+        echo '<input type="time" id="hourEvent" name="hourEvent" value="'.$detailOneEvent['hourEvent'].'"/>';
+        $this->numberParticipantSelected  (6, $detailOneEvent['numberParticipants']);
+        $this->gamesListSelected ($gameType, $detailOneEvent['idNameGame']);
+        $this->locationListSelected ($detailOneEvent['idLocation']) ;
+        echo '<input type="hidden" name="idEvent" value="'.$detailOneEvent['idEvent'].'"/>';
+        echo '<div class="flex-row-reverse-simple">';
+            echo '<label id="check">Assurez vous que les locaux sont libre avant de valider.</label>';
+            echo '<input id="check" type="checkbox" name="valid"/>';
+        echo '</div>';
+        
+        echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>';
         echo '</form>';
     }
     public function displayFormsEvent ($idNav) {
@@ -318,7 +382,11 @@ class TemplateEvents extends sqlEvents
                     foreach ($dataEvents as $detail) {
                         echo '<article class="item">';
                             echo '<ul class="listClass">';
+                 
                                 echo '<li class="subTitleSite">'.$detail['nameEvent'].'</li>';
+                                if($admin) {
+                                    echo '<li><a class="link" href="'.findTargetRoute(258).'&idEvent='.$detail['idEvent'].'">Administrer</a></li>';
+                                }
                                 echo '<li>Le '.brassageDate($detail['dateEvent']).' à '.$detail['hourEvent'].'</li>';
                                 echo '<li><p>'.$detail['objetEvent'].'</p></li>';
                                 echo '<li>Type de jeu  : '.$detail['typeGame'].'</li>';
@@ -330,7 +398,9 @@ class TemplateEvents extends sqlEvents
                                 if(($admin)&&($detail['dateEvent']<date('Y-m-d'))) {
                                  echo '<li>'.$this->deleteEvent ($detail['idEvent'], $idNav).'</li>';
                                 }
+                          
                                 $this->displayRegister ($detail['idEvent'], $idNav, $detail['numberParticipants']);
+             
                             echo '</ul>';
                         echo '</article>';
                     }
@@ -501,4 +571,17 @@ class TemplateEvents extends sqlEvents
                 }
             echo '</main>';
     }
+    public function updateFormEvent ($idEvent, $idNav) {
+        $detailOneEvent = $this->getOneEvent ($idEvent);
+        if(!empty($detailOneEvent)) {
+            $detailOneEvent = $detailOneEvent[0];
+            echo '<main class="gallery">';
+                    $this->oneEventSheet ($detailOneEvent, $idNav);
+                    $this->formUpdateEvent ($idNav, $detailOneEvent['idTypeGame'], $detailOneEvent);
+            echo '</main>';
+        } else {
+            echo '<h2 class="subTitleSite">Donnée inaccessible, contacter l\'administrateur ?</h2>';
+        }
+      
+    }   
 }
