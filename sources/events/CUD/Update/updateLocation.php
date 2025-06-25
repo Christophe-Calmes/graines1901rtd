@@ -13,7 +13,6 @@ if (checkPostFields($arrayKeys, $_POST)) {
         array_push($mark, 0);
     }
 }
-
 if(($mark == $controle_POST)&&($mark != [])) {
     $parametre = new Preparation ();
     $param = $parametre->creationPrep ($_POST);

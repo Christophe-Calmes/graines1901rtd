@@ -6,7 +6,6 @@ $arrayKeys =['valid', 'idEvent'];
 $controle_POST = array();
 $mark = [true];
 if (checkPostFields($arrayKeys, $_POST)) {
-// checkIdEvent ($idEvent)
     array_push($controle_POST, filter($_POST[$arrayKeys[0]]));
     array_push($controle_POST, $deleteEvent->checkIdEvent(filter($_POST[$arrayKeys[1]])));
     array_push($mark, 1);

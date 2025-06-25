@@ -24,11 +24,6 @@ if (checkPostFields($arrayKeys, $_POST)) {
     array_push($controle_POST,$addEvent->checkOwenerEvent (filter($_POST[$arrayKeys[7]])));
     array_push($mark, 1);
 }
-/*echo '<br/>$controle_POST<br/>';
-print_r($controle_POST);
-echo '<br/>$mark</br>';
-print_r($mark);
-array_pop($_POST);*/
 array_pop($_POST);
 if($mark == $controle_POST) {
     $parametre = new Preparation ();

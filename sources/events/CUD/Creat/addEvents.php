@@ -5,7 +5,6 @@ $addEvent = new SQLEvents ();
 $arrayKeys =['nameEvent', 'objetEvent', 'dateEvent', 'hourEvent', 'numberParticipants', 'idNameGame', 'idLocation',  'valid'];
 $controle_POST = array();
 $mark = [1];
-//print_r($_POST);
 if (checkPostFields($arrayKeys, $_POST)) {
     array_push($controle_POST, $addEvent->checkValideDate(filter($_POST[$arrayKeys[2]]), 'Y-m-d'));
     array_push($controle_POST, $addEvent->isValidTime(filter($_POST[$arrayKeys[3]]), 'H:i'));

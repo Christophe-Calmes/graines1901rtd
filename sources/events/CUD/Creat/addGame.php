@@ -10,7 +10,6 @@ if (checkPostFields($arrayKeys, $_POST)) {
     array_push($controle_POST, $events->checkIdTypeGame (filter($_POST[$arrayKeys[1]]))); 
     array_push($mark, 1);
 }
-
 if($mark == $controle_POST) {
     $parametre = new Preparation ();
     $param = $parametre->creationPrep ($_POST);

@@ -12,7 +12,6 @@ if (checkPostFields($arrayKeys, $_POST)) {
 }
 
 if($mark == $controle_POST) {
-  
     $parametre = new Preparation ();
     $param = $parametre->creationPrep ($_POST);
     $events->updateGame ($param);

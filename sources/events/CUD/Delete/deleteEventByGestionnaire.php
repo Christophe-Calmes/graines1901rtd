@@ -17,7 +17,7 @@ if($mark == $controle_POST) {
     $param = $parametre->creationPrep ($_POST);
     print_r($param);
     $deleteEvent->deleteOneEventByGestionnaire ($param);
-    //header('location:../index.php?message=Delete event success to record&idNav='.$idNav);
+    header('location:../index.php?message=Delete event success to record&idNav='.$idNav);
 } else {
-    //header('location:../index.php?message=Delete event fail to record&idNav='.$idNav);
+    header('location:../index.php?message=Delete event fail to record&idNav='.$idNav);
 }
