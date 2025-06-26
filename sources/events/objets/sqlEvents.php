@@ -421,8 +421,6 @@ class sqlEvents
         $this->deleteAllEventParticipant ($param);
         $update = "UPDATE `events` SET `valid`=0 WHERE `id` = :idEvent AND `idOwner` = :idUser;";
         ActionDB::access($update, $param, 2);  
-        //$delete = "DELETE FROM `events` WHERE `id` = :idEvent AND `idOwner` = :idUser;";
-        //return  ActionDB::access($delete, $param, 2);  
     }
     public function deleteOneEventByGestionnaire ($param) {
         $this->deleteAllEventParticipantByGestionnaire ($param);
@@ -475,6 +473,24 @@ class sqlEvents
             $select = "SELECT COUNT(`id`) AS `nbrEvents` FROM `events` WHERE`dateEvent` >= NOW() AND `valid`=1;";
         }
         return ActionDB::select($select, [],2)[0]['nbrEvents'];
+    }
+    public function updateEventAndDate ($param) {
+        //print_r($param);
+        $idEvent = [$param[0]];
+        $select = "SELECT `dateEvent` FROM `events` WHERE `id` = :idEvent;";
+        $LastDateEvent = ActionDB::select($select,  $idEvent, 2)[0]['dateEvent'];
+      
+        if($param[1]['variable'] > $LastDateEvent) {
+
+            $this->deleteAllEventParticipant ($param);
+            array_push($idEvent, ['prep'=>':idUser', 'variable'=>$this->getIdUser ()]);
+            print_r($idEvent);
+            $this->recordEventParticipant ($idEvent);
+
+        } else {
+            echo 'De dedans le Q !';
+        }
+        return false;
     }
     
 }

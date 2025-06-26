@@ -23,14 +23,19 @@ if (checkPostFields($arrayKeys, $_POST)) {
     array_push($mark, 1);
     array_push($controle_POST,$addEvent->checkOwenerEvent (filter($_POST[$arrayKeys[7]])));
     array_push($mark, 1);
+} else {
+    header('location:../index.php?message=You didn\'t check the checkbox. &idNav='.$idNav.'&idEvent='.filter($_POST[$arrayKeys[7]]));
 }
 array_pop($_POST);
 if($mark == $controle_POST) {
     $parametre = new Preparation ();
     $param = $parametre->creationPrepIdUser ($_POST);
-    print_r($param);
+    $eventAndDate = array();
+    array_push($eventAndDate, $param[7]);
+    array_push($eventAndDate, $param[2]);
+    $addEvent->updateEventAndDate ($eventAndDate);
     $idEvent = $addEvent->updateEvent ($param);
     header('location:../index.php?message=Update event success to record&idNav='.$idNav.'&idEvent='.filter($_POST[$arrayKeys[7]]));
 } else {
-    header('location:../index.php?message=Update event fail to record&idNav='.$idNav.'&idEvent='.filter($_POST[$arrayKeys[7]]));
+    //header('location:../index.php?message=Update event success to record&idNav='.$idNav.'&idEvent='.filter($_POST[$arrayKeys[7]]));
 }

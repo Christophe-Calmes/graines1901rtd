@@ -267,8 +267,10 @@ class TemplateEvents extends sqlEvents
         echo '</form>';
     }
     protected function formUpdateEvent ($idNav, $gameType, $detailOneEvent) {
-        //echo '<h2 class="subTitleSite">Créer une partie</h2>';
+        
         echo '<form class="customerForm" action="'.encodeRoutage(162).'"  method="post">';
+        echo '<h2 class="subTitleSite">Modifier une partie : '.$detailOneEvent['typeGame'].'</h2>';
+       
         echo '<label for="nameEvent">Nom de votre événement</label>';
         echo '<input id="nameEvent" type="text" name="nameEvent" value="'.$detailOneEvent['nameEvent'].'" size="'.strlen($detailOneEvent['nameEvent']).'"/>';
         echo '<label for="objetEvent">Description</label>';
@@ -281,9 +283,11 @@ class TemplateEvents extends sqlEvents
         $this->gamesListSelected ($gameType, $detailOneEvent['idNameGame']);
         $this->locationListSelected ($detailOneEvent['idLocation']) ;
         echo '<input type="hidden" name="idEvent" value="'.$detailOneEvent['idEvent'].'"/>';
-        echo '<div class="flex-row-reverse-simple">';
-            echo '<label id="check">Assurez vous que les locaux sont libre avant de valider.</label>';
-            echo '<input id="check" type="checkbox" name="valid"/>';
+        echo '<div class="flex-row-reverse-simple box">';
+          echo '<label id="check"><p>Assurez vous que les locaux sont libre avant de valider.</p>
+                <p>Modifier la date engendre la perte des inscriptions à la partie, sauf la votre.</p>
+                <p>Clic sur la checkbox si tu as compris.</p></label>';
+            echo '<p><input class="paddingLeft " id="check" type="checkbox" name="valid"/></p>';
         echo '</div>';
         
         echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>';
@@ -576,7 +580,6 @@ class TemplateEvents extends sqlEvents
         if(!empty($detailOneEvent)) {
             $detailOneEvent = $detailOneEvent[0];
             echo '<main class="gallery">';
-                    $this->oneEventSheet ($detailOneEvent, $idNav);
                     $this->formUpdateEvent ($idNav, $detailOneEvent['idTypeGame'], $detailOneEvent);
             echo '</main>';
         } else {

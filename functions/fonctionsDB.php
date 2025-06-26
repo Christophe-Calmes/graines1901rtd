@@ -112,17 +112,17 @@ function timeIntervalPositive ($start, $end) {
     return 0;
   }
 }
-function checkPostFields ($arrayKey, $post) {
-  $i = 0;
-foreach($post as $key => $value) {
-    $value;
-    if($arrayKey[$i] != $key) {
-        return false;
+
+function checkPostFields(array $expectedKeys, array $postData): bool {
+    foreach ($expectedKeys as $key) {
+        if (!array_key_exists($key, $postData)) {
+            return false;
+        }
     }
-    $i ++;
+    return true;
 }
-return true;
-}
+
+
 function checkBool ($bool) {
   if(($bool == 0)||($bool == 1)) {
     return true;
