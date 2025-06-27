@@ -277,6 +277,40 @@ class templateAccounting extends SQLaccounting
            $this->startCompta ($idNav);
         }
     }
-
+    public function displayActualAccountingForUser () {
+        $data = $this->getActualAccouting ();
+        echo '<table class="tableWebSite" border="1">';
+            echo '<tr>
+                    <th>Date mouvement</th>
+                    <th>Numéro de transaction</th>
+                    <th>object</th>
+                    <th>Montant</th>
+                    <th>Type bancaire</th>
+                    <th>Auteur de la transaction</th>
+                    <th>Balance</th>
+                    <th>Bilan actif</th>
+                </tr>';
+            foreach ($data as $value) {
+                if(stripos($value['objet'], 'cotisation')!== false) {
+                    $value['objet'] = 'Cotisation membre anonymisé';
+                }
+                $name = $this->identification ($value['auteurActes']);
+                echo '<tr>
+                        <td>'.formatDateHeureFr($value['dateActe']).'</td>
+                        <td>'.$value['numeroTransaction'].'</td>
+                        <td>'.$value['objet'].'</td>
+                        <td>'.$value['montant'].' €</td>
+                        <td>'.$this->typeBankTransaction[$value['formeBanquaire']]['type'].'</td>
+                        <td>'.$name['prenom'].' '.$name['nom'].'</td>
+                        <td>'.($value['balance'] ? 'Recette' : 'Débit').'</td>
+                        <td>'.($value['bilan'] ? 'Non' : 'Oui').'</td>';
+                echo'</tr>';
+                    
+            }
+        echo '</table>';
+        echo '<aside class="customerForm">';
+        $this->balance();
+        echo '</aside>';
+    }
 
 }

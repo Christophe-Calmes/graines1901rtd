@@ -108,7 +108,14 @@ private $yes;
       if(($value['role']== 1)||($value['role']== 4)){
         echo '<p>Vous avez accepté les CGU :</>';
         echo '<br/>';
-        echo '<a href="'.findTargetRoute(104).'">Voir les CGU</a>';
+        if(($value['role']== 4)) {
+          echo '<a href="'.findTargetRoute(260).'">Voir les CGU</a>';
+          echo '<a href="'.findTargetRoute(259).'">Voir la compta en cours</a>';
+        } else {
+          echo '<a href="'.findTargetRoute(104).'">Voir les CGU</a>';
+        }
+        
+        
       }
   
       echo '</aside>';

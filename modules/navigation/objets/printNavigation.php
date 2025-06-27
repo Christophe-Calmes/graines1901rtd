@@ -124,10 +124,14 @@ Class PrintNavigation extends GetNavigation {
           if($value['deroulant'] != 0) {
             $nav = 'nav';
           }
+          $idNav = null;
+          if($value['menuVisible'] == 0) {
+            $idNav = '<br/>findTargetRoute('.$value['idNav'].')';
+          }
 
           echo '<a class="lienTab" href="'.findTargetRoute(93).'&id='.$value['idNav'].'">
                   <div class="moduleNav '.$nav.'">
-                        <div class="nomNav">'.$value['nomNav'].'</div>
+                        <div class="nomNav">'.$value['nomNav'].$idNav.'</div>
                         <div class="phat">'.$value['cheminNav'].'</div>
                         <div class="visible">'.yes($value['menuVisible']).'</div>
                         <div class="zoneMenu">'.wathIsMenu($menu, $value['zoneMenu']).'</div>
