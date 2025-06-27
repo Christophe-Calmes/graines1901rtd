@@ -6,10 +6,10 @@
   $user = new PrintUser();
   //$dataUser = $user->getProfil($_SESSION['tokenConnexion']);
   echo '<div class="flex-rows">';
-  echo '<article>';
+  echo '<article class="flex-row-reverse-simple">';
   $dataUser = $user->printProfilUser ();
-  echo '</article>';
-  echo '<button type="button" id="magic" class="open">Modifier le profil ?</button>';
+ 
+  echo '<button type="button" id="magic" class="open">Administrer</button>';
   echo '<aside class="flex-colonne" id="hiddenForm">';
   // Modifier step by step
   //Email
@@ -28,4 +28,5 @@
   $user->delUser($idNav);
     echo '</aside>';
 echo '</div>';
-  include 'javaScript/magicButton.php';
+  include 'javaScript/magicButtonMenus.php';
+   echo '</article>';

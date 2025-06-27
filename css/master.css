@@ -989,6 +989,7 @@ nav {
     flex-direction: column;
     align-items: center;
   }
+
   .flex-colonne-left {
     margin-left: 0em;
   }
@@ -1044,7 +1045,7 @@ nav {
   #hiddenForm {
     top: 30%;
     left: 15%;
-    width: 64%;
+    width: initial;
   }
 
  
@@ -1070,23 +1071,24 @@ nav {
     font-size: 0.9em;
     margin-right: auto;
   }
+  .gallery {
+    display: flex;
+    flex-direction: column;
+  }
   .item {
     width: 10vw;
+    padding: 1em;
   }
-  /*.listClass { 
-    text-indent: -20vw;
-    list-style: none;
-    text-align: left;
-    padding:0vw;
-    font-size: 0.8em;
-    margin-left: auto;
-    margin-right: auto;
-  }*/
-  /*.listClass li {
-
-    margin: 0;
-    padding: 0;
-  }*/
+  .customerForm {
+    width: auto;
+  }
+  textarea {
+    width: 100%;
+  }
+  select {
+    width: auto;
+    max-width: 100%;
+  }
   .imgNews {
     display: block;
     margin-bottom: 0em;
@@ -1094,7 +1096,14 @@ nav {
   .pictureNews{
     margin:6vw;
   }
- 
+  #magic {
+    width: auto;
+  }
+  .flex-row-reverse-simple {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
  
   .modal {
     width: 70vw;

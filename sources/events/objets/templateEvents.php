@@ -287,7 +287,7 @@ class TemplateEvents extends sqlEvents
           echo '<label id="check"><p>Assurez vous que les locaux sont libre avant de valider.</p>
                 <p>Modifier la date engendre la perte des inscriptions à la partie, sauf la votre.</p>
                 <p>Clic sur la checkbox si tu as compris.</p></label>';
-            echo '<p><input class="paddingLeft " id="check" type="checkbox" name="valid"/></p>';
+            echo '<p><input class="paddingLeft" id="check" type="checkbox" name="valid"/></p>';
         echo '</div>';
         
         echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>';
@@ -579,9 +579,7 @@ class TemplateEvents extends sqlEvents
         $detailOneEvent = $this->getOneEvent ($idEvent);
         if(!empty($detailOneEvent)) {
             $detailOneEvent = $detailOneEvent[0];
-            echo '<main class="gallery">';
                     $this->formUpdateEvent ($idNav, $detailOneEvent['idTypeGame'], $detailOneEvent);
-            echo '</main>';
         } else {
             echo '<h2 class="subTitleSite">Donnée inaccessible, contacter l\'administrateur ?</h2>';
         }
