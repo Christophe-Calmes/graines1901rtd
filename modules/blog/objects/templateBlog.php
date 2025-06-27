@@ -27,10 +27,12 @@ class TemplateBlog extends PresentationHTML
     }
     private function displayOneArticleBlog ($data) {
         echo '<aside class="sectionBlog">';
-            echo '<h2 class="titleSite">'.$data['title'].'</h2>';
                 echo '<h3>Catégorie : '.$data['subject'].'</h3>';
-                    echo '<p>Le '.brassageDate($data['creat_date']).'</p>';
+                echo '<h1 class="titleEventItem">'.$data['title'].'</h1>';
+                echo '<article>';
+                echo '<p>Le '.brassageDate($data['creat_date']).'</p>';
                         echo $this->htmlText ($data['article']);
+                echo '</article>';
         echo '</aside>';
     }
     private function redirectionPage () {
@@ -58,7 +60,7 @@ class TemplateBlog extends PresentationHTML
     }
     private function displayPreviweArticleBlog ($data) {
             echo '<aside class="sectionBlog">';
-                echo '<h2 class="titleSite"><a class="link" href="'.findTargetRoute($this->redirectionPage ()).'&idArticle='.$data['idArticle'].'">'.$data['title'].'</a></h2>';
+                echo '<h2 class="titleEventItem"><a class="link" href="'.findTargetRoute($this->redirectionPage ()).'&idArticle='.$data['idArticle'].'">'.$data['title'].'</a></h2>';
                 if((!empty($_SESSION))&&($_SESSION['role'] == 3)) {
                     echo '<h2><a class="link" href="'.findTargetRoute(218).'&idArticle='.$data['idArticle'].'">Administrer</a></h2>';
                 }

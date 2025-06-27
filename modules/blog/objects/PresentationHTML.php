@@ -8,9 +8,9 @@ class PresentationHTML extends SQLBlog
         'ul'=>'listClass', 
         'article'=>'articleBlog', 
         'p'=>'p-class', 
-        'h2'=>'titleSite', 
+        'h2'=>'subTitleSite', 
         'h3'=>'subTitleSite', 
-        'h4'=>'subTitleSite',
+        'h4'=>'littleTitleSite',
         'a'=>'link',
         'img'=>'pictureBlog',
         'center'=>'centerBlog'];
