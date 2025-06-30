@@ -1,1 +1,1 @@
-<p>Cette page n'existe pas.</p>
+<p>This page does not exist.</p>

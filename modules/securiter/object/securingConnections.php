@@ -1,14 +1,13 @@
 <?php
 
 Class SecuringConnections {
-    
     private $ip;
     private $numberErrorMDP;
 
     public function __construct($ip)
     {
         $this->ip = $ip;
-        $this->$numberErrorMDP = 2;
+        $this->numberErrorMDP = 10;
     }
 
     public function ipIsProhibited () {
@@ -90,6 +89,7 @@ Class SecuringConnections {
         $_SESSION['tokenConnexion'] = $token;
         $_SESSION['role'] = $dataTraiter[0]['role'];
         $_SESSION['login'] = $dataTraiter[0]['login'];
+        $_SESSION['time'] = time() + 3600;
         return true;
     }
 
@@ -108,5 +108,20 @@ Class SecuringConnections {
             $this->BanIP ();
             return false;
         }
+    }
+    private function idUser () {
+        $idUser = new Controles ();
+        return $idUser->idUser($_SESSION);
+    }
+    public function disconnectUser () {
+            $dataTraiter = array();
+             array_push($dataTraiter, ['idUser'=>$this->idUser()]);
+             echo '<br/>';
+            print_r($dataTraiter);
+            $this->genTokenConnexionAndRecord ($dataTraiter);
+                session_destroy();
+                session_unset();
+            return header('location:index.php?message=Vous êtes déconnecté');
+            // header('location: urlsite');
     }
 }
