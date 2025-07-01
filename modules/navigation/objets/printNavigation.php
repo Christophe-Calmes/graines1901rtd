@@ -289,4 +289,42 @@ echo '<form class="formulaireClassique" action="'.encodeRoutage(21).'" method="p
       echo '</tr>';
     echo '</table>';
   }
+  private function formAddNewNavLink ($internaute, $dataMenuDeroulant, $idNav) {
+    echo '<form class="customerForm" action="'.encodeRoutage(4).'" method="post">
+  <label for="nomNav">Nom du lien</label>
+  <input id="nomNav" type="text" name="nomNav" required>
+  <label for="cheminNav">chemin du lien</label>
+  <input id="cheminNav" type="text" name="cheminNav" required>';
+    echo '<label for="menuVisible">Menu visible ?</label>
+            <select id="menuVisible" name="menuVisible">
+              <option value="0">Non</option>
+              <option value="1" selected>Oui</option>
+            </select>';
+    echo '<label for="ordre">Ordre d\'apparition</label>
+          <input id="ordre" type="number" name="ordre" min="0" max="20" value="0" required>';
+    echo '  <label for="niveau">Niveau d\'acréditation</label>
+          <select id="niveau" name="niveau">';
+          foreach ($internaute as $key => $value) {
+          echo '<option value="'.$value['role'].'">'.$value['name'].'</option>';
+        }
+    echo '<select>';
+            $this->selectZoneMenu($dataMenuDeroulant, 0);
+            $this->menuDeroulant($dataMenuDeroulant, 0);
+            $this->modulesList();
+      echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Ajouter</button>
+  </form>';
+
+  }
+
+
+  public function AddLienNavigation ($dev,$internaute, $dataMenuDeroulant, $idNav) {
+    if($dev) {
+      echo '<h3 class="subTitleSite">Ajouter un lien de navigation</h3>';
+      $this->formAddNewNavLink ($internaute, $dataMenuDeroulant, $idNav);
+
+    } else {
+      echo '<h3 class="subTitleSite">Ajouter un lien de navigation</h3>';
+    }
+    
+  }
 }
