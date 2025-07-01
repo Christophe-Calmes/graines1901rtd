@@ -25,7 +25,7 @@ Class SecuringConnections {
         $param = [['prep'=>':ipUser', 'variable'=>$this->ip]];
         $dataCount = ActionDB::select($count, $param, 0);
         $nbrFailConnection = $dataCount[0]['nbrConnexionFail'];
-        if($nbrFailConnection >= $this->$numberErrorMDP) {
+        if($nbrFailConnection >= $this->numberErrorMDP) {
             $insert = "INSERT INTO `banIP`(`BanIP`) VALUES (:ipUser)";
             ActionDB::access($insert, $param, 0);
             return false;

@@ -54,4 +54,35 @@ Class TemplateFireWall extends SQLFireWall {
                 </form>
             </div>';
     }
+    public function printJourneaux ($premier, $parPage, $idNav) {
+        $dataJourneaux = $this->dataJourneaux ($premier, $parPage);
+        if(!empty($dataJourneaux)) {
+            echo '<article class="sevenColum box">';
+                echo '<div class="One">Identité</div>';
+                echo '<div class="Two">Login</div>';
+                echo '<div class="Three">Accréditation</div>';
+                echo '<div class="Four">IP connexion</div>';
+                echo '<div class="Five">Date & heure connexion</div>';
+                echo '<div class="Six">Ok connexion</div>';
+                echo '<div class="Seven">Ban IP</div>';
+            echo '</article>';
+            foreach ($dataJourneaux as $connexion) {
+                echo '<article class="sevenColum box">';
+                    echo '<div class="One">'.$connexion['prenom'].' '.$connexion['nom'].'</div>';
+                    echo '<div class="Two">'.$connexion['loginUser'].'</div>';
+                    echo '<div class="Three">'.$connexion['typeRole'].'</div>';
+                    echo '<div class="Four">'.$connexion['ipUser'].'</div>';
+                    echo '<div class="Five">'.formatDateHeureFr($connexion['dateHeure']).'</div>';
+                    echo '<div class="Six">'.($connexion['okConnexion']? 'Oui' : 'Non').'</div>';
+                    echo '<form class="flex-colonne Seven" action="'.encodeRoutage(65).'" method="post">
+                            <input type="hidden" name="BanIP" value="'.$connexion['ipUser'].'"/>
+                            <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Add IP ban</button>
+                        </form>';
+                echo '</article>';
+            }
+        } else {
+            echo '<h3>No data in the log</h3>';
+        }
+        
+    }
 }

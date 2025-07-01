@@ -2,7 +2,6 @@
 require ('../functions/functionToken.php');
 $arrayKey = ['login', 'mdp', 'idNav'];
 if(checkPostFields ($arrayKey, $_POST)) {
-      //$connectingUser = new SecuringConnections ();
     if($ipCheck->checkSecurityAndConnect  ($_POST)) {
        return header('location:../index.php?message=Welcome '.$_SESSION['login']);
     }  
