@@ -18,19 +18,20 @@ private $yes;
     if ($variable == []) {
       echo '<p>Pas de données</p>';
     } else {
-    echo '<div class="flex-rows">
-            <table>';
+    echo '<table class="tableWebSite" border="1">';
       echo '<tr>
             <th>Login</th>
             <th>Date d\'inscription</th>
-            <th>Modifier</th>
+            <th>Status</th>
+            <th>Administrer</th>
           </tr>';
           foreach ($variable as $key => $value) {
             echo '<tr>
                     <td>'.$value['login'].'</td>
                     <td>'.brassageDate($value['dateCreation']).'</td>
-                    <td>
+                    <td class="celulleLeft fullHeigt">
                       <form action="'.encodeRoutage(14).'" method="post">
+                        <div class="celulleLeft">
                         <label for="valide">Valider</label>
                         <select  id="valide" name="valide">';
                         for ($i=0; $i < count($this->yes) ; $i++) {
@@ -41,6 +42,8 @@ private $yes;
                           }
                         }
                         echo'</select>
+                        </div>
+                        <div class="celulleLeft">
                         <label for="role">Niveau d\'accréditation</label>
                         <select id="role" name="role">';
                           foreach ($this->role as $keyRole => $valueRole) {
@@ -52,14 +55,16 @@ private $yes;
                           }
 
                         echo'</select>
+                        
                         <input type="hidden" name="idUser" value="'.$value['idUser'].'" />
-                        <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>
+                        </div>
+                        </td>
+                        <td><button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button></td>
                       </form>
                     </td>
                   </tr>';
           }
-    echo '</table>
-    </div>';}
+    echo '</table>';}
     
   }
   public function printProfilUser () {

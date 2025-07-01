@@ -206,6 +206,9 @@ a {
   flex-direction: column;
   align-items: center;
 }
+.fullHeigt {
+  height: 5em;
+}
 .paddingLeft {
   padding-left: 4vw;
 }
@@ -214,7 +217,13 @@ a {
   align-items: flex-start;
   flex-direction: column;
 }
-
+.celulleLeft {
+  display: flex; 
+  flex-direction: row; 
+  justify-content: flex-start; 
+  align-items: center;
+  gap: 10px; 
+}
 .flex-colonne-form {
   display: flex;
   flex-direction: column;
@@ -874,6 +883,9 @@ nav {
 }
 .margingLeft {
   margin-left: 0.5em;
+}
+.marginTop {
+  margin-top: 0.5em;
 }
 .fontSize {
   font-size: 1em;

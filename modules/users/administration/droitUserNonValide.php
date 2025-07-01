@@ -1,5 +1,5 @@
 <?php
-  $valide = 0;
+  $valid = 0;
   require 'modules/users/objets/getUser.php';
   require 'modules/users/objets/printUser.php';
   include 'functions/functionPagination.php';
@@ -10,21 +10,15 @@ if(isset($_GET['page']) && (!empty($_GET['page']))) {
 } else {
 $currentPage = 1;
 }
-$parPage = 5;
+$parPage = 10;
 echo '<h3>Liste des utilisateurs | page : '.$currentPage.'</h3>';
-// Nombre d'utilisateurs + Nombre de pages
-$count ="SELECT COUNT(`idUser`) AS `nbr` FROM `users` WHERE `valide` = :valide";
-$element = [['prep'=>':valide', 'variable'=>$valide]];
-$nbr = ActionDB::select($count, $element);
-$nbrArticles = $nbr[0]['nbr'];
-$pages = ceil($nbrArticles/$parPage);
-$premier = ($currentPage * $parPage) - $parPage;
-// Element d'affichage renseignement utilisateurs.
-  $dataUsers = $users->getUserCurrentPage($premier, $parPage, $valide);
-// Affichage
+      $nbrArticles =   $users->numberOfUser ($valid) ;
+      $pages = ceil($nbrArticles/$parPage);
+      $premier = ($currentPage * $parPage) - $parPage;
+      $dataUsers = $users->getUserCurrentPage($premier, $parPage, $valid);
+  $dataUsers = $users->getUserCurrentPage($premier, $parPage, $valid);
   $users->userTable($dataUsers, $idNav);
-// Fin affichage
 for ($page=1; $page <= $pages ; $page++ ) {
   echo '<a class="lienNav" href="index.php?idNav='.$idNav.'&start='.$page.'">'.$page.'</a>';
 }
-?>
+

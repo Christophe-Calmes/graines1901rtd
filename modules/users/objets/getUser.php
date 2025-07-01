@@ -59,4 +59,10 @@ Class GetUser {
             return ActionDB::select($select, $param, 0)[0];
             
     }
+  public function numberOfUser ($valid) {
+    $select ="SELECT COUNT(`idUser`) AS `nbr` FROM `users` WHERE `valide` = :valid";
+    $param = [['prep'=>':valid', 'variable'=>$valid]];
+    return ActionDB::select($select, $param, 0)[0]['nbr'];
+
+  }
 }
