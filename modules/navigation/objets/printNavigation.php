@@ -313,10 +313,7 @@ echo '<form class="formulaireClassique" action="'.encodeRoutage(21).'" method="p
             $this->modulesList();
       echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Ajouter</button>
   </form>';
-
   }
-
-
   public function AddLienNavigation ($dev,$internaute, $dataMenuDeroulant, $idNav) {
     if($dev) {
       echo '<h3 class="subTitleSite">Ajouter un lien de navigation</h3>';
