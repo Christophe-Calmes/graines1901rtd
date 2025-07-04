@@ -33,6 +33,7 @@ if($mark == $controle_POST) {
             $param = $parametre->creationPrepIdUser ($_POST);
             $accouting->addActe ($param);
             header('location:../index.php?message=New membership success to record');
+          
 } else {
     header('location:../index.php?message=New membership fail to record');
 }

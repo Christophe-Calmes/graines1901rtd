@@ -52,8 +52,8 @@ private function noVoidPostData(): bool {
             return $this-> setPath ();
         }
         if(!$this->noVoidPostData ()) {
-            header('location:../index.php?message=Champs vide dans votre formulaire&idNav='.$this->setIdNav ());
-            exit;
+            header('location:../index.php?message=Champs vide dans votre formulaire');
+            exit();
         }
         if(($this->setSecurity () === $this->setRole ())&&($this->testRequest ())&&($this->border == 1)) {
             return $this-> setPath ();
@@ -61,7 +61,7 @@ private function noVoidPostData(): bool {
                 session_destroy();
                 $_SESSION = array();
                header('location:../index.php?message=Vous êtes déconnecté');
-               exit;
+               exit();
         }
     }
 }

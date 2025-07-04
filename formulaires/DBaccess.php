@@ -14,6 +14,8 @@ if($ipCheck->ipIsProhibited ()) {
   if(!empty($_SESSION)) {
   $checkId = new Controles();
   $border = $checkId->doublon("SELECT `token` FROM `users` WHERE `token` = :token", ':token' , $_SESSION['tokenConnexion']);
+  } else {
+    $border = 0;
   }
   $dataRoute = new GetNavigation();
   $form = new SecurityAndRouterForm ($_SESSION, $dataRoute->getFrom($route), $_SERVER['REQUEST_METHOD'], $_POST, $border);

@@ -43,7 +43,6 @@ if($securiter == 0) {
               if($controleForm == [0]) {
                   include '../'.$chemin;
                 } else {
-               
                     header('location:../index.php?message=Un ou plusieurs champs sont vide.');
                   }
                 } else {
