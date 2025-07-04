@@ -91,18 +91,21 @@ class templateAccounting extends SQLaccounting
         echo '</table>';
 
     }
-    private function formUnvalideActe ($idActe, $idNav) {
+    private function formUnvalideActe ($idActe, $idNav, $valid) {
+        if($valid == 1) {
+            $message = 'Unvalid';
+        } else {
+            $message = 'Valid';
+        }
         echo '<td>';
             echo '<form method="post" action="'.encodeRoutage(147).'">';
                 echo '<input type="hidden" name="id" value="'. $idActe.'">';
-                echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Del</button>';
+                echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">'.$message.'</button>';
             echo '</form>';
         echo '</td>';
     }
-
-    public function displayActualAccounting ($idNav) {
-        $data = $this->getActualAccouting ();
-        echo '<table class="tableWebSite" border="1">';
+    private function templateBilan ($data, $idNav, $valid) {
+         echo '<table class="tableWebSite" border="1">';
             echo '<tr>
                     <th>Ordre transaction</th>
                     <th>Date mouvement</th>
@@ -129,14 +132,36 @@ class templateAccounting extends SQLaccounting
                         <td>'.$name['prenom'].' '.$name['nom'].'</td>
                         <td>'.($value['balance'] ? 'Recette' : 'Débit').'</td>
                         <td>'.($value['bilan'] ? 'Non' : 'Oui').'</td>';
-                        $this->formUnvalideActe ($value['idActe'], $idNav);
+                        $this->formUnvalideActe ($value['idActe'], $idNav, $valid);
                 echo'</tr>';
                     
             }
         echo '</table>';
-        echo '<aside class="customerForm">';
-        $this->balance();
-        echo '</aside>';
+        if($valid == 1) {
+            echo '<aside class="customerForm">';
+            $this->balance();
+            echo '</aside>';
+        }
+  
+    }
+
+    public function displayActualAccounting ($idNav, $valid) {
+        $data = $this->getActualAccouting ($valid);
+        if($valid === 1) {
+            $message = 'compte en cours et valide';
+        } else {
+            $message = 'donnée effacé du bilan';
+        }
+        if(!empty($data)) {
+            echo '<h2 class="subTitleSite">'.$message.'</h2>';
+            $this->templateBilan ($data, $idNav, $valid) ;
+        } elseif($valid == 1) {
+            echo '<h2 class="subTitleSite">Pas de donnée</h2>';
+        } else {
+            echo '<h2 class="subTitleSite">pas de '.$message.'</h2>';
+        }
+        
+       
     }
     private function ArchiveBilan ($data, $idBilan) {
          echo '<table class="tableWebSite" border="1">';
