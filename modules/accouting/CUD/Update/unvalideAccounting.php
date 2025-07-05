@@ -12,7 +12,7 @@ if($mark == $controle_POST) {
     $parametre = new Preparation ();
     $param = $parametre->creationPrepIdUser ($_POST);
     $accouting->unvalideActe ($param);
-    header('location:../index.php?message=Acte unvalide success to record&idNav='.$idNav);
+    header('location:../index.php?message=Acte modification success to record&idNav='.$idNav);
 } else {
-    header('location:../index.php?message=Acte unvalide fail to record&idNav='.$idNav);
+    header('location:../index.php?message=Acte modification fail to record&idNav='.$idNav);
 }
