@@ -65,4 +65,43 @@ Class GetUser {
     return ActionDB::select($select, $param, 0)[0]['nbr'];
 
   }
+  public function checkNoUseEmailBeforeChange ($email) {
+    $param = [['prep'=>':email', 'variable'=>$email]];
+    $select = "SELECT COUNT(`idUser`) AS `nbr` FROM `users` WHERE `email` = :email;";
+    $check = ActionDB::select($select, $param, 0)[0]['nbr'];
+    if($check == 0) {
+      return true;
+    }
+    return false;
+  }
+  public function checkNoUsedPseudoBeforChange ($pseudo) {
+    $param = [['prep'=>':pseudo', 'variable'=>$pseudo]];
+    $select = "SELECT COUNT(`login`) AS `nbr` FROM `users` WHERE `login` = :pseudo;";
+    $check = ActionDB::select($select, $param, 0)[0]['nbr'];
+    if($check == 0) {
+      return true;
+    }
+    return false;
+  }
+  public function passwordControle ($post) {
+    $mdp = filter($_POST['mdp']);
+    $mdpA = filter($_POST['mdpA']);
+    if(!empty($mdp)&&($mdp === $mdpA)&&(strlen($mdp)>9)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  public function changeEmailUser ($param) {
+    $update = "UPDATE `users` SET `email`=:email  WHERE `idUser`= :idUser;";
+    return ActionDB::access($update, $param, 0);
+  }
+  public function changePseudo ($param) {
+    $update = "UPDATE `users` SET `login`=:login WHERE `idUser`=:idUser;";
+    return ActionDB::access($update, $param, 0);
+  }
+  public function changePassword ($param) {
+    $update = "UPDATE `users` SET `mdp` = :mdp WHERE `idUser` = :idUser;";
+    return ActionDB::access($update, $param, 0);
+  }
 }

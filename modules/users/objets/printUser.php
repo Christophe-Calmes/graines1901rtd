@@ -77,7 +77,7 @@ private $yes;
           echo '<li>Pseudo : '.$value['login'].'</li>';
           echo '<li>Role : '.$this->role[$value['role']]['name'].'</li>';
           echo '<li class="alignLi">Date d\'inscription au site : <p class="displayDate">'.brassageDate($value['dateCreation']).'</p></li>';
-          if(($value['role']== 1)||($value['role']== 4)) {
+          if ($value['role']== 4) {
           $member = $this->getTypeCotisation ($value['idUser']);
           echo '<li>Numéro adhérant : '.$member['MemberNumber'].'</li>';
           echo '<li>Membre association depuis le '.brassageDate($member['creat_date']).'</li>';
@@ -99,7 +99,7 @@ private $yes;
                                 echo '<br/>Cotisation demi année';
                                 break;
                             case 9:
-                                $data = $this->linkIdentity ($member['idUser']);
+                                $data = $this->linkIdentity ($dataUser[0]['idUser']);
                                 echo '<br/>Date cotisation : '.brassageDate($member['update_date']);
                                 echo '<br/>Cotisation familliale affilié à '.$data['prenom'].' '.$data['nom'];
                                 break;
@@ -126,8 +126,8 @@ private $yes;
       echo '</aside>';
     return $dataUser;
   }
-  public function delUser($idNav) {
-      echo '<form action="'.encodeRoutage(22).'" method="post">
+  public function delUser($idNav, $delUserFormRoute) {
+      echo '<form action="'.encodeRoutage($delUserFormRoute).'" method="post">
               <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Désinscription</button>
             </form>';
   }
@@ -143,5 +143,51 @@ private $yes;
          }
          echo '</ul>';
        }
+    }
+    public function formProfil ($dataUser, $idNav) {
+        $adressForm = [
+                      ['updateEmail'=>16, 'updateSpeudo'=>17, 'updateMdP'=>18, 'delUser'=>22],
+                      ['updateEmail'=>163, 'updateSpeudo'=>164, 'updateMdP'=>165, 'delUser'=>173],
+                      ['updateEmail'=>168, 'updateSpeudo'=>166, 'updateMdP'=>169, 'delUser'=>174],
+                      ['updateEmail'=>170, 'updateSpeudo'=>171, 'updateMdP'=>172, 'delUser'=>175]];
+        switch ($dataUser[0]['role']) {
+              case 1:
+                // Membre
+              $profilAdress = $adressForm[0];
+               $delUserFormRoute = $profilAdress['delUser'];
+              break;
+              case 2:
+                // Administrateur
+              $profilAdress = $adressForm[1];
+               $delUserFormRoute = $profilAdress['delUser'];
+              break;
+              case 3:
+                // Gestionnaire
+              $profilAdress = $adressForm[2];
+               $delUserFormRoute = $profilAdress['delUser'];
+              break;
+              case 4:
+                // Adéherant
+              $profilAdress = $adressForm[3];
+              $delUserFormRoute = $profilAdress['delUser'];
+              break;
+          
+          default:
+            echo '<h3>Error !</h3>';
+            break;
+        }
+        $formModifierProfil = [['name'=>'email', 'message'=>'Email', 'type'=>0, 'lastInput'=>$dataUser[0]['email']]];
+        $button = 'Modifier email';
+        formModification($profilAdress['updateEmail'], $formModifierProfil, $idNav, $button);
+        //Login
+        $formModifierProfil = [['name'=>'login', 'message'=>'Pseudo', 'type'=>0, 'lastInput'=>$dataUser[0]['login']]];
+        $button = 'Modifier pseudo';
+        formModification($profilAdress['updateSpeudo'], $formModifierProfil, $idNav, $button);
+        //mdp
+        $formModifierProfil = [['name'=>'mdp', 'message'=>'Nouveau mot de passe', 'type'=>0, 'lastInput'=>genToken (12)],
+                          ['name'=>'mdpA', 'message'=>'Confirmer nouveau mot de passe', 'type'=>9, 'lastInput'=>'????']];
+        $button = 'Modifier mot de passe';
+        formModification($profilAdress['updateMdP'], $formModifierProfil, $idNav, $button);
+        $this->delUser($idNav, $delUserFormRoute);
     }
 }

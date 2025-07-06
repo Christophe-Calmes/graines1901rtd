@@ -1,16 +1,21 @@
 <?php
-// Contrôle doublon login
-$doublon = new Controles();
-  $sql = "SELECT`login`FROM `users` WHERE `login` = :login";
-  $preparation = ':login';
-  $valeur = filter($_POST['login']);
-    array_push($controleForm, $doublon->doublon($sql, $preparation , $valeur));
-  if($controleForm == [0, 0]) {
-    $parametre = new Preparation();
-    $param = $parametre->creationPrepTokenUser ($_POST);
-    $update = "UPDATE `users` SET `login`= :login WHERE `token` = :token";
-    ActionDB::access($update, $param);
-    header('location:../index.php?message=Votre login a été modifié&idNav='.$idNav);
-  } else {
-    header('location:../index.php?message=Votre login non valable.&idNav='.$idNav);
-  }
+require('../modules/users/objets/getUser.php');
+$changePseudo = new GetUser ();
+$arrayKeys = ['login'];
+$control_POST = array();
+$mark = [0];
+if(checkPostFields($arrayKeys, $_POST)) {
+  array_push($control_POST, sizePost(filter($_POST[$arrayKeys[0]]), 15));
+  array_push($control_POST, $changePseudo->checkNoUsedPseudoBeforChange (filter($_POST[$arrayKeys[0]])));
+  array_push($mark, true);
+}
+if($mark == $control_POST) {
+   $parametre = new Preparation ();
+  $param = $parametre->creationPrepIdUser ($_POST);
+  $changePseudo->changePseudo ($param);
+  header('location:../index.php?message=Update pseudo succefulld&idNav='.$idNav);
+    exit();
+} else {
+    header('location:../index.php?message=Pseudo is not available&idNav='.$idNav);
+      exit();
+}
