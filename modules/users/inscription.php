@@ -13,6 +13,7 @@ $formConfirmation = [['name'=>'login', 'message'=>'Votre login', 'type'=>0],
                     ['name'=>'token', 'message'=>'Votre token', 'type'=>0]];
 $button = 'Activation du compte';
 
-echo '<h3>Activation de votre compte</h3>';
+/*echo '<h3>Activation de votre compte</h3>';
 formAction(3, $formConfirmation, $idNav, $button);
+*/
 

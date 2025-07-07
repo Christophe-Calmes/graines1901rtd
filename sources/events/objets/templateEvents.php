@@ -584,5 +584,46 @@ class TemplateEvents extends sqlEvents
             echo '<h2 class="subTitleSite">Donnée inaccessible, contacter l\'administrateur ?</h2>';
         }
       
-    }   
+    }
+    private function onePublicEventSheet ($detail) {
+                   echo '<article class="item">';
+                            echo '<ul class="listClass">';
+                                $fullAddress = htmlspecialchars_decode($detail['adress'].', '.$detail['zipCode'].' '.$detail['city']);
+                                echo '<li class="subTitleSite">'.$detail['nameEvent'].'</li>';
+                                echo '<li>Le '.brassageDate($detail['dateEvent']).' à '.$detail['hourEvent'].'</li>';
+                                echo '<li><p>'.$detail['objetEvent'].'</p></li>';
+                                echo '<li>Type de jeu  : '.$detail['typeGame'].'</li>';
+                                echo '<li>Nom du jeu  : '.$detail['nameGame'].'</li>';
+                                echo '<li>Lieu : '.$detail['nameLocation'].'</li>';
+                                if($detail['private'] == 0) {
+                                    echo '<li>Adresse : '.$fullAddress.'</li>';
+                                } else {
+                                    echo '<li>Adresse : Lieu privé</li>';
+                                }
+                           
+                                $dataRegister = $this->registerEvent ($detail['idEvent']);
+                                $actual = $this->countParticipantsOneEvent ($detail['idEvent']);
+                                echo '<li><h4 class="titleEventItem">Liste des inscrits ('.$actual.'/'.$detail['numberParticipants'].')</h4></li>';
+                            echo '</ul>';
+                        echo '</article>';
+    }
+    public function publicFuturEvent (){
+        $dataActualEvent = $this->getActualEvent ();
+        if(!empty($dataActualEvent)) {
+        echo '<h4 class="titleEventItem">Nos futurs événements</h4>';
+        
+          echo '<main class="gallery">';
+                foreach ($dataActualEvent as $detail) {
+                    $this->onePublicEventSheet ($detail);
+                }
+          echo '</main>';
+    
+        } else {
+            echo '<h2 class="titleEventItem">Aucun événement à venir.</h2>';
+        }
+        echo '<article class="formAdmin">';
+            echo '<a href="'.findTargetRoute(73).'">Nous rejoindre ?</a>';
+        echo '</article>';
+
+    }
 }

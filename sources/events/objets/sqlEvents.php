@@ -390,7 +390,8 @@ class sqlEvents
         `adress`, 
         `city`, 
         `zipCode`, 
-        `phone`
+        `phone`, 
+        `private`
 
         FROM `events` 
         INNER JOIN `locations` ON `locations`.`id`= `idLocation`
