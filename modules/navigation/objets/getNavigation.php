@@ -1,6 +1,52 @@
 <?php
 Class GetNavigation {
+  public function checkAccreditionExist ($accreditation) {
+       $param = [['prep'=>':accreditation', 'variable'=>$accreditation]];
+    $select = "SELECT COUNT(`idRole`) AS `nbr` FROM `roles` WHERE `accreditation` = :accreditation;";
+    $check = ActionDB::select($select, $param, 0)[0]['nbr'];
+    if($check == 1) {
+      return true;
+    }
+    return false;
+  }
+  public function checkIdModuleExist ($idModule) {
+     $param = [['prep'=>':id', 'variable'=>$idModule]];
+    $select = "SELECT COUNT(`id`) AS `nbr` FROM `modules` WHERE `id` = :id AND `valide` = 1;";
+        $check = ActionDB::select($select, $param, 0)[0]['nbr'];
+    if($check == 1) {
+      return true;
+    }
+    return false;
+  }
+  public function RecordNewMenu ($param) {
+    $insert = "INSERT INTO `menuNav`(`titreMenu`) VALUES (:titreMenu);";
+    ActionDB::access($insert, $param, 0);
+    $select = "SELECT `idMenuDeroulant` FROM `menuNav` ORDER BY `idMenuDeroulant` DESC LIMIT 1;";
+    return ActionDB::select ($select, [], 0)[0]['idMenuDeroulant'];
+  }
+  public function insertNewMenu ($param) {
+    $insert = "INSERT INTO `navigation`(`nomNav`, 
+    `cheminNav`, 
+    `menuVisible`, 
+    `zoneMenu`, 
+    `ordre`, 
+    `niveau`,  
+    `deroulant`, 
+    `targetRoute`, 
+    `idModule`) 
+    VALUES 
+    (:nomNav, 
+    :cheminNav, 
+    :menuVisible, 
+    :zoneMenu, 
+    :ordre, 
+    :niveau, 
+    :deroulant, 
+    :targetRoute, 
+    :idModule);";
+    return ActionDB::access($insert, $param, 0);
 
+  }
   protected function AuthenticNav ($value) {
     $select = "SELECT `idNav`, `nomNav`, `cheminNav`, `menuVisible`, `zoneMenu`, `ordre`, `niveau`, `valide`, `deroulant`, `targetRoute`
     FROM `navigation`
@@ -69,4 +115,5 @@ Class GetNavigation {
     array_push($statRouting, ['total'=>$statRouting[0]['idNav'] + $statRouting[1]['idForm']]);
     return $statRouting;
   }
+
 }

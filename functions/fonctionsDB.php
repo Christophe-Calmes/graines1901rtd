@@ -44,7 +44,8 @@ function Qualiter ($arraySize){
 }
 
 function borneSelect($data, $maxArray) {
-  if(($data >=0)||($data<=$maxArray)) {
+  
+  if(($data >=0)||($data<=$maxArray)&&(filter_var($data, FILTER_VALIDATE_INT)) != false) {
     return 0;
   } else {
     return 1;
