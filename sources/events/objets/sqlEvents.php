@@ -1,6 +1,10 @@
 <?php
 class sqlEvents
 {
+    private function getIdUser () {
+            $idUser = new Controles ();
+            return $idUser->idUser($_SESSION);
+    }
     protected function GetEvents ($firstPage, $parPage, $past) {
         if($past) {
               $select = "SELECT 
@@ -133,15 +137,22 @@ class sqlEvents
                $param = [['prep'=>':idLocation', 'variable'=>$idLocation]];
         return ActionDB::select($select, $param, 2)[0]['check'];
     }
+    public function checkOwnerLocation ($idLocation) {
+        $select = "SELECT COUNT(`id`) AS `check` FROM `locations` WHERE `idOwner` = :idOwner AND `id`=:idLocation;";
+        $param = [['prep'=>':idLocation', 'variable'=>$idLocation],
+                ['prep'=>':idOwner', 'variable'=> $this->getIdUser ()]];
+        return ActionDB::select($select, $param, 2)[0]['check'];
+    }
     public function checkIdEvent ($idEvent) {
         $select ="SELECT COUNT(`id`) AS `check` FROM `events` WHERE `id` = :idEvent;";
         $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
         return ActionDB::select($select, $param, 2)[0]['check'];
     }
+
+
     public function checkOwenerEvent ($idEvent) {
         $select = "SELECT COUNT(`id`) AS `nbrEvent` FROM `events` WHERE `idOwner` = :idUser AND `id` = :idEvent;";
-        $idUser = new Controles ();
-        $param = [['prep'=>':idEvent', 'variable'=>$idEvent],['prep'=>':idUser', 'variable'=>$idUser->idUser($_SESSION)]];
+        $param = [['prep'=>':idEvent', 'variable'=>$idEvent],['prep'=>':idUser', 'variable'=>$this->getIdUser ()]];
         return ActionDB::select($select, $param, 2)[0]['nbrEvent'];
     }
     public function recordNewGame ($param) {
@@ -178,6 +189,11 @@ class sqlEvents
         VALUES (:nameLocation, :adress, :city, :zipCode, :phone, 0, :idUser);";
         return ActionDB::access($insert, $param, 2);
     }
+    public function recordNewPrivateLocation ($param) {
+        $insert = "INSERT INTO `locations`(`nameLocation`, `adress`, `city`, `zipCode`, `phone`, `private`, `idOwner`) 
+        VALUES (:nameLocation, :adress, :city, :zipCode, :phone, 1, :idUser);";
+        return ActionDB::access($insert, $param, 2);
+    }
     protected function getLocation ($valid, $private) {
         $select = "SELECT `id`, 
         `nameLocation`, 
@@ -200,7 +216,8 @@ class sqlEvents
             `adress`, 
             `city`, 
             `zipCode`, 
-            `phone`
+            `phone`,
+            `valid`
             FROM `locations` 
             WHERE `id` = :idLocation;";
         $param = [['prep'=>':idLocation', 'variable'=>$idLocation]];
@@ -229,8 +246,11 @@ class sqlEvents
     protected function getAllLocation () {
         $select = "SELECT `id`, `nameLocation`, `adress`, `city`
         FROM `locations` 
-        WHERE `private` = 0 AND `valid` = 1;";
-        return ActionDB::select($select, [], 2);
+        WHERE `valid` = 1 AND (
+        `private` = 0 OR
+        (`private` = 1 AND `idOwner` = :idOwner));";
+         $param = [['prep'=>':idOwner', 'variable'=> $this->getIdUser ()]];
+        return ActionDB::select($select, $param, 2);
 
     }
     protected function getAllGameTypes () {
@@ -310,12 +330,6 @@ class sqlEvents
         `idLocation`=:idLocation 
         WHERE `id` = :idEvent AND `idOwner`=:idUser;";
         ActionDB::access($update, $param, 2);
-    }
-
-
-    private function getIdUser () {
-        $user = new Controles ();
-        return $user->idUser($_SESSION);
     }
     protected function getMyEvent ($valid, $moment) {
         // $moment = true (present & futur), false (past)
@@ -488,10 +502,25 @@ class sqlEvents
             print_r($idEvent);
             $this->recordEventParticipant ($idEvent);
 
-        } else {
-            echo 'De dedans le Q !';
-        }
+        } 
         return false;
     }
-    
+    protected function getOwnerPrivateLocation ($valid) {
+        $select = "SELECT `id`, 
+        `nameLocation`, 
+        `adress`, 
+        `city`, 
+        `zipCode`, 
+        `phone`, 
+        `valid` 
+        FROM `locations` 
+        WHERE `idOwner` = :idUser 
+        AND `private` = 1 
+        AND `valid` = :valid;";
+        $param = [['prep'=>':valid', 'variable'=>$valid],
+        ['prep'=>':idUser', 'variable'=>$this->getIdUser ()]];
+        return ActionDB::select($select, $param, 2);
+
+    }
+
 }

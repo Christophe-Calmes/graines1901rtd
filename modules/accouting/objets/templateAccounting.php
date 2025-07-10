@@ -303,7 +303,8 @@ class templateAccounting extends SQLaccounting
         }
     }
     public function displayActualAccountingForUser () {
-        $data = $this->getActualAccouting ();
+        $data = $this->getActualAccouting (1);
+
         echo '<table class="tableWebSite" border="1">';
             echo '<tr>
                     <th>Date mouvement</th>
