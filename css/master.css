@@ -4,8 +4,10 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,700&display=swap');
 :root {
   /*Variables Button*/
-  --body-color:#320001ff;
-  --main-background-color: rgb(156, 68, 41);
+  /*rgb(156, 68, 41)*/
+  --body-color:linear-gradient(to bottom, rgb(77, 0, 1), rgb(36, 0, 0));
+  --main-background-color: linear-gradient(to bottom, rgb(156, 68, 41), rgb(36, 0, 0));
+  --main-darkBackground: rgb(36, 0, 0);
   --main-color: rgb(236, 236, 236);
   --main-background-MagicForm: #5D3720ff;
   --main-background-navBar: rgb(87, 44, 17);
@@ -46,7 +48,7 @@
   --color-darkGreen: #03470D;
   --color-orange: #cc3915;
   --color-neutralBone: #fdfdf8;
-  --color-yellowAlternate: #ccb21dd3;
+  --color-yellowAlternate: #a58d05d3;
 
 }
 /*Presentation basique*/
@@ -55,7 +57,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   justify-content: space-between;
-  background-color: var(--body-color);
+  background:var( --body-color);
   color: var(--main-color);
 }
 header {
@@ -361,7 +363,7 @@ a {
  /* Blog */
 .sectionBlog {
   display: flex;
-  background-color: var(--main-background-navBar);
+  background: var(--main-background-color);
   border-radius: var(--main-radius);
   border: var(--main-border);
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
@@ -753,7 +755,7 @@ min-width: 250px;
 }
 
 .dropdown-child a {
-  background-color: var(--main-background-color);
+  background-color: var(--main-darkBackground);
   border: var(--main-border);
   color: var(--main-color);
   /* padding: var(--main-padding); */

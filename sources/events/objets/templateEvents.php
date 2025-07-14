@@ -443,11 +443,16 @@ class TemplateEvents extends sqlEvents
         // $sort = [$valid(bool), $moment(bool), $admin(bool)]
         $this->displayEvent ($sort[0], $sort[1], $sort[2], $idNav);
     }
+    private function googleDateFormat ($dateEvent) {
+        $dateTime = new DateTime($dateEvent);
+        $formattedDate = $dateTime->format('Ymd');
+        return $formattedDate . '/' . $formattedDate;
+    }
     private function oneEventSheet ($detail, $idNav) {
                    echo '<article class="item">';
                             echo '<ul class="listClass">';
                                 $fullAddress = htmlspecialchars_decode($detail['adress'].', '.$detail['zipCode'].' '.$detail['city']);
-                                echo '<li><a class="link" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text='.urlencode($detail['nameEvent']).'&dates='.dateAndTimeAgendaGoogle($detail['dateEvent']).'&details='.urlencode($detail['nameGame']).'&location='.urlencode($fullAddress).'&sf=true&output=xml" target="_blank">Ajouter à Google Agenda</a></li>';
+                                echo '<li><a class="link" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text='.urlencode($detail['nameEvent']).'&dates='.$this->googleDateFormat($detail['dateEvent']).'&details='.urlencode($detail['nameGame']).'&location='.urlencode($fullAddress).'&sf=true&output=xml" target="_blank">Ajouter à Google Agenda</a></li>';
                                 echo '<li class="subTitleSite">'.$detail['nameEvent'].'</li>';
                                 echo '<li>Le '.brassageDate($detail['dateEvent']).' à '.$detail['hourEvent'].'</li>';
                                 echo '<li><p>'.$detail['objetEvent'].'</p></li>';
