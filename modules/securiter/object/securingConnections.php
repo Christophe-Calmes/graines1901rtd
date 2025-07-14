@@ -116,8 +116,6 @@ Class SecuringConnections {
     public function disconnectUser () {
             $dataTraiter = array();
              array_push($dataTraiter, ['idUser'=>$this->idUser()]);
-             echo '<br/>';
-            print_r($dataTraiter);
             $this->genTokenConnexionAndRecord ($dataTraiter);
                 session_destroy();
                 session_unset();
