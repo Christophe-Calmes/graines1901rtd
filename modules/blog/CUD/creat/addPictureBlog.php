@@ -19,11 +19,12 @@ if($controle_POST == $mark) {
             chmod($f, 0644);
             $parametre = new Preparation ();
             $param = $parametre->creationPrepIdUser ($_POST);
-            print_r($param);
             $addPictureForBlog->recordPictureBlog($param);
             return header('location:../index.php?message=Record new picture sucess.&idNav='.$idNav);
+            exit();
         } else {
             return header('location:../index.php?message=The target file is not found.');
+            exit();
         }
     } else {
         return header('location:../index.php?message=Record error !');

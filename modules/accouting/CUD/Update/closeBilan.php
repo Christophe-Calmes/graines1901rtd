@@ -19,6 +19,8 @@ if($mark == $controle_POST) {
     $accouting->closeAndOpenBilan ($idUser);
     $member->resetCotisation ();
     header('location:../index.php?message=Close Bilan success&idNav='.$idNav);
+    exit();
 } else {
     header('location:../index.php?message=Close bilan fail to record&idNav='.$idNav);
+    exit();
 }
