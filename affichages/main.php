@@ -19,7 +19,7 @@ class ControlerAffichage {
 
       }
       // Debug true => phat / False Prod
-      $dev = true;
+      $dev = false;
       if (isset($data['idNav'])) {
           $idNav = filter($data['idNav']);
           $readNav = new PrintNavigation();
