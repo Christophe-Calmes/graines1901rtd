@@ -116,6 +116,7 @@ private $yes;
         if(($value['role']== 4)) {
           echo '<a href="'.findTargetRoute(260).'">Voir les CGU</a>';
           echo '<a href="'.findTargetRoute(259).'">Voir la compta en cours</a>';
+          echo '<a href="'.findTargetRoute(264).'">Lieux privé</a>';
         } else {
           echo '<a href="'.findTargetRoute(104).'">Voir les CGU</a>';
         }
