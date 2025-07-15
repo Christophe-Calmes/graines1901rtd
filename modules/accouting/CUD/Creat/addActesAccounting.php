@@ -21,6 +21,8 @@ if($mark == $controle_POST) {
     $param = $parametre->creationPrepIdUser ($_POST);
     $addActe->addAccountingActe ($param);
     header('location:../index.php?message=New acte success to record&idNav='.$idNav);
+    exit();
 } else {
     header('location:../index.php?message=New acte fail to record&idNav='.$idNav);
+    exit();
 }

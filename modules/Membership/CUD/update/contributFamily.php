@@ -16,7 +16,9 @@ if($mark == $controle_POST) {
     $parametre = new Preparation ();
     $param = $parametre ->creationPrep ($_POST);
     $member->linkFamily ($param);
-    header('location:../index.php?message=New membership success to record&idNav='.$idNav);
+    header('location:../index.php?message=New membership success to record');
+    exit();
 } else {
-    header('location:../index.php?message=New membership fail to record&idNav='.$idNav);
+    header('location:../index.php?message=New membership fail to record');
+    exit();
 }

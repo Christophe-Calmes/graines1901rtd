@@ -13,6 +13,8 @@ if($mark == $controle_POST) {
     $param = $parametre->creationPrepIdUser ($_POST);
     $accouting->unvalideActe ($param);
     header('location:../index.php?message=Acte modification success to record&idNav='.$idNav);
+    exit();
 } else {
     header('location:../index.php?message=Acte modification fail to record&idNav='.$idNav);
+    exit();
 }

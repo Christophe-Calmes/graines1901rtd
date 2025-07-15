@@ -32,7 +32,9 @@ if($mark == $controle_POST) {
             $parametre = new Preparation ();
             $param = $parametre->creationPrepIdUser ($_POST);
             $accouting->addActe ($param);
-            header('location:../index.php?message=New membership success to record');
+        header('location:../index.php?message=New membership success to record');
+        exit();
 } else {
     header('location:../index.php?message=New membership fail to record');
+    exit();
 }

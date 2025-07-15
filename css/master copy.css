@@ -1,18 +1,19 @@
 /*Présentation Graine*/
 /*Variables CSS*/
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Montserrat:ital,wght@0,600;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,700&display=swap');
 :root {
   /*Variables Button*/
-  --body-color:rgb(133, 111, 91);
-  --main-background-color: linear-gradient(to bottom, #3e3a35, #251e1b);
-  --main-background-color-item: linear-gradient(to bottom, #804701, #5e3300);
-  --main-color: #F5D798ff;
+  /*rgb(156, 68, 41)*/
+  --body-color:linear-gradient(to bottom, rgb(77, 0, 1), rgb(36, 0, 0));
+  --main-background-color: linear-gradient(to bottom, rgb(156, 68, 41), rgb(36, 0, 0));
+  --main-darkBackground: rgb(36, 0, 0);
+  --main-color: rgb(236, 236, 236);
   --main-background-MagicForm: #5D3720ff;
   --main-background-navBar: rgb(87, 44, 17);
-  --color-select: #DFA14Aff;
-  --color-selected: #DFA14Aff;
-  --main-border: 1px solid #CA8339ff;
+  --color-select: #ECBC2Dff;
+  --color-selected: #ECBC2Dff;
+  --main-border: 1px solid #ECBC2Dff;
   --main-radius: 5px;
   --main-radiusInput: 5px;
   /*print variable*/
@@ -29,17 +30,17 @@
   /*Variables global*/
   --main-shadow: radial-gradient(#320001ff, #C5522Eff, #5D3720ff, #FFF0B3ff);
   /*--font-family: "Bebas Neue", sans-serif;*/
-  --font-family: "Montserrat", sans-serif;
-  --font-family-titleEvent: "Montserrat", sans-serif;
-  --font-weight: 600;
+  --font-family: "IBM Plex Mono", monospace;;
+  --font-family-titleEvent: "IBM Plex Mono", monospace;
+  --font-weight: 500;
   --font-style: normal;
-  --color-title: rgb(14, 6, 2);
-  --color-subTitle: rgb(255, 233, 192);
+  --color-title: rgb(253, 245, 210);
+  --color-subTitle: rgb(255, 236, 161);
   /*Présentation*/
   --padding-sheddulingShop: 0.2em 0 0.2em 0;
   /*Variable color*/
   --color-green: #4f8b36;
-  --color-yellow: #fff6ae;
+  --color-yellow: #f1df57;
   --color-chair: #f3f3f3;
   --color-blueOneChair: #1B384D;
   --color-red:#cc3915;
@@ -47,23 +48,18 @@
   --color-darkGreen: #03470D;
   --color-orange: #cc3915;
   --color-neutralBone: #fdfdf8;
-  --color-yellowAlternate: #cc6c1dd3;
+  --color-yellowAlternate: #a58d05d3;
 
 }
 /*Presentation basique*/
-
 body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   justify-content: space-between;
-  background:  var(--main-background-color);
+  background:var( --body-color);
   color: var(--main-color);
-  font-family: var(--font-family);
-  line-height: 1.6;
-  font-size: 16px;
 }
-
 header {
     text-align: center;
 }
@@ -82,7 +78,7 @@ aside {
 
 h1 {
   font-size: 2em;
-  font-family: var(--main-font-familly);
+
 }
 
 h2 {
@@ -93,8 +89,9 @@ h2 {
 }
 .titleSite {
   font-family: var(--font-family);
+  font-weight: var(--font-weight);
   font-style: var(--font-style);
-  color:var(--main-color);
+  color: var(--color-title);
   font-size: 1.4em;
 }
 .subTitleSite {
@@ -366,7 +363,7 @@ a {
  /* Blog */
 .sectionBlog {
   display: flex;
-  background-color: var(--main-background-navBar);
+  background: var(--main-background-color);
   border-radius: var(--main-radius);
   border: var(--main-border);
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
@@ -649,7 +646,7 @@ grid-row-gap: 5px;
     min-height: auto;
     min-width: fit-content;
     padding: 0.5em;
-    background: var(--main-background-color-item);
+    background: var(--color-yellowAlternate);
     color: rgb(32, 32, 32);
     border-radius: var(--main-radiusInput);
     display: inline;
@@ -758,7 +755,7 @@ min-width: 250px;
 }
 
 .dropdown-child a {
-  background: var(--main-background-color);
+  background-color: var(--main-darkBackground);
   border: var(--main-border);
   color: var(--main-color);
   /* padding: var(--main-padding); */

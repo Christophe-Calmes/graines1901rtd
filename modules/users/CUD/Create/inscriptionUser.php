@@ -1,4 +1,5 @@
 <?php
+
 include '../functions/functionToken.php';
 // Security tests
 $arrayKey = ['email', 'prenom', 'nom', 'login', 'mdp', 'mpdA', 'idNav'];
@@ -35,7 +36,7 @@ if(checkPostFields ($arrayKey, $_POST)) {
     array_push($stamp, 0);
   }
 }
-
+$stock = ['login'=>filter($_POST['login']), 'mdp'=>filter($_POST['mdp'])];
 
 if($security === $stamp) {
   $test = true;
@@ -49,13 +50,14 @@ if($test) {
   $insert = $sql->requestInsert($_POST, 3, 'users');
   $parametre = new Preparation();
   $param = $parametre->creationPrep ($_POST);
-  ActionDB::access($insert, $param);
-  $to = filter($_POST['email']);
-  $subject = 'Valider votre compte';
-  $message = 'Vous vous êtes inscrit à  le graines1901 le '.date('d-m-y').', rendez-vous à l\'adresse suivante : ***********.';
-  $headers = 'From: no-reply@graines1901.fr';
-  //mail($to, $subject, $message, $headers);
-  header('location:../index.php?message=You have received an e-mail confirming your registration&idNav='.$idNav);
+  ActionDB::access($insert, $param, 0);
+  $_POST = array();
+  $_POST['login'] = $stock['login'];
+  $_POST['mdp'] = $stock['mdp'];
+  $ipCheck->checkSecurityAndConnect  ($_POST);
+  return header('location:../index.php?message=Welcome '.$_SESSION['login']);
+  exit();
 } else {
   header('location:../index.php?message=Treatment concerns');
+  exit();
 }

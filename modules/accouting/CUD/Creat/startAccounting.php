@@ -12,8 +12,10 @@ if (checkPostFields($arrayKeys, $_POST)) {
 }
 unset($_POST['valid']);
 if($mark == $controle_POST) {
-  $accouting->openNewBilan ();
- header('location:../index.php?message=Start accounting success&idNav='.$idNav);
+    $accouting->openNewBilan ();
+    header('location:../index.php?message=Start accounting success&idNav='.$idNav);
+    exit();
 } else {
     header('location:../index.php?message=Start accounting  fail&idNav='.$idNav);
+    exit();
 }
