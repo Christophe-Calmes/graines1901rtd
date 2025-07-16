@@ -1,20 +1,24 @@
 /*Présentation Graine*/
+
+
+
+
 /*Variables CSS*/
 
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Montserrat:ital,wght@0,600;1,600&display=swap');
 :root {
   /*Variables Button*/
-  --body-color:rgb(133, 111, 91);
-  --main-background-color: linear-gradient(to bottom, #3e3a35, #251e1b);
-  --main-background-color-item: linear-gradient(to bottom, #804701, #5e3300);
-  --main-color: #F5D798ff;
-  --main-background-MagicForm: #5D3720ff;
-  --main-background-navBar: rgb(87, 44, 17);
-  --color-select: #DFA14Aff;
-  --color-selected: #DFA14Aff;
-  --main-border: 1px solid #CA8339ff;
-  --main-radius: 5px;
-  --main-radiusInput: 5px;
+  --body-color:hsla(0, 0%, 99%, 1);
+  --main-background-color: rgb(10, 15, 15);
+  --main-background-color-item: hsla(60, 4%, 11%, 1);;
+  --main-color: hsla(0, 0%, 63%, 1);;
+  --main-background-MagicForm: linear-gradient(180deg,  rgb(39, 39, 39), #1C1C1Aff);
+  --main-background-navBar: #000000ff;
+  --color-select: hsla(0, 0%, 99%, 1);;
+  --color-selected: rgb(216, 216, 216);;
+  --main-border: 1px solid rgb(43, 43, 43);;
+  --main-radius: 6px;
+  --main-radiusInput: 4px;
   /*print variable*/
   --main-printBorder: #9e9e9e solid 1px;
   --main-PrintBackGround: var(--color-neutralBone);
@@ -33,8 +37,8 @@
   --font-family-titleEvent: "Montserrat", sans-serif;
   --font-weight: 600;
   --font-style: normal;
-  --color-title: rgb(14, 6, 2);
-  --color-subTitle: rgb(255, 233, 192);
+  --color-title: #FDFDFDff;
+  --color-subTitle: #A0A0A0ff;
   /*Présentation*/
   --padding-sheddulingShop: 0.2em 0 0.2em 0;
   /*Variable color*/
@@ -115,13 +119,13 @@ h2::first-letter {
   font-size: 1em;
 }
 .titleEventItem {
-  color: var(--color-yellow);
+  color: var(--color-subTitle);
   font-family: var(--font-family-titleEvent);
   font-style: var(--font-style);
 }
 h3 {
   font-size: 1.5em;
-  color: var(--color-yellowAlternate);
+  color: var(--color-subTitle);
 }
 h4 {
   font-size: 1.2em;
@@ -650,7 +654,7 @@ grid-row-gap: 5px;
     min-width: fit-content;
     padding: 0.5em;
     background: var(--main-background-color-item);
-    color: rgb(32, 32, 32);
+    color: var(--main-color);
     border-radius: var(--main-radiusInput);
     display: inline;
     align-items: center;
@@ -841,7 +845,7 @@ transition: display 3s;
 .btn-line {
   width: 30px;
   height: 3px;
-  background-color:var(--main-background-color);
+  background-color:var(--body-color);
   margin: 3px;
 }
 

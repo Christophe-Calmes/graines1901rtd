@@ -32,55 +32,52 @@ class templateMembership extends SQLmembership
          if (empty($dataMember)) {
               echo '<h2 class="subTitleSite">No members found.</h2>';
          } else {
-                echo '<h2 class="subTitleSite">Liste des membres du site adhérant</h2>';
-                echo '<table class="tableWebSite" border="1">';
-                    echo "<tr><th>Email</th><th>Prenom</th><th>Nom</th><th>Pseudo</th><th>Valid</th><th>Role</th><th>Date de création</th><th>Cotisation</th><th>Administration</th></tr>";
-                    foreach ($dataMember as $member) {
-                        echo "<tr>";
-                        echo '<td><a href="mailto:' . htmlspecialchars($member['email']) . '">'. htmlspecialchars($member['prenom']) .' '. htmlspecialchars($member['nom']) .'</a></td>';
-                        echo "<td>" . htmlspecialchars($member['prenom']) . "</td>";
-                        echo "<td>" . htmlspecialchars($member['nom']) . "</td>";
-                        echo "<td>" . htmlspecialchars($member['login']) . "</td>";
-                        echo "<td>" . ($member['valide'] ? 'Oui' : 'Non') . "</td>";
-                        echo '<td>'.htmlspecialchars($member['typeRole']).'</td>';
-                        echo "<td>" . htmlspecialchars(brassageDate($member['dateCreation'])) . "</td>";
-                        echo '<td>';
-                        switch ($member['cotisation']) {
+                echo '<h2 class="subTitleSite">Liste des membres du site adhérants</h2>';
+                  echo '<article class="gallery">';
+                     foreach ($dataMember as $member) {
+                        echo '<div class="item">';
+                            echo '<ul class="listeProfil">';
+                                echo '<li>Email : <a href="mailto:' . htmlspecialchars($member['email']) . '">'. htmlspecialchars($member['prenom']) .' '. htmlspecialchars($member['nom']) .'</a></li>';
+                                echo '<li>Identité : '. htmlspecialchars($member['prenom']) .' '. htmlspecialchars($member['nom']) .'</li>';
+                                echo '<li>Pseudo : '. htmlspecialchars($member['login']).'</li>';
+                                echo '<li>'.htmlspecialchars($member['typeRole']).'</li>';
+                                echo '<li>'.htmlspecialchars(brassageDate($member['dateCreation'])).'</li>';
+                                echo '<li>'.$this->addMemberFirstTime ($member['idUser'], $idNav).'</li>';
+                                 switch ($member['cotisation']) {
                             case 0:
-                                echo '<br/>Date inscription : '.brassageDate($member['update_date']);
-                                echo '<br/>Pas de cotisation';
+                                echo '<li>Date inscription : '.brassageDate($member['update_date']).'</li>';
+                                echo '<li>Pas de cotisation</li>';
                                 break;
                             case 1:
-                                echo '<br/>Date cotisation : '.brassageDate($member['update_date']);
-                                echo '<br/>Cotisation Individuel';
+                                echo '<li>Date cotisation : '.brassageDate($member['update_date']).'</li>';
+                                echo '<li>Cotisation Individuel</li>';
                                 break;
                             case 2:
-                                echo '<br/>Date cotisation : '.brassageDate($member['update_date']);
-                                echo '<br/>Cotisation Famille';
+                                echo '<li>Date cotisation : '.brassageDate($member['update_date']).'</li>';
+                                echo '<li>Cotisation Famille</li>';
                                 break;
                             case 3:
-                                echo '<br/>Date cotisation : '.brassageDate($member['update_date']);
-                                echo '<br/>Cotisation demi année';
+                                echo '<li>Date cotisation : '.brassageDate($member['update_date']).'</li>';
+                                echo '<li>Cotisation demi année</li>';
                                 break;
                             case 9:
                                 $data = $this->linkIdentity ($member['idUser']);
-                                echo '<br/>Date cotisation : '.brassageDate($member['update_date']);
-                                echo '<br/>Cotisation familliale affilié à '.$data['prenom'].' '.$data['nom'];
+                                echo '<li>Date cotisation : '.brassageDate($member['update_date']).'</li>';
+                                echo '<li>Cotisation familliale affilié à '.$data['prenom'].' '.$data['nom'].'</li>';
                                 break;
                             
                             default:
-                                echo 'Non';
+                                echo '<li>Non</li>';
                                 break;
                         }
-                        echo '</td>';
                         if($member['role'] == 1) {
-                            $this->addMemberFirstTime ($member['idUser'], $idNav);
+                            echo '<li>'.$this->addMemberFirstTime ($member['idUser'], $idNav).'</li>';
                         }
                         if($member['role'] == 4) {
-                            $this->memberShip($member['idUser'], $idNav, $member['cotisation']);
+                            echo '<li>'.$this->memberShip($member['idUser'], $idNav, $member['cotisation']).'</li>';
                         } 
-                        
-                        echo "</tr>";
+                            echo '</ul>';
+                        echo '</div>';
                 }
               echo "</table>";
          }
@@ -89,21 +86,21 @@ class templateMembership extends SQLmembership
              
              $dataMember = $this->getNewMember();
              if(!empty($dataMember)) {
-   echo '<h2 class="subTitleSite">Liste des membres du site adhérant</h2>';
-                echo '<table class="tableWebSite" border="1">';
-                    echo "<tr><th>Email</th><th>Prenom</th><th>Nom</th><th>Pseudo</th><th>Role</th><th>Date de création</th><th>Administration</th></tr>";
-                    foreach ($dataMember as $member) {
-                        echo "<tr>";
-                        echo '<td><a href="mailto:' . htmlspecialchars($member['email']) . '">'. htmlspecialchars($member['prenom']) .' '. htmlspecialchars($member['nom']) .'</a></td>';
-                        echo "<td>" . htmlspecialchars($member['prenom']) . "</td>";
-                        echo "<td>" . htmlspecialchars($member['nom']) . "</td>";
-                        echo "<td>" . htmlspecialchars($member['login']) . "</td>";
-                        echo '<td>'.htmlspecialchars($member['typeRole']).'</td>';
-                        echo "<td>" . htmlspecialchars(brassageDate($member['dateCreation'])) . "</td>";
-                        $this->addMemberFirstTime ($member['idUser'], $idNav);
-                        echo "</tr>";
-                    }
-                    echo "</table>";
+                echo '<h2 class="subTitleSite">Liste des membres du site</h2>';
+                    echo '<article class="gallery">';
+                     foreach ($dataMember as $member) {
+                        echo '<div class="item">';
+                            echo '<ul class="listeProfil">';
+                                echo '<li>Email : <a href="mailto:' . htmlspecialchars($member['email']) . '">'. htmlspecialchars($member['prenom']) .' '. htmlspecialchars($member['nom']) .'</a></li>';
+                                echo '<li>Identité : '. htmlspecialchars($member['prenom']) .' '. htmlspecialchars($member['nom']) .'</li>';
+                                echo '<li>Pseudo : '. htmlspecialchars($member['login']).'</li>';
+                                echo '<li>'.htmlspecialchars($member['typeRole']).'</li>';
+                                echo '<li>'.htmlspecialchars(brassageDate($member['dateCreation'])).'</li>';
+                                echo '<li>'.$this->addMemberFirstTime ($member['idUser'], $idNav).'</li>';
+                            echo '</ul>';
+                        echo '</div>';
+                     }
+                    echo '</article>';
              } else {
                 echo '<h2 class="subTitleSite">No members found.</h2>';
              }

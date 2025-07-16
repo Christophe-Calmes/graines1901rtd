@@ -46,6 +46,7 @@ Class PrintNavigation extends GetNavigation {
       }
       echo '</ul>
     </nav>';
+   
     include 'javaScript/magicBurger.php';
   }
   public function selectZoneMenu($variable, $dataTarget) {

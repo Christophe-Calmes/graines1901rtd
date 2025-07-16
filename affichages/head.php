@@ -20,3 +20,4 @@ if(isset($_GET['idArticle'])) {
     <title><?=$title?></title>
 </head>
   <body class="gridPage">
+     
