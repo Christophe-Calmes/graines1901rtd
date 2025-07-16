@@ -161,6 +161,7 @@ a {
   display: block ruby;
 }
 
+
 /*Date*/
 .displayDate::first-letter{
   text-transform: uppercase;
@@ -352,6 +353,7 @@ a {
  }
  .green {
   background-color: #69af5e;
+  color:var(--main-background-navBar);
  }
  .orange {
   background-color: #f07338;
@@ -880,9 +882,11 @@ nav {
   position: absolute;
   left: 1em;
   margin-right: 0.25em;
+
 }
 .logoPicture {
-  height: 15vh;
+  height: 12vh;
+  margin-bottom: 5em;
 }
 .smartPhone {
   display: none;
