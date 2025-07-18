@@ -105,6 +105,7 @@ class templateAccounting extends SQLaccounting
         echo '</td>';
     }
     private function templateBilan ($data, $idNav, $valid) {
+        echo '<h4 class="please">Retourner votre portable</h2>';
          echo '<table class="tableWebSite" border="1">';
             echo '<tr>
                     <th>Ordre transaction</th>
