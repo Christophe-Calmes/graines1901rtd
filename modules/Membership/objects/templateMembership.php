@@ -42,7 +42,6 @@ class templateMembership extends SQLmembership
                                 echo '<li>Pseudo : '. htmlspecialchars($member['login']).'</li>';
                                 echo '<li>'.htmlspecialchars($member['typeRole']).'</li>';
                                 echo '<li>'.htmlspecialchars(brassageDate($member['dateCreation'])).'</li>';
-                                echo '<li>'.$this->addMemberFirstTime ($member['idUser'], $idNav).'</li>';
                                  switch ($member['cotisation']) {
                             case 0:
                                 echo '<li>Date inscription : '.brassageDate($member['update_date']).'</li>';

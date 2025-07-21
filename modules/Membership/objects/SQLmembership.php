@@ -93,7 +93,8 @@ class SQLmembership
             
     }
     public function resetCotisation () {
-        $update = "UPDATE `membership` SET `cotisation` = 0 ";
+        $update = "UPDATE `membership` SET `cotisation` = 0 ;
+        TRUNCATE TABLE `family_link`;";
         ActionDB::access($update, [], 0);
     }
     

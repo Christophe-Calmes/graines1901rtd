@@ -220,22 +220,21 @@ class templateAccounting extends SQLaccounting
             echo '</form>';
     }
     private function closeBilanButton ($idBilan, $openCompta, $idNav) {
-        echo '<div>
-                                <button type="button" id="magic" class="open red leftAlign">Cloturer du bilan</button>
-                                </div>
-                                <div id="hiddenForm">
-                                <article class="articleBlog">
-                                        <h3>DANGER !</h3>
-                                        <p>Attention, la cloture du bilan doit se faire en fin d\'exercice uniquement. Elle entraine la cloture du bilan actuel, mais aussi la remise à 0 de toute les cotisation en cours.</p>
-                                    
-                                    <form class="flex-center" method="post" action="'.encodeRoutage(149).'">
-                                    <label id="check">J\'ai compris et lu :</label>
-                                    <input id="check" type="checkbox" name="valid"/>
-                                    <input type="hidden" name="idBilan" value="'.$idBilan.'"/>
-                                    <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Cloturer le bilan '.year($openCompta).' - '.(year($openCompta)+1).'</button>
-                                    </form>
-                                </article>
-                                </div>';
+                echo '<div>
+                <button type="button" id="magic" class="open red leftAlign" aria-expanded="false" aria-controls="hiddenForm">Cloturer du bilan</button>
+            </div>
+            <div class="red" id="hiddenForm" aria-hidden="true">
+                <aside class="red">
+                    <h3>DANGER !</h3>
+                    <p>Attention, la cloture du bilan doit se faire en fin d\'exercice uniquement. Elle entraine la cloture du bilan actuel, mais aussi la remise à 0 de toute les cotisation en cours.</p>
+                    <form class="flex-center" method="post" action="'.encodeRoutage(149).'">
+                        <input type="checkbox" name="valid" id="confirmCheckbox"/>
+                        <label for="confirmCheckbox">J\'ai compris et lu :</label>
+                        <input type="hidden" name="idBilan" value="'.$idBilan.'"/>
+                        <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Cloturer le bilan '.year($openCompta).' - '.(year($openCompta)+1).'</button>
+                    </form>
+                </aside>
+            </div>';
     }
     private function displayBilan ($dataBilan, $archive, $idNav) {
     
