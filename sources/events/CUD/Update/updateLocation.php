@@ -19,6 +19,8 @@ if(($mark == $controle_POST)&&($mark != [])) {
     print_r($param);
     $events->updateLocation ($param);
     header('location:../index.php?message=Update location success to record&idNav='.$idNav.'&idLocation='.filter($_POST[$arrayKeys[6]]));
+    exit();
 } else {
     header('location:../index.php?message=Update location fail to record&idNav='.$idNav.'&idLocation='.filter($_POST[$arrayKeys[6]]));
+    exit();
 }

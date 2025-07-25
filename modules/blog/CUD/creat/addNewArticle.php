@@ -12,7 +12,6 @@ if(checkPostFields($arrayKeys, $_POST)) {
     array_push($mark, 0);
     array_push($mark, 0);
 }
-print_r($_POST);
 if($mark == $controle_POST) {
     $id_subject =  filter($_POST['id_subject']);
     array_pop($_POST);
@@ -20,6 +19,8 @@ if($mark == $controle_POST) {
     $param = $parametre->creationPrepIdUser ($_POST);
     $addNewArticle ->creatNewArticle ($param, $id_subject);
     header('location:../index.php?message=New article success to record&idNav='.$idNav);
+    exit();
 } else {
     header('location:../index.php?message=New article fail to record&idNav='.$idNav);
+    exit();
 }

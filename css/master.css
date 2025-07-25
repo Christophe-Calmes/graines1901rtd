@@ -404,7 +404,7 @@ a {
   border-radius: 5px;
 }
 .customerForm {
-  background-color: var(--main-background-MagicForm);
+  background-color: var(--main-background-color);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -821,7 +821,7 @@ transition: display 3s;
   padding-bottom: 0.2em;
   top: 35%;
   left: 35%;
-  background-color: var(--main-background-MagicForm);
+  background-color: var(--main-background-color);
   -webkit-box-shadow: var(--main-shadow);
   box-shadow: var(--main-shadow);
   position: absolute;
@@ -1069,7 +1069,7 @@ nav {
       background-color: var(--main-background-color);
       top: 10%;
       left: 0;
-      border: var(--main-background-MagicForm) solid 10px;
+      border: var(--main-border);
   }
 
   .menu.active ul {
@@ -1101,6 +1101,7 @@ nav {
     top: 30%;
     left: 15%;
     width: initial;
+    background-color: var(--main-background-color);
   }
 
  

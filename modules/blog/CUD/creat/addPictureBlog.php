@@ -28,8 +28,10 @@ if($controle_POST == $mark) {
         }
     } else {
         return header('location:../index.php?message=Record error !');
+            exit();
     }
 
 } else {
     return header('location:../index.php?message=Record error !');
+        exit();
 }
