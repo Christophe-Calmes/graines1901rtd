@@ -15,6 +15,8 @@ if($mark == $controle_POST) {
     $param = $parametre->creationPrep ($_POST);
     $addNewCategorie->creatNewCategorie ($param);
     header('location:../index.php?message=New subject success to record&idNav='.$idNav);
+        exit();
 } else {
     header('location:../index.php?message=New subject fail to record&idNav='.$idNav);
+        exit();
 }

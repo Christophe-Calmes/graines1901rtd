@@ -29,8 +29,8 @@ class TemplateBlog extends PresentationHTML
         echo '<aside class="sectionBlog">';
                 echo '<h3>Catégorie : '.$data['subject'].'</h3>';
                 echo '<h1 class="titleEventItem">'.$data['title'].'</h1>';
-                echo '<article>';
                 echo '<p>Le '.brassageDate($data['creat_date']).'</p>';
+                echo '<article>';
                         echo $this->htmlText ($data['article']);
                 echo '</article>';
         echo '</aside>';

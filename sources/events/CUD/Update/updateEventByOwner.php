@@ -25,6 +25,7 @@ if (checkPostFields($arrayKeys, $_POST)) {
     array_push($mark, 1);
 } else {
     header('location:../index.php?message=You didn\'t check the checkbox. &idNav='.$idNav.'&idEvent='.filter($_POST[$arrayKeys[7]]));
+    exit();
 }
 array_pop($_POST);
 if($mark == $controle_POST) {
@@ -36,6 +37,8 @@ if($mark == $controle_POST) {
     $addEvent->updateEventAndDate ($eventAndDate);
     $idEvent = $addEvent->updateEvent ($param);
     header('location:../index.php?message=Update event success to record&idNav='.$idNav.'&idEvent='.filter($_POST[$arrayKeys[7]]));
+    exit();
 } else {
-    //header('location:../index.php?message=Update event success to record&idNav='.$idNav.'&idEvent='.filter($_POST[$arrayKeys[7]]));
+    header('location:../index.php?message=Update event no update&idNav='.$idNav.'&idEvent='.filter($_POST[$arrayKeys[7]]));
+    exit();
 }

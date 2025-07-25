@@ -31,6 +31,8 @@ if($mark == $controle_POST) {
     $param = $parametre->creationPrepIdUser ($post);
     $addEvent->recordEventParticipant ($param);
     header('location:../index.php?message=New event success to record&idNav='.$idNav);
+        exit();
 } else {
     header('location:../index.php?message=New event fail to record&idNav='.$idNav);
+        exit();
 }

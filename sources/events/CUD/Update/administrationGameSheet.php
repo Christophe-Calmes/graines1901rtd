@@ -16,6 +16,8 @@ if($mark == $controle_POST) {
     $param = $parametre->creationPrep ($_POST);
     $events->updateGame ($param);
     header('location:../index.php?message=Update game success to record&idNav='.$idNav.'&idGame='.filter($_POST['idGame']));
+    exit();
 } else {
     header('location:../index.php?message=Update game fail to record&idNav='.$idNav.'&idGame='.filter($_POST['idGame']));
+    exit();
 } 
