@@ -60,7 +60,11 @@ class SQLaccounting
     }
     private function getDateStartBalanceSheet () {
         $select = "SELECT `openCompta` FROM `bilans` WHERE `valid` = 1 AND `archive` = 0 ORDER BY `openCompta` DESC LIMIT 1;";
-        return ActionDB::select($select, [],2)[0]['openCompta'];
+        $dataStartBilan =  ActionDB::select($select, [],2);
+        if(!empty($dataStartBilan)) {
+            return $dataStartBilan[0]['openCompta'];
+        }
+        
     }
     protected function getActualBilan () {
         $select = "SELECT `id`, `openCompta`, `closeCompta`, `archive`, `valid` FROM `bilans` WHERE `valid` = 1 AND `archive` = 0 ORDER BY `openCompta` DESC LIMIT 1;";
@@ -106,13 +110,13 @@ class SQLaccounting
     protected function balanceAccounting () {
         $result = array();
         $DateStartBilan = $this->getDateStartBalanceSheet ();
-        $param = [['prep'=>':startDateBilan', 'variable'=>$DateStartBilan]];
-        $select = "SELECT SUM(`montant`) AS `sumBilan` FROM `compta` WHERE `balance` = 1 AND `dateActe` >= :startDateBilan AND bilan = 0 AND valide=1;";
-        array_push($result, ActionDB::select($select, $param, 2)[0]['sumBilan']);
-        $select = "SELECT SUM(`montant`) AS `sumBilan` FROM `compta` WHERE `balance` = 0 AND `dateActe` >= :startDateBilan AND bilan = 0 AND valide=1;";
-        array_push($result, ActionDB::select($select, $param, 2)[0]['sumBilan']);
-        array_push($result, $result[0]-$result[1]);
-        return $result;
+            $param = [['prep'=>':startDateBilan', 'variable'=>$DateStartBilan]];
+                $select = "SELECT SUM(`montant`) AS `sumBilan` FROM `compta` WHERE `balance` = 1 AND `dateActe` >= :startDateBilan AND bilan = 0 AND valide=1;";
+                array_push($result, ActionDB::select($select, $param, 2)[0]['sumBilan']);
+                $select = "SELECT SUM(`montant`) AS `sumBilan` FROM `compta` WHERE `balance` = 0 AND `dateActe` >= :startDateBilan AND bilan = 0 AND valide=1;";
+                array_push($result, ActionDB::select($select, $param, 2)[0]['sumBilan']);
+                array_push($result, $result[0]-$result[1]);
+                return $result;
     }
     public function unvalideActe ($param) {
         $update = "UPDATE `compta` SET `valide`= `valide`^1, `date_update`= NOW(), `auteurDel`=:idUser  WHERE `idActe`=:id AND `bilan`=0;";
@@ -189,11 +193,21 @@ class SQLaccounting
         ActionDB::access($update, $param, 2);
         return true;
     }
-    public function openNewBilan () {
+
+    private function getLastIdBilan () {
+        $select = "SELECT `id` FROM `bilans` ORDER BY `id` DESC LIMIT 1;";
+        return ActionDB::select($select, [], 2)[0]['id'];
+    }
+    private function creatNewActivityTrakerLine ($idBilan) {
+        $insert = "INSERT INTO `EventsActivity`(`idBilan`) VALUES (:idBilan);";
+        $param = [['prep'=>':idBilan', 'variable'=>$idBilan]];
+        return ActionDB::access($insert, $param, 2);
+    }
+        public function openNewBilan () {
         $insert ="INSERT INTO `bilans` () VALUES ();";
         ActionDB::access($insert, [], 2);
+        $this->creatNewActivityTrakerLine ($this->getLastIdBilan ());
     }
-
     public function closeAndOpenBilan ($idUser) {
         $solde = $this->balanceAccounting ();
         if($solde[2]>=0) {
@@ -213,6 +227,7 @@ class SQLaccounting
         ['prep'=>':objet', 'variable'=>'Report bilan année précédente'],
         ['prep'=>':idUser', 'variable'=>$idUser]];
         $this->addAccountingActe ($param);
+        
         return true;
     }
    

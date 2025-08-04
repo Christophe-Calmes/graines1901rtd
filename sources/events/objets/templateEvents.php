@@ -714,4 +714,25 @@ class TemplateEvents extends sqlEvents
         }
 
     }
+    public function KPIEventsActualBilan () {
+
+        $dataEventsActualBilan = $this->getLastKPIEvents ()[0];
+        $numberActualEventInBilan = $this->getNumberEventsInBilan ()[0];
+        $inscriptionNet = $dataEventsActualBilan['nrRegister'] - $dataEventsActualBilan['nbrDeleteRegister'];
+        if($dataEventsActualBilan['nbrEvents'] != 0) {
+            $moyenInscritByEvent = $inscriptionNet/$dataEventsActualBilan['nbrEvents'];
+        } else {
+             $moyenInscritByEvent = 0;
+        }
+
+           echo '<h2 class="subTitleSite">Résultat des événements du bilan actuel</h2>';
+        echo '<ul class="listeProfil">';
+            echo '<li>Nombre événements créer par les adhérants : '.$dataEventsActualBilan['nbrEvents'].'</li>';
+            echo '<li>Nombre d\'événements actuellement en ligne :  '.$numberActualEventInBilan['nombre_evenements'].'</li>';
+            echo '<li>Total des inscrites à un événements : '.$inscriptionNet.' personnes</li>';
+            echo '<li>Nombre événements supprimer par un modérateur : '.$dataEventsActualBilan['nbrDeleteEvents'].'</li>';
+            echo '<li>Nombre moyen d\'inscrit par événements : '.round($moyenInscritByEvent, 2).' personnes / événement</li>';
+        echo '</ul>';
+
+    }
 }

@@ -1,6 +1,17 @@
 <?php
 class sqlEvents
 {
+    public function updateEventAndDate ($param) {
+        $idEvent = [$param[0]];
+        $select = "SELECT `dateEvent` FROM `events` WHERE `id` = :idEvent;";
+        $LastDateEvent = ActionDB::select($select,  $idEvent, 2)[0]['dateEvent'];
+            if(($param[1]['variable'] > $LastDateEvent)||($param[1]['variable'] < $LastDateEvent)) {
+                $this->deleteAllEventParticipant ($param);
+                array_push($idEvent, ['prep'=>':idUser', 'variable'=>$this->getIdUser ()]);
+                $this->recordEventParticipant ($idEvent);
+            } 
+        return false;
+    }
     private function getIdUser () {
             $idUser = new Controles ();
             return $idUser->idUser($_SESSION);
@@ -297,11 +308,13 @@ class sqlEvents
          return ActionDB::select($select,$param, 2)[0]['check'];
     }
     public function recordEventParticipant ($param) {
-        $insert = "INSERT INTO `link_events_participants`(`idParticipant`, `idEvent`) VALUES (:idUser, :idEvent);";
+        $insert = "INSERT INTO `link_events_participants`(`idParticipant`, `idEvent`) VALUES (:idUser, :idEvent);
+        UPDATE `EventsActivity` SET `nrRegister`= `nrRegister` + 1 ORDER BY `id` DESC LIMIT 1;";
         return ActionDB::access($insert, $param, 2);
     }
     public function DeleteEventParticipant ($param) {
-        $insert = "DELETE FROM `link_events_participants` WHERE `idEvent` = :idEvent AND `idParticipant` =  :idUser;";
+        $insert = "DELETE FROM `link_events_participants` WHERE `idEvent` = :idEvent AND `idParticipant` =  :idUser;
+        UPDATE `EventsActivity` SET `nbrDeleteRegister` = `nbrDeleteRegister` + 1 ORDER BY `id` DESC LIMIT 1;";
         return ActionDB::access($insert, $param, 2);
     }
     protected function countParticipantsOneEvent ($idEvent) {
@@ -315,11 +328,27 @@ class sqlEvents
     }
     public function recordNewEvent ($param) {
         $insert = "INSERT INTO `events`( `nameEvent`, `objetEvent`, `dateEvent`, `hourEvent`, `numberParticipants`, `idNameGame`, `idLocation`, `idOwner`) 
-        VALUES (:nameEvent, :objetEvent, :dateEvent ,  :hourEvent, :numberParticipants, :idNameGame, :idLocation, :idUser);";
+        VALUES (:nameEvent, :objetEvent, :dateEvent ,  :hourEvent, :numberParticipants, :idNameGame, :idLocation, :idUser);
+        UPDATE `EventsActivity` SET `nbrEvents` = `nbrEvents` + 1 ORDER BY `id` DESC LIMIT 1;";
         ActionDB::access($insert, $param, 2);
         return $this->lastEvent ();
     }
+    private function trakUpdateEvent ($param) {
+        $date = $param[2]['variable'];
+        $hour = $param[3]['variable'];
+        $idEvent = $param[7]['variable'];
+        $select = "SELECT `dateEvent`, `hourEvent` FROM `events` WHERE `id`=:idEvent;";
+        $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
+        $dataDateEvent = ActionDB::select($select, $param, 2);
+        if (date("Y-m-d") > $dataDateEvent[0]['dateEvent']) {
+            $update = "UPDATE `EventsActivity` SET `nbrEvents` = `nbrEvents` + 1 ORDER BY `id` DESC LIMIT 1;";
+            ActionDB::access($update, [], 2);
+            return true;
+        }
+        return false;
+    }
     public function updateEvent ($param) {
+        $this->trakUpdateEvent ($param);
         $update = "UPDATE `events` SET 
         `nameEvent`=:nameEvent,
         `objetEvent`=:objetEvent,
@@ -330,6 +359,7 @@ class sqlEvents
         `idLocation`=:idLocation 
         WHERE `id` = :idEvent AND `idOwner`=:idUser;";
         ActionDB::access($update, $param, 2);
+        
     }
     protected function getMyEvent ($valid, $moment) {
         // $moment = true (present & futur), false (past)
@@ -434,12 +464,14 @@ class sqlEvents
     }
     public function deleteOneEventByOwner ($param) {
         $this->deleteAllEventParticipant ($param);
-        $update = "UPDATE `events` SET `valid`=0 WHERE `id` = :idEvent AND `idOwner` = :idUser;";
+        $update = "UPDATE `events` SET `valid`=0 WHERE `id` = :idEvent AND `idOwner` = :idUser;
+        UPDATE `EventsActivity` SET `nbrDeleteRegister` = `nbrDeleteRegister` + 1 ORDER BY `id` DESC LIMIT 1;";
         ActionDB::access($update, $param, 2);  
     }
     public function deleteOneEventByGestionnaire ($param) {
         $this->deleteAllEventParticipantByGestionnaire ($param);
-        $delete = "DELETE FROM `events` WHERE `id` = :idEvent;";
+        $delete = "DELETE FROM `events` WHERE `id` = :idEvent;
+                    UPDATE `EventsActivity` SET `nbrDeleteEvents` = `nbrDeleteEvents`+ 1 ORDER BY `id` DESC LIMIT 1;";
         return  ActionDB::access($delete, $param, 2);  
     }
     protected function getMyAgenda () {
@@ -489,22 +521,6 @@ class sqlEvents
         }
         return ActionDB::select($select, [],2)[0]['nbrEvents'];
     }
-    public function updateEventAndDate ($param) {
-        //print_r($param);
-        $idEvent = [$param[0]];
-        $select = "SELECT `dateEvent` FROM `events` WHERE `id` = :idEvent;";
-        $LastDateEvent = ActionDB::select($select,  $idEvent, 2)[0]['dateEvent'];
-      
-        if($param[1]['variable'] > $LastDateEvent) {
-
-            $this->deleteAllEventParticipant ($param);
-            array_push($idEvent, ['prep'=>':idUser', 'variable'=>$this->getIdUser ()]);
-            print_r($idEvent);
-            $this->recordEventParticipant ($idEvent);
-
-        } 
-        return false;
-    }
     protected function getOwnerPrivateLocation ($valid) {
         $select = "SELECT `id`, 
         `nameLocation`, 
@@ -521,6 +537,24 @@ class sqlEvents
         ['prep'=>':idUser', 'variable'=>$this->getIdUser ()]];
         return ActionDB::select($select, $param, 2);
 
+    }
+    protected function getLastKPIEvents () {
+        $select = "SELECT `nbrEvents`, `nbrDeleteEvents`, `nrRegister`, `nbrDeleteRegister` FROM `EventsActivity` ORDER BY `id` DESC LIMIT 1;";
+        return ActionDB::select($select, [], 2);
+    }
+    protected function getNumberEventsInBilan () {
+        $select = "SELECT
+            COUNT(eventsTable.id) AS nombre_evenements
+        FROM
+            events AS eventsTable
+        WHERE
+            eventsTable.creat_date >= (
+                SELECT
+                    MAX(openCompta)
+                FROM
+                    bilans 
+            );";
+        return ActionDB::select($select, [], 2);
     }
 
 }
